@@ -363,10 +363,16 @@ const playerData = {
   roleNameGen: function () {
     if (this.role === "W") {
       this.roleName = "Warrior";
+      document.querySelector(".tooltip-content-player").textContent =
+        "I SWING BIG SWORD!";
     } else if (this.role === "M") {
       this.roleName = "Mage";
+      document.querySelector(".tooltip-content-player").textContent =
+        "Don't test me...";
     } else if (this.role === "A") {
       this.roleName = "Assassin";
+      document.querySelector(".tooltip-content-player").textContent =
+        "The night is my ally...";
     }
     return this.roleName;
   },
