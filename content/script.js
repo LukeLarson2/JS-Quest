@@ -615,9 +615,13 @@ document.querySelector("#next-story").addEventListener("click", function () {
 document.querySelector("#drink-hp").addEventListener("click", function () {
   const totalHpPots = Number(document.querySelector(".hp-pots").textContent);
   const totalHp = Number(document.querySelector(".health").textContent);
+  let amountToHeal = 30;
   if (totalHpPots !== 0 && totalHp < 100) {
+    if (totalHp + 30 > 100) {
+      amountToHeal = 100 - totalHp;
+    }
     document.querySelector(".hp-pots").textContent = totalHpPots - 1;
-    document.querySelector(".health").textContent = totalHp + 30;
+    document.querySelector(".health").textContent = totalHp + amountToHeal;
   }
 });
 
@@ -625,9 +629,13 @@ document.querySelector("#drink-hp").addEventListener("click", function () {
 document.querySelector("#drink-nrg").addEventListener("click", function () {
   const totalNrgPots = Number(document.querySelector(".nrg-pots").textContent);
   const totalNrg = Number(document.querySelector(".energy").textContent);
+  let amountToRestore = 20;
   if (totalNrgPots !== 0 && totalNrg < 100) {
+    if (totalNrg + 20 > 100) {
+      amountToRestore = 100 - totalNrg;
+    }
     document.querySelector(".nrg-pots").textContent = totalNrgPots - 1;
-    document.querySelector(".energy").textContent = totalNrg + 20;
+    document.querySelector(".energy").textContent = totalNrg + amountToRestore;
   }
 });
 
