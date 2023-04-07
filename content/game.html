@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD"
+      crossorigin="anonymous"
+    />
+    <link href="style.css" rel="stylesheet" />
+    <title>JS Quest – Part 1</title>
+  </head>
+  <body>
+    <container class="container">
+      <header class="row align-items-start" id="player-data">
+        <div class="col col-2">
+          <img
+            class="role-logo"
+            src="images/knight-shield-crop.png"
+            alt="knight shield picture"
+          />
+          <p id="player-name" style="text-align: left">username</p>
+        </div>
+        <div class="col col-2">
+          <h3 class="health-title" style="margin-top: 40px">
+            Health: <span class="health">100</span>
+          </h3>
+        </div>
+        <div class="col col-2">
+          <h3 class="energy-title" style="margin-top: 40px">
+            Energy: <span class="energy">100</span>
+          </h3>
+        </div>
+        <div class="col col-2">
+          <h3 class="hp-pot-title" style="margin-top: 30px; margin-left: 50px">
+            Health Potions: <span class="hp-pots">0</span>
+          </h3>
+        </div>
+        <div class="col col-2">
+          <button
+            class="btn btn-dark"
+            type="button"
+            style="margin-top: 50px; margin-left: 70px"
+          >
+            Drink<br />Potion
+          </button>
+        </div>
+      </header>
+      <main class="row">
+        <div class="col col-4" id="story-block">
+          <div class="row justify-content-center">
+            <div class="col-12" id="main-story">
+              Press "Next" to start your adventure!
+            </div>
+          </div>
+          <div class="row align-items-end">
+            <div class="btn btn-dark" id="next-story" type="button">Next</div>
+          </div>
+        </div>
+        <div class="col col-4 g-1" id="combat-block">
+          <div id="btl-btns">
+            <div class="attack-1-dmg" id="skills">Attack<br />One</div>
+            <div class="btn btn-dark attacks" id="attack-1" type="button">
+              ATK 1
+            </div>
+          </div>
+          <div id="btl-btns">
+            <div class="attack-2-dmg" id="skills">Attack<br />Two</div>
+            <div class="btn btn-dark attacks" id="attack-2" type="button">
+              ATK 2
+            </div>
+          </div>
+          <div id="btl-btns">
+            <div class="attack-3-dmg" id="skills">Attack<br />Three</div>
+            <div class="btn btn-dark attacks" id="attack-3" type="button">
+              ATK 3
+            </div>
+          </div>
+          <div id="btl-btns">
+            <div class="attack-4-dmg" id="skills">Attack<br />Four</div>
+            <div class="btn btn-dark attacks" id="attack-4" type="button">
+              ATK 4
+            </div>
+          </div>
+        </div>
+      </main>
+    </container>
+    <script src="script.js"></script>
+  </body>
+</html>

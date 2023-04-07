@@ -1,0 +1,104 @@
+@import url("https://fonts.googleapis.com/css?family=Press+Start+2P&display=swap");
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: inherit;
+}
+
+body {
+  height: 100vh;
+  display: flex;
+  background: linear-gradient(to top left, #182e69, #000000);
+  font-family: "Press Start 2P", sans-serif !important;
+}
+
+#game-title {
+  font-size: 50px;
+  color: #eee;
+}
+
+.btn-dark {
+  color: #eee;
+  background-color: #222;
+  text-align: center;
+  border: 3px solid #eee !important;
+}
+
+.role-logo {
+  max-width: 100px;
+  border: 3px solid #eee;
+  background-color: #eee;
+  border-radius: 10px;
+}
+
+#player-data {
+  color: #eee;
+  margin-top: 15px;
+}
+
+#player-data {
+  border-bottom: 10px solid #eee;
+  border-radius: 10px;
+}
+
+#story-block {
+  border: 7px solid #eee;
+  background-color: #aaa8a8;
+  opacity: 100%;
+  height: 575px;
+  max-height: 575px;
+  margin-top: 50px;
+  margin-right: 100px;
+  margin-left: 75px;
+  border-radius: 10px;
+  display: flex;
+  justify-content: center;
+  /* align-items: flex; */
+}
+
+#combat-block {
+  border: 7px solid #eee;
+  background-color: #aaa8a8;
+  opacity: 100%;
+  height: 575px;
+  max-height: 575px;
+  margin-top: 50px;
+  margin-left: 100px;
+  border-radius: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+}
+
+#next-story {
+  max-width: fit-content;
+  margin: 10px;
+  max-height: 20px;
+  /* align-items: flex-end; */
+}
+
+.attacks {
+  font-size: 10px;
+  margin: 10px;
+}
+
+#skills {
+  text-align: center;
+  margin: 10px;
+  font-size: 10px;
+  color: #222;
+}
+
+#main-story {
+  max-height: 530px;
+  margin: 10px;
+  justify-items: center;
+}
+
+.attack-3-dmg {
+  white-space: pre;
+}
+.attack-4-dmg {
+  white-space: pre;
+}
