@@ -4,8 +4,8 @@ function beginTutorial() {
   let begin = prompt(`Save the kingdom? (Y/N)`);
   begin = begin.toUpperCase();
   if (begin === "N") {
-    alert(`Well that sucks...`);
-    gameOver();
+    document.querySelector("#next-story").remove();
+    document.querySelector("#main-story").textContent = `---- Game Over ----`;
   } else {
     storyCount++;
     document.querySelector("#main-story").textContent =
@@ -571,8 +571,8 @@ const storyText = {
     `${playerData.name}, do you stand up to the task of cleansing the kingdom of these filthy Orcs?`,
     "tutorial",
     `That's Excellent!`,
-    `Before you go let me give you this health potion to help you on your jounrey`,
-    "hp+",
+    `Before you go let me give you these health and energy potions to help you on your jounrey`,
+    "hp+nrg",
     `Good luck ${playerData.name}!`,
     `--You make your way to the castle gates--`,
     `--A young boy is running towards you as he is being chased by an Orc!--`,
@@ -596,11 +596,13 @@ document.querySelector("#next-story").addEventListener("click", function () {
   }
   if (storyText[partCount][storyCount] === "tutorial") {
     beginTutorial();
+    return;
   }
-  if (storyText[partCount][storyCount + 1] === "hp+") {
+  if (storyText[partCount][storyCount + 1] === "hp+nrg") {
     document.querySelector("#main-story").textContent =
       storyText[partCount][storyCount];
     document.querySelector(".hp-pots").textContent++;
+    document.querySelector(".nrg-pots").textContent++;
     storyCount = storyCount + 2;
     return;
   }
@@ -611,11 +613,21 @@ document.querySelector("#next-story").addEventListener("click", function () {
 
 // -- Drink hp potion --
 document.querySelector("#drink-hp").addEventListener("click", function () {
-  const totalPots = Number(document.querySelector(".hp-pots").textContent);
+  const totalHpPots = Number(document.querySelector(".hp-pots").textContent);
   const totalHp = Number(document.querySelector(".health").textContent);
-  if (totalPots !== 0) {
-    document.querySelector(".hp-pots").textContent = totalPots - 1;
-    document.querySelector(".health").textContent = totalHp + 20;
+  if (totalHpPots !== 0 && totalHp < 100) {
+    document.querySelector(".hp-pots").textContent = totalHpPots - 1;
+    document.querySelector(".health").textContent = totalHp + 30;
+  }
+});
+
+// -- Drink nrg potion --
+document.querySelector("#drink-nrg").addEventListener("click", function () {
+  const totalNrgPots = Number(document.querySelector(".nrg-pots").textContent);
+  const totalNrg = Number(document.querySelector(".energy").textContent);
+  if (totalNrgPots !== 0 && totalNrg < 100) {
+    document.querySelector(".nrg-pots").textContent = totalNrgPots - 1;
+    document.querySelector(".energy").textContent = totalNrg + 20;
   }
 });
 
