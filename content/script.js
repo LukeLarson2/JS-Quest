@@ -373,31 +373,27 @@ const playerData = {
   skillGen: function () {
     if (this.role === "W") {
       this.skills = warriorSkils;
-      document.querySelector(".attack-1-dmg").textContent = "Punch";
-      document.querySelector("#attack-1").textContent =
-        warriorSkils["Punch"].dmg;
-      document.querySelector(".attack-2-dmg").textContent = "Kick";
-      document.querySelector("#attack-2").textContent =
-        warriorSkils["Kick"].dmg;
-      document.querySelector(".attack-3-dmg").textContent = "Swing";
-      document.querySelector("#attack-3").textContent =
-        warriorSkils["Swing"].dmg;
-      document.querySelector(".attack-4-dmg").textContent = "Stab";
-      document.querySelector("#attack-4").textContent =
-        warriorSkils["Stab"].dmg;
     } else if (this.role === "M") {
       this.skills = mageSkils;
-      document.querySelector(".attack-1-dmg").textContent = "Zap";
-      document.querySelector(".attack-2-dmg").textContent = "Shock";
-      document.querySelector(".attack-3-dmg").textContent = "Magic\r\nMissle";
-      document.querySelector(".attack-4-dmg").textContent = "Mana\r\nBolt";
     } else if (this.role === "A") {
       this.skills = assassinSkils;
-      document.querySelector(".attack-1-dmg").textContent = "Jab";
-      document.querySelector(".attack-2-dmg").textContent = "Slice";
-      document.querySelector(".attack-3-dmg").textContent = "Back\r\nStab";
-      document.querySelector(".attack-4-dmg").textContent = "Dagger\r\nThrow";
     }
+    document.querySelector(".attack-1-dmg").textContent =
+      playerData.skills[0][0];
+    document.querySelector("#attack-1").textContent =
+      playerData.skills[0][1].dmg + " DMG";
+    document.querySelector(".attack-2-dmg").textContent =
+      playerData.skills[1][0];
+    document.querySelector("#attack-2").textContent =
+      playerData.skills[1][1].dmg + " DMG";
+    document.querySelector(".attack-3-dmg").textContent =
+      playerData.skills[2][0];
+    document.querySelector("#attack-3").textContent =
+      playerData.skills[2][1].dmg + " DMG";
+    document.querySelector(".attack-4-dmg").textContent =
+      playerData.skills[3][0];
+    document.querySelector("#attack-4").textContent =
+      playerData.skills[3][1].dmg + " DMG";
     return this.skills;
   },
   health: 100,
@@ -462,13 +458,13 @@ const mageSkils = [
     },
   ],
   [
-    "Magic Missle",
+    "Magic\r\nMissle",
     {
       dmg: 3,
     },
   ],
   [
-    "Mana Bolt",
+    "Mana\r\nBolt",
     {
       dmg: 4,
     },
@@ -490,13 +486,13 @@ const assassinSkils = [
     },
   ],
   [
-    "Back-Stab",
+    "Back\r\nStab",
     {
       dmg: 3,
     },
   ],
   [
-    "Dagger Throw",
+    "Dagger\r\nThrow",
     {
       dmg: 2,
     },
@@ -575,7 +571,7 @@ const storyText = {
     `${playerData.name}, do you stand up to the task of cleansing the kingdom of these filthy Orcs?`,
     "tutorial",
     `That's Excellent!`,
-    `Before you go let me give you this health potion ❤️‍🩹 to help you on your jounrey`,
+    `Before you go let me give you this health potion to help you on your jounrey`,
     "hp+",
     `Good luck ${playerData.name}!`,
     `--You make your way to the castle gates--`,
@@ -611,6 +607,16 @@ document.querySelector("#next-story").addEventListener("click", function () {
   document.querySelector("#main-story").textContent =
     storyText[partCount][storyCount];
   storyCount++;
+});
+
+// -- Drink hp potion --
+document.querySelector("#drink-hp").addEventListener("click", function () {
+  const totalPots = Number(document.querySelector(".hp-pots").textContent);
+  const totalHp = Number(document.querySelector(".health").textContent);
+  if (totalPots !== 0) {
+    document.querySelector(".hp-pots").textContent = totalPots - 1;
+    document.querySelector(".health").textContent = totalHp + 20;
+  }
 });
 
 /*

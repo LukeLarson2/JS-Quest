@@ -52,9 +52,7 @@ body {
   margin-right: 100px;
   margin-left: 75px;
   border-radius: 10px;
-  display: flex;
-  justify-content: center;
-  /* align-items: flex; */
+  align-items: center;
 }
 
 #combat-block {
@@ -75,7 +73,6 @@ body {
   max-width: fit-content;
   margin: 10px;
   max-height: 20px;
-  /* align-items: flex-end; */
 }
 
 .attacks {
@@ -92,8 +89,8 @@ body {
 
 #main-story {
   max-height: 530px;
-  margin: 10px;
-  justify-items: center;
+  max-width: 400px;
+  margin: 20px;
 }
 
 .attack-3-dmg {

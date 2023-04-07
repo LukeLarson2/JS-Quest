@@ -36,13 +36,15 @@
         </div>
         <div class="col col-2">
           <h3 class="hp-pot-title" style="margin-top: 30px; margin-left: 50px">
-            Health Potions: <span class="hp-pots">0</span>
+            Health Potions:
+            <span src="images/hp-pot-bottle.png" class="hp-pots">0</span>
           </h3>
         </div>
         <div class="col col-2">
           <button
             class="btn btn-dark"
             type="button"
+            id="drink-hp"
             style="margin-top: 50px; margin-left: 70px"
           >
             Drink<br />Potion
@@ -51,13 +53,17 @@
       </header>
       <main class="row">
         <div class="col col-4" id="story-block">
-          <div class="row justify-content-center">
-            <div class="col-12" id="main-story">
-              Press "Next" to start your adventure!
+          <div class="row">
+            <div class="col">
+              <p id="main-story">Press "Next" to start your adventure!</p>
             </div>
           </div>
-          <div class="row align-items-end">
-            <div class="btn btn-dark" id="next-story" type="button">Next</div>
+          <div class="row">
+            <div class="col">
+              <button class="btn btn-dark" id="next-story" type="button">
+                Next >
+              </button>
+            </div>
           </div>
         </div>
         <div class="col col-4 g-1" id="combat-block">
