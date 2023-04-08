@@ -2,8 +2,8 @@
 Developing Browser Game
 
 <h1>How to Play</h1>
-<li>
-<ol>Download full zip file</ol>
-<ol>Extract Files</ol>
-<olOpen index.html file</ol>
-</li>
+<ol>
+<li>Download full zip file</li>
+<li>Extract Files</li>
+<li>Open index.html file</li>
+</ol>
