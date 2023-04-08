@@ -568,6 +568,7 @@ playerData.defGen();
 
 // -- SKILL DISPLAY --
 document.querySelector("#player-name").textContent = playerData.name;
+disableButtons(false, true);
 
 // -- Story Board --
 const storyText = {
@@ -593,6 +594,15 @@ const storyText = {
 let storyCount = 0;
 let partCount = 1;
 
+// -- DISABLE FUNCTION --
+function disableButtons(story, battle) {
+  document.querySelector("#next-story").disabled = story;
+  document.querySelector("#attack-1").disabled = battle;
+  document.querySelector("#attack-2").disabled = battle;
+  document.querySelector("#attack-3").disabled = battle;
+  document.querySelector("#attack-4").disabled = battle;
+}
+
 // -- Click Through Story --
 document.querySelector("#next-story").addEventListener("click", function () {
   if (storyCount >= storyText[partCount][storyCount].length - 1) {
@@ -603,6 +613,10 @@ document.querySelector("#next-story").addEventListener("click", function () {
   }
   if (storyText[partCount][storyCount] === "tutorial") {
     beginTutorial();
+    return;
+  }
+  if (storyText[partCount][storyCount] === `---- IN BATTLE ----`) {
+    disableButtons(true, false);
     return;
   }
   if (storyText[partCount][storyCount + 1] === "hp+nrg") {
