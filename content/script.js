@@ -39,6 +39,7 @@ function getRole() {
 function getName() {
   let result = prompt("Tell us, what is your name?");
   if (result.length >= 1) {
+    document.querySelector("#mob-pic").src = "images/the-castle.png";
     playerData.name = result;
     return playerData.name;
   } else {
@@ -58,6 +59,12 @@ function battle(mob, player) {
   document.querySelector("#mob-hp").textContent = mob.hp;
   // ---- ATTACK 1 ----
   document.querySelector("#attack-1").addEventListener("click", function () {
+    let curNrg = Number(document.querySelector(".energy").textContent);
+    if (curNrg < player.skills[0][1].nrg) {
+      return;
+    }
+    curNrg = curNrg - player.skills[0][1].nrg;
+    document.querySelector(".energy").textContent = curNrg;
     let mobHP = Number(document.querySelector("#mob-hp").textContent);
     console.log(mobHP);
     let playerHP = Number(document.querySelector(".health").textContent);
@@ -100,6 +107,12 @@ function battle(mob, player) {
   });
   // ---- ATTACK 2 ----
   document.querySelector("#attack-2").addEventListener("click", function () {
+    let curNrg = Number(document.querySelector(".energy").textContent);
+    if (curNrg < player.skills[1][1].nrg) {
+      return;
+    }
+    curNrg = curNrg - player.skills[1][1].nrg;
+    document.querySelector(".energy").textContent = curNrg;
     let mobHP = Number(document.querySelector("#mob-hp").textContent);
     console.log(mobHP);
     let playerHP = Number(document.querySelector(".health").textContent);
@@ -142,6 +155,12 @@ function battle(mob, player) {
   });
   // ---- ATTACK 3 ----
   document.querySelector("#attack-3").addEventListener("click", function () {
+    let curNrg = Number(document.querySelector(".energy").textContent);
+    if (curNrg < player.skills[2][1].nrg) {
+      return;
+    }
+    curNrg = curNrg - player.skills[2][1].nrg;
+    document.querySelector(".energy").textContent = curNrg;
     let mobHP = Number(document.querySelector("#mob-hp").textContent);
     console.log(mobHP);
     let playerHP = Number(document.querySelector(".health").textContent);
@@ -184,6 +203,12 @@ function battle(mob, player) {
   });
   // ---- ATTACK 4 ----
   document.querySelector("#attack-4").addEventListener("click", function () {
+    let curNrg = Number(document.querySelector(".energy").textContent);
+    if (curNrg < player.skills[3][1].nrg) {
+      return;
+    }
+    curNrg = curNrg - player.skills[3][1].nrg;
+    document.querySelector(".energy").textContent = curNrg;
     let mobHP = Number(document.querySelector("#mob-hp").textContent);
     console.log(mobHP);
     let playerHP = Number(document.querySelector(".health").textContent);
@@ -284,6 +309,7 @@ const leftCottagePick = [
   `--The cottage seems safe so you decide to rest to restore your strength--`,
   `max-power`,
   `--You rest and restore yourself to full power!`,
+  "end",
 ];
 
 // -- RIGHT COTTAGE --
@@ -291,6 +317,7 @@ const rightCottagePick = [
   `--As you approach the cottage on the right you notice a shadow moving inside--`,
   `--You open the door and find yourself standing in front of another Orc!--`,
   `---- IN BATTLE! ----`,
+  "end",
 ];
 // battle(easyMob2, playerData);
 
@@ -386,24 +413,28 @@ const warriorSkils = [
     "Punch",
     {
       dmg: 1,
+      nrg: 1,
     },
   ],
   [
     "Kick",
     {
       dmg: 2,
+      nrg: 2,
     },
   ],
   [
     "Swing",
     {
       dmg: 4,
+      nrg: 3,
     },
   ],
   [
     "Stab",
     {
       dmg: 3,
+      nrg: 2,
     },
   ],
 ];
@@ -414,24 +445,28 @@ const mageSkils = [
     "Zap",
     {
       dmg: 2,
+      nrg: 1,
     },
   ],
   [
     "Shock",
     {
       dmg: 3,
+      nrg: 2,
     },
   ],
   [
     "Missle",
     {
       dmg: 3,
+      nrg: 3,
     },
   ],
   [
     "Bolt",
     {
       dmg: 4,
+      nrg: 4,
     },
   ],
 ];
@@ -442,24 +477,28 @@ const assassinSkils = [
     "Jab",
     {
       dmg: 1,
+      nrg: 1,
     },
   ],
   [
     "Slice",
     {
       dmg: 2,
+      nrg: 2,
     },
   ],
   [
     "Stab",
     {
       dmg: 3,
+      nrg: 3,
     },
   ],
   [
     "Cut",
     {
       dmg: 2,
+      nrg: 1,
     },
   ],
 ];
@@ -544,7 +583,7 @@ const storyText = {
     `--A young boy is running towards you as he is being chased by an Orc!--`,
     `Boy: "Help me! It's going to get me!"`,
     `--The boy runs behind you as the Orc draws near!--`,
-    `--TO BATTLE!--`,
+    `end`,
   ],
   2: [
     `---- IN BATTLE ----`,
@@ -561,7 +600,7 @@ const storyText = {
     `--The boy didn't say which was his--`,
     "Which cottage do you pick?",
     "pick-cottage",
-    "choose",
+    "end",
   ],
   3: [],
 };
@@ -580,74 +619,106 @@ function disableButtons(story, battle) {
 
 // -- Click Through Story --
 document.querySelector("#next-story").addEventListener("click", function () {
+  // Initialize Current Part
   if (partCount === 1) {
     document.querySelector("#story-title").textContent = "Part 1";
   }
-  if (storyCount >= storyText[partCount][storyCount].length - 1) {
+  // Check if end of story array
+  if (storyCount < storyText[partCount][storyCount].length - 1) {
+    // -- TUTORIAL CHECK --
+    if (storyText[partCount][storyCount] === "tutorial") {
+      beginTutorial();
+      return;
+      // -- BATTLE CHECK --
+    } else if (storyText[partCount][storyCount] === `---- IN BATTLE ----`) {
+      disableButtons(true, false);
+      // -- FIRST BATTLE --
+      if (partCount - 1 === 1) {
+        document.querySelector("#mob-name").textContent = easyMob1.name;
+        document.querySelector("#mob-hp").textContent = easyMob1.hp;
+        document.querySelector("#mob-pic").src = "images/orc-mob-1.png";
+        battle(easyMob1, playerData);
+        // -- EXTRA BATTLE --
+      } else if (partCount - 1 === 3) {
+        document.querySelector("#mob-name").textContent = easyMob2.name;
+        document.querySelector("#mob-hp").textContent = easyMob2.hp;
+        document.querySelector("#mob-pic").src = "images/orc-mob-1.png";
+        battle(easyMob2, playerData);
+      }
+      // -- COTTAGE SELECTION CHECK --
+    } else if (storyText[partCount][storyCount] === "pick-cottage") {
+      let cottage = prompt(
+        `"L" => cottage on the left\n"R" => cottage on the right`
+      );
+      cottage = cottage.toUpperCase();
+      // -- LEFT COTTAGE CHOICE --
+      if (cottage === "L") {
+        storyText[3] = leftCottagePick;
+        partCount++;
+        storyCount = 0;
+        document.querySelector("#main-story").textContent =
+          storyText[partCount][storyCount];
+        // -- RIGHT COTTAGE CHOICE --
+      } else if (cottage === "R") {
+        storyText[3] = rightCottagePick;
+        partCount++;
+        storyCount = 0;
+        document.querySelector("#main-story").textContent =
+          storyText[partCount][storyCount];
+        // -- INVALID SELECTION --
+      } else {
+        alert(`Invalid entry, please try again...`);
+      }
+      // -- SHOW COTTAGE PICTURES --
+    } else if (
+      storyText[partCount][storyCount] ===
+      `--Ahead of you reside two cottages--`
+    ) {
+      document.querySelector("#mob-pic").src = "images/cottages.png";
+      document.querySelector("#main-story").textContent =
+        storyText[partCount][storyCount];
+      storyCount++;
+      return;
+      // -- SHOW INSIDE LEFT COTTAGE PICTURE --
+    } else if (
+      storyText[partCount][storyCount] ===
+      `--As you enter you see a create in the corner with a broken lock--`
+    ) {
+      document.querySelector("#mob-pic").src = "images/inside-left-cottage.png";
+      document.querySelector("#main-story").textContent =
+        storyText[partCount][storyCount];
+      storyCount++;
+      return;
+      // -- ADD ONE HEALTH POTION AND ONE ENERGY POTION --
+    } else if (storyText[partCount][storyCount + 1] === "hp+nrg") {
+      document.querySelector("#main-story").textContent =
+        storyText[partCount][storyCount];
+      document.querySelector(".hp-pots").textContent++;
+      document.querySelector(".nrg-pots").textContent++;
+      storyCount = storyCount + 2;
+      return;
+      // -- FULL STATS CHECK --
+    } else if (storyText[partCount][storyCount + 1] === "max-power") {
+      document.querySelector(".health").textContent = 100;
+      document.querySelector(".energy").textContent = 50;
+      storyCount++;
+      document.querySelector("#main-story").textContent =
+        storyText[partCount][storyCount];
+      return;
+    }
+    // -- ELSE PROGRESS STORY --
+    document.querySelector("#main-story").textContent =
+      storyText[partCount][storyCount];
+    storyCount++;
+    return;
+    // -- IF AT END OF STORY ARRAY MOVE TO NEXT PART --
+  } else {
     partCount++;
     storyCount = 0;
     document.querySelector("#main-story").textContent =
       storyText[partCount][storyCount];
-  }
-  if (storyText[partCount][storyCount] === "tutorial") {
-    beginTutorial();
     return;
   }
-  if (storyText[partCount][storyCount] === `---- IN BATTLE ----`) {
-    disableButtons(true, false);
-    if (partCount - 1 === 1) {
-      document.querySelector("#mob-name").textContent = easyMob1.name;
-      document.querySelector("#mob-hp").textContent = easyMob1.hp;
-      document.querySelector("#mob-pic").src = "images/orc-mob-1.png";
-      battle(easyMob1, playerData);
-    } else if (partCount - 1 === 3) {
-      document.querySelector("#mob-name").textContent = easyMob2.name;
-      document.querySelector("#mob-hp").textContent = easyMob2.hp;
-      document.querySelector("#mob-pic").src = "images/orc-mob-1.png";
-      battle(easyMob2, playerData);
-    }
-  }
-  if (storyText[partCount][storyCount] === "pick-cottage") {
-    let cottage = prompt(
-      `"L" => cottage on the left\n"R" => cottage on the right`
-    );
-    cottage.toUpperCase();
-    if (cottage === "L") {
-      storyText[3] = leftCottagePick;
-      partCount++;
-      storyCount = 0;
-      document.querySelector("#main-story").textContent =
-        storyText[partCount][storyCount];
-    } else if (cottage === "R") {
-      storyText[3] = rightCottagePick;
-      partCount++;
-      storyCount = 0;
-      document.querySelector("#main-story").textContent =
-        storyText[partCount][storyCount];
-    } else {
-      alert(`Invalid entry, please try again...`);
-      cottageChoice();
-    }
-  }
-  if (storyText[partCount][storyCount + 1] === "hp+nrg") {
-    document.querySelector("#main-story").textContent =
-      storyText[partCount][storyCount];
-    document.querySelector(".hp-pots").textContent++;
-    document.querySelector(".nrg-pots").textContent++;
-    storyCount = storyCount + 2;
-    return;
-  }
-  if (storyText[partCount][storyCount + 1] === "max-power") {
-    document.querySelector(".health").textContent = 100;
-    document.querySelector(".energy").textContent = 50;
-    storyCount++;
-    document.querySelector("#main-story").textContent =
-      storyText[partCount][storyCount];
-    return;
-  }
-  document.querySelector("#main-story").textContent =
-    storyText[partCount][storyCount];
-  storyCount++;
 });
 
 // -- Drink hp potion --
@@ -669,9 +740,9 @@ document.querySelector("#drink-nrg").addEventListener("click", function () {
   const totalNrgPots = Number(document.querySelector(".nrg-pots").textContent);
   const totalNrg = Number(document.querySelector(".energy").textContent);
   let amountToRestore = 20;
-  if (totalNrgPots !== 0 && totalNrg < 100) {
-    if (totalNrg + 20 > 100) {
-      amountToRestore = 100 - totalNrg;
+  if (totalNrgPots !== 0 && totalNrg < 50) {
+    if (totalNrg + 20 > 50) {
+      amountToRestore = 50 - totalNrg;
     }
     document.querySelector(".nrg-pots").textContent = totalNrgPots - 1;
     document.querySelector(".energy").textContent = totalNrg + amountToRestore;
