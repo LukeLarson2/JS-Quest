@@ -465,13 +465,13 @@ const mageSkils = [
     },
   ],
   [
-    "Magic\r\nMissle",
+    "Missle",
     {
       dmg: 3,
     },
   ],
   [
-    "Mana\r\nBolt",
+    "Bolt",
     {
       dmg: 4,
     },
@@ -493,13 +493,13 @@ const assassinSkils = [
     },
   ],
   [
-    "Back\r\nStab",
+    "Stab",
     {
       dmg: 3,
     },
   ],
   [
-    "Dagger\r\nThrow",
+    "Cut",
     {
       dmg: 2,
     },
