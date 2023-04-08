@@ -290,24 +290,23 @@ function toHit() {
 
 // -- LEFT COTTAGE --
 const leftCottagePick = [
-  `--You make your way to the cottage on the left--`,
-  `--As you enter you see a create in the corner with a broken lock--`,
-  `--You slowly open the box and find ${openBox()}`,
+  `You make your way to the cottage on the left`,
+  `As you enter you see a create in the corner with a broken lock`,
+  `You slowly open the box and find ${openBox()}`,
 
-  `--The cottage seems safe so you decide to rest to restore your strength--`,
+  `The cottage seems safe so you decide to rest to restore your strength`,
   `max-power`,
-  `--You rest and restore yourself to full power!`,
+  `You rest and restore yourself to full power!`,
   "end",
 ];
 
 // -- RIGHT COTTAGE --
 const rightCottagePick = [
-  `--As you approach the cottage on the right you notice a shadow moving inside--`,
-  `--You open the door and find yourself standing in front of another Orc!--`,
-  `---- IN BATTLE! ----`,
+  `As you approach the cottage on the right you notice a shadow moving inside`,
+  `You open the door and find yourself standing in front of another Orc!`,
+  `---- IN BATTLE ----`,
   "end",
 ];
-// battle(easyMob2, playerData);
 
 // -- BOX ITEM GENERATOR --
 function openBox() {
@@ -566,29 +565,39 @@ const storyText = {
     `That's Excellent!`,
     `Before you go let me give you these health and energy potions to help you on your jounrey`,
     `Good luck ${playerData.name}!`,
-    `--You make your way to the castle gates--`,
-    `--A young boy is running towards you as he is being chased by an Orc!--`,
+    `You make your way to the castle gates`,
+    `A young boy is running towards you as he is being chased by an Orc!`,
     `Boy: "Help me! It's going to get me!"`,
-    `--The boy runs behind you as the Orc draws near!--`,
+    `The boy runs behind you as the Orc draws near!`,
     `---- IN BATTLE ----`,
     `-- Next Part --`,
   ],
   2: [
-    `--You turn to the boy--`,
+    `You turn to the boy`,
     `Boy: "Thank you adventurer!`,
-    `--The boy gestures ahead--`,
+    `The boy gestures ahead`,
     `Boy: "My home is just up there"`,
     `Boy: "If you need to rest, feel free to take shelter inside"`,
-    `--The boy turns and continues off into the distance--`,
-    `--The battle has drained some energy and the idea of rest sounds like a good idea--`,
-    `--Ahead of you reside two cottages--`,
-    `--The cottage on your left looks abandoned and broken--`,
-    `--The cottage on your right has a warm glow raidiating from the window--`,
-    `--The boy didn't say which was his--`,
+    `The boy turns and continues off into the distance`,
+    `The battle has drained some energy and the idea of rest sounds like a good idea`,
+    `Ahead of you reside two cottages`,
+    `The cottage on your left looks abandoned and broken`,
+    `The cottage on your right has a warm glow raidiating from the window`,
+    `The boy didn't say which was his`,
     "Which cottage do you pick?",
     "-- Next Part --",
   ],
   3: [],
+  4: [
+    `You exit the cottage and continue your journey forward`,
+    `A foul stench drifts into your nostrils`,
+    `You hear the sound of scrapping metal`,
+    `A few steps in front of the castle gates, a large Orc drags a massive bone axe behind it`,
+    `Orc: "YOU NO PASS HUMAN!"`,
+    `Orc: "I CRUSH AND EAT YOU FOR BREAKFAST!"`,
+    `You ready your weapon and prepare to fight!`,
+    `---- IN BATTLE ----`,
+  ],
 };
 
 let storyCount = 0;
@@ -614,6 +623,30 @@ document.querySelector("#next-story").addEventListener("click", function () {
     document.querySelector("#story-title").textContent = "Part 3";
   }
   // Check if end of story array
+  if (
+    document.querySelector("#main-story").textContent === `---- IN BATTLE ----`
+  ) {
+    disableButtons(true, false);
+    // -- FIRST BATTLE --
+    if (partCount === 1) {
+      document.querySelector("#mob-name").textContent = easyMob1.name;
+      document.querySelector("#mob-hp").textContent = easyMob1.hp;
+      document.querySelector("#mob-pic").src = "images/orc-mob-1.png";
+      battle(easyMob1, playerData);
+      // -- EXTRA BATTLE --
+    } else if (partCount === 3) {
+      document.querySelector("#mob-name").textContent = easyMob2.name;
+      document.querySelector("#mob-hp").textContent = easyMob2.hp;
+      document.querySelector("#mob-pic").src = "images/orc-mob-1.png";
+      battle(easyMob2, playerData);
+    } else if (partCount === 4) {
+      document.querySelector("#mob-name").textContent = easyMob2.name;
+      document.querySelector("#mob-hp").textContent = easyMob2.hp;
+      document.querySelector("#mob-pic").src = "images/orc-mob-2.png";
+      battle(medMob1, playerData);
+    }
+    return;
+  }
   if (storyCount < storyText[partCount].length) {
     // -- TUTORIAL CHECK --
     if (
@@ -621,25 +654,6 @@ document.querySelector("#next-story").addEventListener("click", function () {
       "-- Do you Continue? --"
     ) {
       beginTutorial();
-      return;
-      // -- BATTLE CHECK --
-    } else if (
-      storyText[partCount][storyCount].textContent === `---- IN BATTLE ----`
-    ) {
-      disableButtons(true, false);
-      // -- FIRST BATTLE --
-      if (partCount === 1) {
-        document.querySelector("#mob-name").textContent = easyMob1.name;
-        document.querySelector("#mob-hp").textContent = easyMob1.hp;
-        document.querySelector("#mob-pic").src = "images/orc-mob-1.png";
-        battle(easyMob1, playerData);
-        // -- EXTRA BATTLE --
-      } else if (partCount === 3) {
-        document.querySelector("#mob-name").textContent = easyMob2.name;
-        document.querySelector("#mob-hp").textContent = easyMob2.hp;
-        document.querySelector("#mob-pic").src = "images/orc-mob-1.png";
-        battle(easyMob2, playerData);
-      }
       return;
       // -- COTTAGE SELECTION CHECK --
     } else if (
@@ -657,6 +671,8 @@ document.querySelector("#next-story").addEventListener("click", function () {
         storyCount = 0;
         document.querySelector("#main-story").textContent =
           storyText[partCount][storyCount];
+        document.querySelector("#mob-pic").src = "images/left-cottage.png";
+        return;
         // -- RIGHT COTTAGE CHOICE --
       } else if (cottage === "R") {
         storyText[3] = rightCottagePick;
@@ -664,6 +680,8 @@ document.querySelector("#next-story").addEventListener("click", function () {
         storyCount = 0;
         document.querySelector("#main-story").textContent =
           storyText[partCount][storyCount];
+        document.querySelector("#mob-pic").src = "images/right-cottage.png";
+        return;
         // -- INVALID SELECTION --
       } else {
         alert(`Invalid entry, please try again...`);
@@ -671,7 +689,7 @@ document.querySelector("#next-story").addEventListener("click", function () {
       // -- SHOW COTTAGE PICTURES --
     } else if (
       document.querySelector("#main-story").textContent ===
-      `--Ahead of you reside two cottages--`
+      `Ahead of you reside two cottages`
     ) {
       document.querySelector("#mob-pic").src = "images/cottages.png";
       document.querySelector("#main-story").textContent =
@@ -681,7 +699,7 @@ document.querySelector("#next-story").addEventListener("click", function () {
       // -- SHOW INSIDE LEFT COTTAGE PICTURE --
     } else if (
       document.querySelector("#main-story").textContent ===
-      `--As you enter you see a create in the corner with a broken lock--`
+      `As you enter you see a create in the corner with a broken lock`
     ) {
       document.querySelector("#mob-pic").src = "images/inside-left-cottage.jpg";
       document.querySelector("#main-story").textContent =
@@ -689,6 +707,15 @@ document.querySelector("#next-story").addEventListener("click", function () {
       storyCount++;
       return;
       // -- ADD ONE HEALTH POTION AND ONE ENERGY POTION --
+    } else if (
+      document / this.querySelector("#main-story") ===
+      `You open the door and find yourself standing in front of another Orc!`
+    ) {
+      document.querySelector("#mob-pic").src = "orc-mob-1.jpg";
+      document.querySelector("#main-story").textContent =
+        storyText[partCount][storyCount];
+      storyCount++;
+      return;
     } else if (
       document.querySelector("#main-story").textContent ===
       `Before you go let me give you these health and energy potions to help you on your jounrey`
@@ -703,9 +730,19 @@ document.querySelector("#next-story").addEventListener("click", function () {
     } else if (storyText[partCount][storyCount + 1] === "max-power") {
       document.querySelector(".health").textContent = 100;
       document.querySelector(".energy").textContent = 50;
-      storyCount++;
+      storyCount = storyCount + 2;
       document.querySelector("#main-story").textContent =
         storyText[partCount][storyCount];
+      return;
+      // -- SHOW ORC OUTSIDE CITY GATES --
+    } else if (
+      document.querySelector("#main-story").textContent ===
+      `A few steps in front of the castle gates, a large Orc drags a massive bone axe behind it`
+    ) {
+      document.querySelector("#mob-pic").src = "images/orc-mob-2.png";
+      document.querySelector("#main-story").textContent =
+        storyText[partCount][storyCount];
+      storyCount++;
       return;
     }
     // -- ELSE PROGRESS STORY --
@@ -751,19 +788,7 @@ document.querySelector("#drink-nrg").addEventListener("click", function () {
     document.querySelector(".energy").textContent = totalNrg + amountToRestore;
   }
 });
-
 /*
-
-// -- PART 4 "The castle gates" --
-alert(`--You exit the cottage and continue your journey forward--`);
-alert(`--A foul stench drifts into your nostrils--`);
-alert(`--You hear the sound of scrapping metal--`);
-alert(
-  `--A few steps in front of the castle gates, a large armored Orc drags a large axe behind it--`
-);
-alert(`Orc: "YOU NO PASS HUMAN!"`);
-alert(`Orc: "I CRUSH AND EAT YOU FOR BREAKFAST!"`);
-alert(`--You ready your weapon and prepare to fight!--`);
 
 battle(medMob1, playerData);
 
