@@ -52,7 +52,7 @@ body {
   margin-right: 100px;
   margin-left: 75px;
   border-radius: 10px;
-  align-items: center;
+  padding: 0px;
 }
 
 #combat-block {
@@ -71,7 +71,6 @@ body {
 
 #next-story {
   max-width: fit-content;
-  margin: 10px;
   max-height: 20px;
 }
 
@@ -163,4 +162,10 @@ body {
 }
 .tooltip-wrap:hover .tooltip-content-player {
   display: block;
+}
+
+#next-button{
+text-align: center;
+padding: 0;
+
 }
