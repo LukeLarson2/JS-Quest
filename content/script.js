@@ -11,6 +11,7 @@ function beginTutorial() {
     document.querySelector("#main-story").textContent =
       storyText[partCount][storyCount];
   }
+  storyCount++;
 }
 // -- ROLE CREATOR --
 function getRole() {
