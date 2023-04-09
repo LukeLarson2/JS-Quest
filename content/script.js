@@ -11,6 +11,7 @@ function beginTutorial() {
     document.querySelector("#main-story").textContent =
       storyText[partCount][storyCount];
   }
+  storyCount++;
 }
 // -- ROLE CREATOR --
 function getRole() {
@@ -38,6 +39,7 @@ function getRole() {
 function getName() {
   let result = prompt("Tell us, what is your name?");
   if (result.length >= 1) {
+    document.querySelector("#mob-pic").src = "images/the-castle.png";
     playerData.name = result;
     return playerData.name;
   } else {
@@ -48,210 +50,193 @@ function getName() {
 
 // -- GAME OVER --
 function gameOver() {
-  alert("---- GAME OVER ----");
-  fail;
+  document.querySelector("#next-story").remove();
+  document.querySelector("#main-story").textContent = `---- Game Over ----`;
 }
 
 // -- BATTLE SCREEN --
 function battle(mob, player) {
-  if (player.health <= 0) {
-    gameOver();
-    return;
-  }
-
-  if (mob.hp <= 0) {
-    alert(`--Victory!--`);
-    return;
-  }
-  alert(
-    `${player.name} Health ❤️: ${player.health}\n${mob.name} Health ❤️: ${mob.hp}`
-  );
-  let choice = prompt(
-    `Select your attack (1-4)\nType "D" to defend\nType "H" to use a health potion\nCurrent Health Potions ❤️‍🩹: ${
-      playerData.healthPots
-    }\n\n${skillList()}`
-  );
-  choice = choice.toUpperCase();
-  if (choice === "D") {
+  document.querySelector("#mob-hp").textContent = mob.hp;
+  // ---- ATTACK 1 ----
+  document.querySelector("#attack-1").addEventListener("click", function () {
+    let curNrg = Number(document.querySelector(".energy").textContent);
+    if (curNrg < player.skills[0][1].nrg) {
+      return;
+    }
+    curNrg = curNrg - player.skills[0][1].nrg;
+    document.querySelector(".energy").textContent = curNrg;
+    let mobHP = Number(document.querySelector("#mob-hp").textContent);
+    console.log(mobHP);
+    let playerHP = Number(document.querySelector(".health").textContent);
+    console.log(playerHP);
+    let mobDmg;
+    let playerDmg;
     if (player.role === "M" || player.role === "W") {
-      const mobDmg = Math.floor(dmgGen(mob.attack) / dmgReducGen());
-      alert(`-- The Orc attacks and hits for 💥: ${mobDmg}! --`);
-      player.health -= mobDmg;
-      battle(mob, player);
+      mobDmg = Math.floor(dmgGen(mob.attack) / dmgReducGen());
+      playerDmg = dmgGen(player.skills[0][1].dmg);
     } else {
       const mobHit = dodgeCheck(mob.toHit);
       if (mobHit === true) {
-        alert(`--The Orc Misses!--`);
-        battle(mob, player);
+        playerDmg = dmgGen(player.skills[0][1].dmg);
       } else {
-        const mobDmg = dmgGen(mob.attack);
-        alert(`-- The Orc attacks and hits for 💥: ${mobDmg}! --`);
-        player.health -= mobDmg;
-        battle(mob, player);
+        mobDmg = dmgGen(mob.attack);
+        playerDmg = dmgGen(player.skills[0][1].dmg);
       }
     }
-  } else if (choice === "H") {
-    if (player.healthPots < 1) {
-      alert("--No health potions remaining!--");
-      if (player.role === "M" || player.role === "W") {
-        const mobDmg = Math.floor(dmgGen(mob.attack) / dmgReducGen());
-        alert(`-- The Orc attacks and hits for 💥: ${mobDmg}! --`);
-        player.health -= mobDmg;
-        battle(mob, player);
-      } else {
-        const mobHit = dodgeCheck(mob.toHit);
-        if (mobHit === true) {
-          alert(`--The Orc Misses!--`);
-          battle(mob, player);
-        } else {
-          const mobDmg = dmgGen(mob.attack);
-          alert(`-- The Orc attacks and hits for 💥: ${mobDmg}! --`);
-          player.health -= mobDmg;
-          battle(mob, player);
-        }
-      }
-    } else {
-      if (player.role === "M" || player.role === "W") {
-        player.health += 20;
-        player.healthPots--;
-        alert(`You drink a health potion ❤️‍🩹 and heal 20 HP `);
-        const mobDmg = Math.floor(dmgGen(mob.attack) / dmgReducGen());
-        alert(`-- The Orc attacks and hits for 💥: ${mobDmg}! --`);
-        player.health -= mobDmg;
-        battle(mob, player);
-      } else {
-        player.health += 20;
-        player.healthPots--;
-        alert(`You drink a health potion ❤️‍🩹 and heal 20 HP `);
-        const mobHit = dodgeCheck(mob.toHit);
-        if (mobHit === true) {
-          alert(`--The Orc Misses!--`);
-          battle(mob, player);
-        } else {
-          const mobDmg = dmgGen(mob.attack);
-          alert(`-- The Orc attacks and hits for 💥: ${mobDmg}! --`);
-          player.health -= mobDmg;
-          battle(mob, player);
-        }
-      }
+    if (mobHP - playerDmg <= 0) {
+      alert(`--Victory!--`);
+      disableButtons(false, true);
+      document.querySelector("#mob-pic").src = "images/not-in-battle.png";
+      document.querySelector("#mob-hp").textContent = "N/A";
+      document.querySelector("#mob-name").textContent = "-- No Enemy --";
+      storyCount++;
+      document.querySelector("#main-story").textContent =
+        storyText[partCount][storyCount];
+      storyCount++;
+      return;
     }
-  } else if (choice === "1") {
+    if (player.health - mobDmg <= 0) {
+      gameOver();
+      return;
+    }
+    document.querySelector(".health").textContent = playerHP - mobDmg;
+    document.querySelector("#mob-hp").textContent = mobHP - playerDmg;
+  });
+  // ---- ATTACK 2 ----
+  document.querySelector("#attack-2").addEventListener("click", function () {
+    let curNrg = Number(document.querySelector(".energy").textContent);
+    if (curNrg < player.skills[1][1].nrg) {
+      return;
+    }
+    curNrg = curNrg - player.skills[1][1].nrg;
+    document.querySelector(".energy").textContent = curNrg;
+    let mobHP = Number(document.querySelector("#mob-hp").textContent);
+    console.log(mobHP);
+    let playerHP = Number(document.querySelector(".health").textContent);
+    console.log(playerHP);
+    let mobDmg;
+    let playerDmg;
     if (player.role === "M" || player.role === "W") {
-      const mobDmg = Math.floor(dmgGen(mob.attack) / dmgReducGen());
-      const playerDmg = dmgGen(player.skills[0][1].dmg);
-      alert(
-        `Your attack hits the Orc for 💥: ${playerDmg}\nThe Orc's attack hits for 💥: ${mobDmg}`
-      );
-      player.health -= mobDmg;
-      mob.hp -= playerDmg;
-      battle(mob, player);
+      mobDmg = Math.floor(dmgGen(mob.attack) / dmgReducGen());
+      playerDmg = dmgGen(player.skills[1][1].dmg);
     } else {
       const mobHit = dodgeCheck(mob.toHit);
       if (mobHit === true) {
-        alert(`--The Orc Misses!--`);
-        const playerDmg = dmgGen(player.skills[0][1].dmg);
-        mob.hp -= playerDmg;
-        battle(mob, player);
+        playerDmg = dmgGen(player.skills[1][1].dmg);
       } else {
-        const mobDmg = dmgGen(mob.attack);
-        const playerDmg = dmgGen(player.skills[0][1].dmg);
-        alert(
-          `Your attack hits the Orc for 💥: ${playerDmg}\nThe Orc's attack hits for 💥: ${mobDmg}`
-        );
-        player.health -= mobDmg;
-        mob.hp -= playerDmg;
-        battle(mob, player);
+        mobDmg = dmgGen(mob.attack);
+        playerDmg = dmgGen(player.skills[1][1].dmg);
       }
     }
-  } else if (choice === "2") {
+    if (mobHP - playerDmg <= 0) {
+      alert(`--Victory!--`);
+      disableButtons(false, true);
+      document.querySelector("#mob-pic").src = "images/not-in-battle.png";
+      document.querySelector("#mob-hp").textContent = "N/A";
+      document.querySelector("#mob-name").textContent = "-- No Enemy --";
+      storyCount++;
+      document.querySelector("#main-story").textContent =
+        storyText[partCount][storyCount];
+      storyCount++;
+      return;
+    }
+    if (player.health - mobDmg <= 0) {
+      gameOver();
+      return;
+    }
+    document.querySelector(".health").textContent = playerHP - mobDmg;
+    document.querySelector("#mob-hp").textContent = mobHP - playerDmg;
+  });
+  // ---- ATTACK 3 ----
+  document.querySelector("#attack-3").addEventListener("click", function () {
+    let curNrg = Number(document.querySelector(".energy").textContent);
+    if (curNrg < player.skills[2][1].nrg) {
+      return;
+    }
+    curNrg = curNrg - player.skills[2][1].nrg;
+    document.querySelector(".energy").textContent = curNrg;
+    let mobHP = Number(document.querySelector("#mob-hp").textContent);
+    console.log(mobHP);
+    let playerHP = Number(document.querySelector(".health").textContent);
+    console.log(playerHP);
+    let mobDmg;
+    let playerDmg;
     if (player.role === "M" || player.role === "W") {
-      const mobDmg = Math.floor(dmgGen(mob.attack) / dmgReducGen());
-      const playerDmg = dmgGen(player.skills[1][1].dmg);
-      alert(
-        `Your attack hits the Orc for 💥: ${playerDmg}\nThe Orc's attack hits for 💥: ${mobDmg}`
-      );
-      player.health -= mobDmg;
-      mob.hp -= playerDmg;
-      battle(mob, player);
+      mobDmg = Math.floor(dmgGen(mob.attack) / dmgReducGen());
+      playerDmg = dmgGen(player.skills[2][1].dmg);
     } else {
       const mobHit = dodgeCheck(mob.toHit);
       if (mobHit === true) {
-        alert(`--The Orc Misses!--`);
-        const playerDmg = dmgGen(player.skills[1][1].dmg);
-        mob.hp -= playerDmg;
-        battle(mob, player);
+        playerDmg = dmgGen(player.skills[2][1].dmg);
       } else {
-        const mobDmg = dmgGen(mob.attack);
-        const playerDmg = dmgGen(player.skills[1][1].dmg);
-        alert(
-          `Your attack hits the Orc for 💥: ${playerDmg}\nThe Orc's attack hits for 💥: ${mobDmg}`
-        );
-        player.health -= mobDmg;
-        mob.hp -= playerDmg;
-        battle(mob, player);
+        mobDmg = dmgGen(mob.attack);
+        playerDmg = dmgGen(player.skills[2][1].dmg);
       }
     }
-  } else if (choice === "3") {
+    if (mobHP - playerDmg <= 0) {
+      alert(`--Victory!--`);
+      disableButtons(false, true);
+      document.querySelector("#mob-pic").src = "images/not-in-battle.png";
+      document.querySelector("#mob-hp").textContent = "N/A";
+      document.querySelector("#mob-name").textContent = "-- No Enemy --";
+      storyCount++;
+      document.querySelector("#main-story").textContent =
+        storyText[partCount][storyCount];
+      storyCount++;
+      return;
+    }
+    if (player.health - mobDmg <= 0) {
+      gameOver();
+      return;
+    }
+    document.querySelector(".health").textContent = playerHP - mobDmg;
+    document.querySelector("#mob-hp").textContent = mobHP - playerDmg;
+  });
+  // ---- ATTACK 4 ----
+  document.querySelector("#attack-4").addEventListener("click", function () {
+    let curNrg = Number(document.querySelector(".energy").textContent);
+    if (curNrg < player.skills[3][1].nrg) {
+      return;
+    }
+    curNrg = curNrg - player.skills[3][1].nrg;
+    document.querySelector(".energy").textContent = curNrg;
+    let mobHP = Number(document.querySelector("#mob-hp").textContent);
+    console.log(mobHP);
+    let playerHP = Number(document.querySelector(".health").textContent);
+    console.log(playerHP);
+    let mobDmg;
+    let playerDmg;
     if (player.role === "M" || player.role === "W") {
-      const mobDmg = Math.floor(dmgGen(mob.attack) / dmgReducGen());
-      const playerDmg = dmgGen(player.skills[2][1].dmg);
-      alert(
-        `Your attack hits the Orc for 💥: ${playerDmg}\nThe Orc's attack hits for 💥: ${mobDmg}`
-      );
-      player.health -= mobDmg;
-      mob.hp -= playerDmg;
-      battle(mob, player);
+      mobDmg = Math.floor(dmgGen(mob.attack) / dmgReducGen());
+      playerDmg = dmgGen(player.skills[3][1].dmg);
     } else {
       const mobHit = dodgeCheck(mob.toHit);
       if (mobHit === true) {
-        alert(`--The Orc Misses!--`);
-        const playerDmg = dmgGen(player.skills[2][1].dmg);
-        mob.hp -= playerDmg;
-        battle(mob, player);
+        playerDmg = dmgGen(player.skills[3][1].dmg);
       } else {
-        const mobDmg = dmgGen(mob.attack);
-        const playerDmg = dmgGen(player.skills[2][1].dmg);
-        alert(
-          `Your attack hits the Orc for 💥: ${playerDmg}\nThe Orc's attack hits for 💥: ${mobDmg}`
-        );
-        player.health -= mobDmg;
-        mob.hp -= playerDmg;
-        battle(mob, player);
+        mobDmg = dmgGen(mob.attack);
+        playerDmg = dmgGen(player.skills[3][1].dmg);
       }
     }
-  } else if (choice === "4") {
-    if (player.role === "M" || player.role === "W") {
-      const mobDmg = Math.floor(dmgGen(mob.attack) / dmgReducGen());
-      const playerDmg = dmgGen(player.skills[3][1].dmg);
-      alert(
-        `Your attack hits the Orc for 💥: ${playerDmg}\nThe Orc's attack hits for 💥: ${mobDmg}`
-      );
-      player.health -= mobDmg;
-      mob.hp -= playerDmg;
-      battle(mob, player);
-    } else {
-      const mobHit = dodgeCheck(mob.toHit);
-      if (mobHit === true) {
-        alert(`--The Orc Misses!--`);
-        const playerDmg = dmgGen(player.skills[3][1].dmg);
-        mob.hp -= playerDmg;
-        battle(mob, player);
-      } else {
-        const mobDmg = dmgGen(mob.attack);
-        const playerDmg = dmgGen(player.skills[3][1].dmg);
-        alert(
-          `Your attack hits the Orc for 💥: ${playerDmg}\nThe Orc's attack hits for 💥: ${mobDmg}`
-        );
-        player.health -= mobDmg;
-        mob.hp -= playerDmg;
-        battle(mob, player);
-      }
+    if (mobHP - playerDmg <= 0) {
+      alert(`--Victory!--`);
+      disableButtons(false, true);
+      document.querySelector("#mob-pic").src = "images/not-in-battle.png";
+      document.querySelector("#mob-hp").textContent = "N/A";
+      document.querySelector("#mob-name").textContent = "-- No Enemy --";
+      storyCount++;
+      document.querySelector("#main-story").textContent =
+        storyText[partCount][storyCount];
+      storyCount++;
+      return;
     }
-  } else {
-    alert(`Invalid Entry, try again...`);
-    battle(mob, player);
-  }
-  return;
+    if (player.health - mobDmg <= 0) {
+      gameOver();
+      return;
+    }
+    document.querySelector(".health").textContent = playerHP - mobDmg;
+    document.querySelector("#mob-hp").textContent = mobHP - playerDmg;
+  });
 }
 
 // -- DISPLAY SKILLS --
@@ -303,46 +288,34 @@ function toHit() {
   }
 }
 
-// -- COTTAGE CHOICE --
-function cottageChoice() {
-  let cottage = prompt(
-    `Which cottage do you choose to enter?\n"L" => cottage on the left\n"R" => cottage on the right`
-  );
-  return cottage.toUpperCase();
-}
-
 // -- LEFT COTTAGE --
-function leftCottage() {
-  alert(`--You make your way to the cottage on the left--`);
-  alert(`--As you enter you see a create in the corner with a broken lock--`);
-  alert(`--You slowly open the box and find ${openBox()}`);
-  alert(
-    `--The cottage seems safe so you decide to rest to restore your strength--`
-  );
-  playerData.health = 100;
-  playerData.energy = 50;
-  return;
-}
+const leftCottagePick = [
+  `You make your way to the cottage on the left`,
+  `As you enter you see a create in the corner with a broken lock`,
+  `You slowly open the box and find ${openBox()}`,
+
+  `The cottage seems safe so you decide to rest to restore your strength`,
+  `max-power`,
+  `You rest and restore yourself to full power!`,
+  "end",
+];
 
 // -- RIGHT COTTAGE --
-function rightCottage() {
-  alert(
-    `--As you approach the cottage on the right you notice a shadow moving inside--`
-  );
-  alert(
-    `--You open the door and find yourself standing in front of another Orc!--`
-  );
-  alert(`--TO BATTLE!--`);
-  battle(easyMob2, playerData);
-  return;
-}
+const rightCottagePick = [
+  `As you approach the cottage on the right you notice a shadow moving inside`,
+  `You open the door and find yourself standing in front of another Orc!`,
+  `---- IN BATTLE ----`,
+  "end",
+];
 
 // -- BOX ITEM GENERATOR --
 function openBox() {
   const item = Math.floor(Math.random() * 5) + 1;
   let result = undefined;
   if (item === 1 || item === 5) {
-    result = "a Health Potion ❤️‍🩹 + 1";
+    result = "a Health Potion!";
+    let val = Number(document.querySelector(".hp-pots").textContent);
+    document.querySelector(".hp-pots").textContent = val + 1;
   } else if (item === 2) {
     result = "an old boot... Great...";
   } else if (item === 3) {
@@ -427,24 +400,28 @@ const warriorSkils = [
     "Punch",
     {
       dmg: 1,
+      nrg: 1,
     },
   ],
   [
     "Kick",
     {
       dmg: 2,
+      nrg: 2,
     },
   ],
   [
     "Swing",
     {
       dmg: 4,
+      nrg: 3,
     },
   ],
   [
     "Stab",
     {
       dmg: 3,
+      nrg: 2,
     },
   ],
 ];
@@ -455,24 +432,28 @@ const mageSkils = [
     "Zap",
     {
       dmg: 2,
+      nrg: 1,
     },
   ],
   [
     "Shock",
     {
       dmg: 3,
+      nrg: 2,
     },
   ],
   [
-    "Magic\r\nMissle",
+    "Missle",
     {
       dmg: 3,
+      nrg: 3,
     },
   ],
   [
-    "Mana\r\nBolt",
+    "Bolt",
     {
       dmg: 4,
+      nrg: 4,
     },
   ],
 ];
@@ -483,24 +464,28 @@ const assassinSkils = [
     "Jab",
     {
       dmg: 1,
+      nrg: 1,
     },
   ],
   [
     "Slice",
     {
       dmg: 2,
+      nrg: 2,
     },
   ],
   [
-    "Back\r\nStab",
+    "Stab",
     {
       dmg: 3,
+      nrg: 3,
     },
   ],
   [
-    "Dagger\r\nThrow",
+    "Cut",
     {
       dmg: 2,
+      nrg: 1,
     },
   ],
 ];
@@ -567,6 +552,7 @@ playerData.defGen();
 
 // -- SKILL DISPLAY --
 document.querySelector("#player-name").textContent = playerData.name;
+disableButtons(false, true);
 
 // -- Story Board --
 const storyText = {
@@ -575,46 +561,204 @@ const storyText = {
     `The land of the king has been attacked by an evil hoard of Orcs!`,
     `Only a few soldiers hold the line to the keep, but their numbers are dwindling`,
     `${playerData.name}, do you stand up to the task of cleansing the kingdom of these filthy Orcs?`,
-    "tutorial",
+    "-- Do you Continue? --",
     `That's Excellent!`,
     `Before you go let me give you these health and energy potions to help you on your jounrey`,
-    "hp+nrg",
     `Good luck ${playerData.name}!`,
-    `--You make your way to the castle gates--`,
-    `--A young boy is running towards you as he is being chased by an Orc!--`,
+    `You make your way to the castle gates`,
+    `A young boy is running towards you as he is being chased by an Orc!`,
     `Boy: "Help me! It's going to get me!"`,
-    `--The boy runs behind you as the Orc draws near!--`,
-    `--TO BATTLE!--`,
+    `The boy runs behind you as the Orc draws near!`,
+    `---- IN BATTLE ----`,
+    `-- Next Part --`,
   ],
-  2: [`---- IN BATTLE ----`],
+  2: [
+    `You turn to the boy`,
+    `Boy: "Thank you adventurer!`,
+    `The boy gestures ahead`,
+    `Boy: "My home is just up there"`,
+    `Boy: "If you need to rest, feel free to take shelter inside"`,
+    `The boy turns and continues off into the distance`,
+    `The battle has drained some energy and the idea of rest sounds like a good idea`,
+    `Ahead of you reside two cottages`,
+    `The cottage on your left looks abandoned and broken`,
+    `The cottage on your right has a warm glow raidiating from the window`,
+    `The boy didn't say which was his`,
+    "Which cottage do you pick?",
+    "-- Next Part --",
+  ],
+  3: [],
+  4: [
+    `You exit the cottage and continue your journey forward`,
+    `A foul stench drifts into your nostrils`,
+    `You hear the sound of scrapping metal`,
+    `A few steps in front of the castle gates, a large Orc drags a massive bone axe behind it`,
+    `Orc: "YOU NO PASS HUMAN!"`,
+    `Orc: "I CRUSH AND EAT YOU FOR BREAKFAST!"`,
+    `You ready your weapon and prepare to fight!`,
+    `---- IN BATTLE ----`,
+  ],
 };
 
 let storyCount = 0;
 let partCount = 1;
 
+// -- DISABLE FUNCTION --
+function disableButtons(story, battle) {
+  document.querySelector("#next-story").disabled = story;
+  document.querySelector("#attack-1").disabled = battle;
+  document.querySelector("#attack-2").disabled = battle;
+  document.querySelector("#attack-3").disabled = battle;
+  document.querySelector("#attack-4").disabled = battle;
+}
+
 // -- Click Through Story --
 document.querySelector("#next-story").addEventListener("click", function () {
-  if (storyCount >= storyText[partCount][storyCount].length - 1) {
+  // Initialize Current Part
+  if (partCount === 1) {
+    document.querySelector("#story-title").textContent = "Part 1";
+  } else if (partCount === 2) {
+    document.querySelector("#story-title").textContent = "Part 2";
+  } else if (partCount === 3) {
+    document.querySelector("#story-title").textContent = "Part 3";
+  }
+  // Check if end of story array
+  if (
+    document.querySelector("#main-story").textContent === `---- IN BATTLE ----`
+  ) {
+    disableButtons(true, false);
+    // -- FIRST BATTLE --
+    if (partCount === 1) {
+      document.querySelector("#mob-name").textContent = easyMob1.name;
+      document.querySelector("#mob-hp").textContent = easyMob1.hp;
+      document.querySelector("#mob-pic").src = "images/orc-mob-1.png";
+      battle(easyMob1, playerData);
+      // -- EXTRA BATTLE --
+    } else if (partCount === 3) {
+      document.querySelector("#mob-name").textContent = easyMob2.name;
+      document.querySelector("#mob-hp").textContent = easyMob2.hp;
+      document.querySelector("#mob-pic").src = "images/orc-mob-1.png";
+      battle(easyMob2, playerData);
+    } else if (partCount === 4) {
+      document.querySelector("#mob-name").textContent = easyMob2.name;
+      document.querySelector("#mob-hp").textContent = easyMob2.hp;
+      document.querySelector("#mob-pic").src = "images/orc-mob-2.png";
+      battle(medMob1, playerData);
+    }
+    return;
+  }
+  if (storyCount < storyText[partCount].length) {
+    // -- TUTORIAL CHECK --
+    if (
+      document.querySelector("#main-story").textContent ===
+      "-- Do you Continue? --"
+    ) {
+      beginTutorial();
+      return;
+      // -- COTTAGE SELECTION CHECK --
+    } else if (
+      document.querySelector("#main-story").textContent ===
+      "Which cottage do you pick?"
+    ) {
+      let cottage = prompt(
+        `"L" => cottage on the left\n"R" => cottage on the right`
+      );
+      cottage = cottage.toUpperCase();
+      // -- LEFT COTTAGE CHOICE --
+      if (cottage === "L") {
+        storyText[3] = leftCottagePick;
+        partCount++;
+        storyCount = 0;
+        document.querySelector("#main-story").textContent =
+          storyText[partCount][storyCount];
+        document.querySelector("#mob-pic").src = "images/left-cottage.png";
+        return;
+        // -- RIGHT COTTAGE CHOICE --
+      } else if (cottage === "R") {
+        storyText[3] = rightCottagePick;
+        partCount++;
+        storyCount = 0;
+        document.querySelector("#main-story").textContent =
+          storyText[partCount][storyCount];
+        document.querySelector("#mob-pic").src = "images/right-cottage.png";
+        return;
+        // -- INVALID SELECTION --
+      } else {
+        alert(`Invalid entry, please try again...`);
+      }
+      // -- SHOW COTTAGE PICTURES --
+    } else if (
+      document.querySelector("#main-story").textContent ===
+      `Ahead of you reside two cottages`
+    ) {
+      document.querySelector("#mob-pic").src = "images/cottages.png";
+      document.querySelector("#main-story").textContent =
+        storyText[partCount][storyCount];
+      storyCount++;
+      return;
+      // -- SHOW INSIDE LEFT COTTAGE PICTURE --
+    } else if (
+      document.querySelector("#main-story").textContent ===
+      `As you enter you see a create in the corner with a broken lock`
+    ) {
+      document.querySelector("#mob-pic").src = "images/inside-left-cottage.jpg";
+      document.querySelector("#main-story").textContent =
+        storyText[partCount][storyCount];
+      storyCount++;
+      return;
+      // -- ADD ONE HEALTH POTION AND ONE ENERGY POTION --
+    } else if (
+      document / this.querySelector("#main-story") ===
+      `You open the door and find yourself standing in front of another Orc!`
+    ) {
+      document.querySelector("#mob-pic").src = "orc-mob-1.jpg";
+      document.querySelector("#main-story").textContent =
+        storyText[partCount][storyCount];
+      storyCount++;
+      return;
+    } else if (
+      document.querySelector("#main-story").textContent ===
+      `Before you go let me give you these health and energy potions to help you on your jounrey`
+    ) {
+      document.querySelector("#main-story").textContent =
+        storyText[partCount][storyCount];
+      document.querySelector(".hp-pots").textContent++;
+      document.querySelector(".nrg-pots").textContent++;
+      storyCount = storyCount + 2;
+      return;
+      // -- FULL STATS CHECK --
+    } else if (storyText[partCount][storyCount + 1] === "max-power") {
+      document.querySelector(".health").textContent = 100;
+      document.querySelector(".energy").textContent = 50;
+      storyCount = storyCount + 2;
+      document.querySelector("#main-story").textContent =
+        storyText[partCount][storyCount];
+      return;
+      // -- SHOW ORC OUTSIDE CITY GATES --
+    } else if (
+      document.querySelector("#main-story").textContent ===
+      `A few steps in front of the castle gates, a large Orc drags a massive bone axe behind it`
+    ) {
+      document.querySelector("#mob-pic").src = "images/orc-mob-2.png";
+      document.querySelector("#main-story").textContent =
+        storyText[partCount][storyCount];
+      storyCount++;
+      return;
+    }
+    // -- ELSE PROGRESS STORY --
+    document.querySelector("#main-story").textContent =
+      storyText[partCount][storyCount];
+    storyCount++;
+
+    return;
+    // -- IF AT END OF STORY ARRAY MOVE TO NEXT PART --
+  } else {
     partCount++;
     storyCount = 0;
     document.querySelector("#main-story").textContent =
       storyText[partCount][storyCount];
-  }
-  if (storyText[partCount][storyCount] === "tutorial") {
-    beginTutorial();
     return;
   }
-  if (storyText[partCount][storyCount + 1] === "hp+nrg") {
-    document.querySelector("#main-story").textContent =
-      storyText[partCount][storyCount];
-    document.querySelector(".hp-pots").textContent++;
-    document.querySelector(".nrg-pots").textContent++;
-    storyCount = storyCount + 2;
-    return;
-  }
-  document.querySelector("#main-story").textContent =
-    storyText[partCount][storyCount];
-  storyCount++;
 });
 
 // -- Drink hp potion --
@@ -636,58 +780,15 @@ document.querySelector("#drink-nrg").addEventListener("click", function () {
   const totalNrgPots = Number(document.querySelector(".nrg-pots").textContent);
   const totalNrg = Number(document.querySelector(".energy").textContent);
   let amountToRestore = 20;
-  if (totalNrgPots !== 0 && totalNrg < 100) {
-    if (totalNrg + 20 > 100) {
-      amountToRestore = 100 - totalNrg;
+  if (totalNrgPots !== 0 && totalNrg < 50) {
+    if (totalNrg + 20 > 50) {
+      amountToRestore = 50 - totalNrg;
     }
     document.querySelector(".nrg-pots").textContent = totalNrgPots - 1;
     document.querySelector(".energy").textContent = totalNrg + amountToRestore;
   }
 });
-
 /*
-// -- PART 2 "First Battle" --
-alert(`--TO BATTLE!--`);
-battle(easyMob1, playerData);
-alert(`--You turn to the boy--`);
-alert(`Boy: "Thank you adventurer!`);
-alert(`--The boy gestures ahead--`);
-alert(`Boy: "My home is just up there"`);
-alert(`Boy: "If you need to rest, feel free to take shelter inside"`);
-alert(`--The boy turns and continues off into the distance--`);
-
-// -- PART 3 "Which Cottage" --
-alert(
-  `--The battle has left you wounded and the idea of rest sounds like a good idea--`
-);
-alert(`--Ahead of you reside two cottages--`);
-alert(`--The cottage on your left looks abandoned and broken--`);
-alert(
-  `--The cottage on your right has a warm glow raidiating from the window--`
-);
-alert(`--The boy didn't say which was his--`);
-
-let cottage = cottageChoice();
-
-if (cottage === "L") {
-  leftCottage();
-} else if (cottage === "R") {
-  rightCottage();
-} else {
-  alert(`Invalid entry, please try again...`);
-  cottageChoice();
-}
-
-// -- PART 4 "The castle gates" --
-alert(`--You exit the cottage and continue your journey forward--`);
-alert(`--A foul stench drifts into your nostrils--`);
-alert(`--You hear the sound of scrapping metal--`);
-alert(
-  `--A few steps in front of the castle gates, a large armored Orc drags a large axe behind it--`
-);
-alert(`Orc: "YOU NO PASS HUMAN!"`);
-alert(`Orc: "I CRUSH AND EAT YOU FOR BREAKFAST!"`);
-alert(`--You ready your weapon and prepare to fight!--`);
 
 battle(medMob1, playerData);
 

@@ -30,70 +30,91 @@ body {
   border: 3px solid #eee;
   background-color: #eee;
   border-radius: 10px;
+  margin-top: 5%;
 }
 
 #player-data {
   color: #eee;
   margin-top: 15px;
-}
-
-#player-data {
   border-bottom: 10px solid #eee;
   border-radius: 10px;
 }
 
+#player-name {
+  max-width: 200px;
+  margin-top: 5%;
+  margin-right: 0px;
+  margin-left: 0px;
+}
+
 #story-block {
   border: 7px solid #eee;
-  background-color: #aaa8a8;
+  background: linear-gradient(to top left, #e9e9e9, #111113);
   opacity: 100%;
   height: 450px;
   max-height: 450px;
   margin-top: 50px;
   margin-right: 100px;
-  margin-left: 75px;
+  margin-left: 8.5%;
   border-radius: 10px;
-  align-items: center;
+  padding: 0px;
+}
+
+#main-story {
+  color: #333;
+  max-height: 530px;
+  max-width: 400px;
+  margin: 20px;
+  padding: 10px;
+  border: 3px solid #333;
+  border-radius: 10px;
+  background-color: #eee;
+  text-align: center;
+}
+
+#story-title {
+  border-bottom: 5px solid #eee;
+  background-color: #1a0000;
+  color: #eee;
+  text-align: center;
+  justify-content: center;
+  padding-top: 3.75%;
+  padding-bottom: 3.75%;
+  padding-right: 0;
+  padding-left: 0;
+  max-width: 448px;
+}
+
+#next-button {
+  text-align: center;
+  padding: 0;
+}
+
+#next-story {
+  max-width: fit-content;
+  max-height: 20px;
 }
 
 #combat-block {
   border: 7px solid #eee;
-  background-color: #aaa8a8;
+  background: linear-gradient(to top left, #e9e9e9, #111113);
   opacity: 100%;
   height: 450px;
   max-height: 450px;
   margin-top: 50px;
   margin-left: 100px;
   border-radius: 10px;
-  display: flex;
-  justify-content: center;
-  align-items: flex-end;
+  padding: 0px;
 }
-
-#next-story {
-  max-width: fit-content;
-  margin: 10px;
-  max-height: 20px;
+.combat-content {
+  margin-left: 10%;
 }
-
-.attacks {
-  font-size: 10px;
-  margin: 10px;
+.attack-1-dmg {
+  white-space: pre;
 }
-
-#skills {
-  text-align: center;
-  margin: 10px;
-  font-size: 10px;
-  color: #222;
+.attack-2-dmg {
+  white-space: pre;
 }
-
-#main-story {
-  max-height: 530px;
-  max-width: 400px;
-  margin: 20px;
-  text-align: center;
-}
-
 .attack-3-dmg {
   white-space: pre;
 }
@@ -101,14 +122,50 @@ body {
   white-space: pre;
 }
 
+#button-master {
+  align-items: end;
+}
+
+#mob-info {
+  border-bottom: 5px solid #eee;
+  background-color: #1a0000;
+}
+
+#mob-img {
+  text-align: center;
+  padding: 0;
+}
+
+#mob-name {
+  color: #eee;
+  text-align: center;
+  margin-top: 5px;
+}
+
+#mob-hp-text {
+  color: #eee;
+  text-align: center;
+  margin-bottom: 5px;
+}
+
+.attacks {
+  font-size: 10px;
+  margin: 5px;
+}
+
+#skills {
+  text-align: center;
+  margin: 5px;
+  font-size: 10px;
+  color: #222;
+}
+
 #hps {
   text-align: center;
-  justify-items: center;
 }
 
 #nrgs {
   text-align: center;
-  justify-items: center;
 }
 
 .tooltip-wrap {
