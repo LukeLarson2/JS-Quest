@@ -339,6 +339,19 @@ const rightCottagePick = [
   `---- IN BATTLE ----`,
 ];
 
+const helpWoman = [
+  `You tip the girls head back and slowly let her drink the potion`,
+  `Almost instantly she begins to look better`,
+  `Woman: "Oh thank you! You've saved her! I wont forget this!"`,
+  `${playerData.name}: "Of course, it's the least I can do"`,
+  `You stand up bid them farwell`,
+];
+
+const dontHelpWoman = [
+  `Woman: "I can't believe you wont help us..."`,
+  `You take the vial and bid them good luck, but anything that could help you save this kingdom is needed`,
+];
+
 // -- BOX ITEM GENERATOR --
 function openBox() {
   const item = Math.floor(Math.random() * 5) + 1;
@@ -642,6 +655,23 @@ const storyText = {
     `You look around and notice something glistening from inside a barrel`,
     `You reach in and discover its a health potion`,
   ],
+  6: [],
+  7: [
+    `You continue your journey deeper into the castle's center`,
+    `As you approach an inner gate to access the keep, a deep, rumbling voice echos against the stone`,
+    `Armored Orc Leader: "YOU.. GO.. NO... FURTHER"`,
+    `The monstrous Orc slams a massive hammer against the stone wall, throwing splintered stone in every direction`,
+    `Armored Orc Leader: "YOU DIE.....NOW!!!"`,
+    `You ready your self for an epic battle for survival!`,
+    `---- IN BATTLE ----`,
+  ],
+  8: [
+    `The collosus beast falls to his back, trembling the ground around you`,
+    `You begin to think this quest was much more than you asked for`,
+    `${playerData.name}: "Where are all of the kingdom's soldiers??"`,
+    `${playerData.name}: "Could they have truly all been wipped out? Am I to late?"`,
+    `You push the inner gates open just enough to see to the other side`,
+  ],
 };
 
 let storyCount = 0;
@@ -912,44 +942,15 @@ let choice = prompt(
   `Do you keep the health potion for yourself or help the little girl?\nPress 1 to help\nPress 2 to keep the potion`
 );
 if (choice === "1") {
-  alert(`--You tip the girls head back and slowly let her drink the potion--`);
-  alert(`--Almost instantly she begins to look better--`);
-  alert(`Woman: "Oh thank you! You've saved her! I wont forget this!"`);
-  alert(`${playerData.name}: "Of course, it's the least I can do"`);
-  alert(`--You stand up bid them farwell--`);
   help = true;
 } else {
-  alert(`Woman: "I can't believe you wont help us..."`);
-  alert(
-    `--You take the vial and bid them good luck, but anything that could help you save this kingdom is needed--`
-  );
   playerData.healthPots++;
   help = false;
 }
 
-// -- PART 6 "The bigger they are..."
-alert(`--You continue your journey deeper into the castle's center--`);
-alert(
-  `--As you approach an inner gate to access the keep, a deep, rumbling voice echos against the stone--`
-);
-alert(`Armored Orc Leader: "YOU.. GO.. NO... FURTHER"`);
-alert(
-  `--The monstrous Orc slams a massive hammer against the stone wall, throwing splintered stone in every direction--`
-);
-alert(`Armored Orc Leader: "YOU DIE.....NOW!!!"`);
-alert(`--You ready your self for an epic battle for survival!--`);
-
 battle(hardMob, playerData);
 
-// -- PART 7 "One step at a time..."--
-alert(
-  `--The collosus beast falls to his back, trembling the ground around you--`
-);
-alert(`--You begin to think this quest was much more than you asked for--`);
-alert(`${playerData.name}: "Where are all of the kingdom's soldiers??"`);
-alert(
-  `${playerData.name}: "Could they have truly all been wipped out? Am I to late?"`
-);
+
 alert(`--You push the inner gates open just enough to see to the other side--`);
 alert(`--An armored Orc patrols the grounds outside the doors to the keep--`);
 alert(`${playerData.name}: "Did they breach the keep?"`);
