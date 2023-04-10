@@ -26,11 +26,11 @@ function getRole() {
     getRole();
   }
   if (playerData.role === "W") {
-    document.querySelector(".role-logo").src = "images/knight-shield-crop.png";
+    document.querySelector(".role-logo").src = "images/warrior-char-final.png";
   } else if (playerData.role === "M") {
-    document.querySelector(".role-logo").src = "images/wizard-crop.png";
+    document.querySelector(".role-logo").src = "images/mage-char-final.png";
   } else if (playerData.role === "A") {
-    document.querySelector(".role-logo").src = "images/assassin-crop.png";
+    document.querySelector(".role-logo").src = "images/assassin-char-final.png";
   }
   return playerData.role;
 }
@@ -39,7 +39,7 @@ function getRole() {
 function getName() {
   let result = prompt("Tell us, what is your name?");
   if (result.length >= 1) {
-    document.querySelector("#mob-pic").src = "images/the-castle.png";
+    document.querySelector("#mob-pic").src = "images/castle-final.png";
     playerData.name = result;
     return playerData.name;
   } else {
@@ -86,7 +86,16 @@ function battle(mob, player) {
     if (mobHP - playerDmg <= 0) {
       alert(`--Victory!--`);
       disableButtons(false, true);
-      document.querySelector("#mob-pic").src = "images/not-in-battle.png";
+      if (partCount === 1) {
+        document.querySelector("#mob-pic").src = "images/boy-happy-final.png";
+      } else if (partCount === 3) {
+        document.querySelector("#mob-pic").src =
+          "images/continue-to-castle-final.png";
+      } else if (partCount === 4) {
+        document.querySelector("#mob-pic").src =
+          "images/destroyed-town-final.png";
+      }
+
       document.querySelector("#mob-hp").textContent = "N/A";
       document.querySelector("#mob-name").textContent = "-- No Enemy --";
       storyCount++;
@@ -131,7 +140,15 @@ function battle(mob, player) {
     if (mobHP - playerDmg <= 0) {
       alert(`--Victory!--`);
       disableButtons(false, true);
-      document.querySelector("#mob-pic").src = "images/not-in-battle.png";
+      if (partCount === 1) {
+        document.querySelector("#mob-pic").src = "images/boy-happy-final.png";
+      } else if (partCount === 3) {
+        document.querySelector("#mob-pic").src =
+          "images/continue-to-castle-final.png";
+      } else if (partCount === 4) {
+        document.querySelector("#mob-pic").src =
+          "images/destroyed-town-final.png";
+      }
       document.querySelector("#mob-hp").textContent = "N/A";
       document.querySelector("#mob-name").textContent = "-- No Enemy --";
       storyCount++;
@@ -176,7 +193,15 @@ function battle(mob, player) {
     if (mobHP - playerDmg <= 0) {
       alert(`--Victory!--`);
       disableButtons(false, true);
-      document.querySelector("#mob-pic").src = "images/not-in-battle.png";
+      if (partCount === 1) {
+        document.querySelector("#mob-pic").src = "images/boy-happy-final.png";
+      } else if (partCount === 3) {
+        document.querySelector("#mob-pic").src =
+          "images/continue-to-castle-final.png";
+      } else if (partCount === 4) {
+        document.querySelector("#mob-pic").src =
+          "images/destroyed-town-final.png";
+      }
       document.querySelector("#mob-hp").textContent = "N/A";
       document.querySelector("#mob-name").textContent = "-- No Enemy --";
       storyCount++;
@@ -221,7 +246,15 @@ function battle(mob, player) {
     if (mobHP - playerDmg <= 0) {
       alert(`--Victory!--`);
       disableButtons(false, true);
-      document.querySelector("#mob-pic").src = "images/not-in-battle.png";
+      if (partCount === 1) {
+        document.querySelector("#mob-pic").src = "images/boy-happy-final.png";
+      } else if (partCount === 3) {
+        document.querySelector("#mob-pic").src =
+          "images/continue-to-castle-final.png";
+      } else if (partCount === 4) {
+        document.querySelector("#mob-pic").src =
+          "images/destroyed-town-final.png";
+      }
       document.querySelector("#mob-hp").textContent = "N/A";
       document.querySelector("#mob-name").textContent = "-- No Enemy --";
       storyCount++;
@@ -297,7 +330,6 @@ const leftCottagePick = [
   `The cottage seems safe so you decide to rest to restore your strength`,
   `max-power`,
   `You rest and restore yourself to full power!`,
-  "end",
 ];
 
 // -- RIGHT COTTAGE --
@@ -305,7 +337,6 @@ const rightCottagePick = [
   `As you approach the cottage on the right you notice a shadow moving inside`,
   `You open the door and find yourself standing in front of another Orc!`,
   `---- IN BATTLE ----`,
-  "end",
 ];
 
 // -- BOX ITEM GENERATOR --
@@ -592,11 +623,24 @@ const storyText = {
     `You exit the cottage and continue your journey forward`,
     `A foul stench drifts into your nostrils`,
     `You hear the sound of scrapping metal`,
-    `A few steps in front of the castle gates, a large Orc drags a massive bone axe behind it`,
+    `A few steps in front of the castle gates, a large Orc stands blocking it`,
     `Orc: "YOU NO PASS HUMAN!"`,
     `Orc: "I CRUSH AND EAT YOU FOR BREAKFAST!"`,
     `You ready your weapon and prepare to fight!`,
     `---- IN BATTLE ----`,
+  ],
+  5: [
+    `The large armored Orc drops to the ground with a crashing thud`,
+    `A small vial falls from one of its puches`,
+    `Tired and bleeding, you seek aid within the city gates`,
+    `As you enter, you see the absolute distruction of the city`,
+    `Stranger: "Psst.."`,
+    `You look around to see who made that noise and you see a young woman hiding behind a barrel`,
+    `She gestures you over while looking for any nearby Orcs`,
+    `You approach the young woman you notice she has a young girl who looks sick`,
+    `Woman: "Please, is there anything you can do to help her?"`,
+    `You look around and notice something glistening from inside a barrel`,
+    `You reach in and discover its a health potion`,
   ],
 };
 
@@ -631,18 +675,19 @@ document.querySelector("#next-story").addEventListener("click", function () {
     if (partCount === 1) {
       document.querySelector("#mob-name").textContent = easyMob1.name;
       document.querySelector("#mob-hp").textContent = easyMob1.hp;
-      document.querySelector("#mob-pic").src = "images/orc-mob-1.png";
+      document.querySelector("#mob-pic").src = "images/orc-1-final.png";
       battle(easyMob1, playerData);
       // -- EXTRA BATTLE --
     } else if (partCount === 3) {
       document.querySelector("#mob-name").textContent = easyMob2.name;
       document.querySelector("#mob-hp").textContent = easyMob2.hp;
-      document.querySelector("#mob-pic").src = "images/orc-mob-1.png";
+      document.querySelector("#mob-pic").src =
+        "images/inside-right-cabin-final.png";
       battle(easyMob2, playerData);
     } else if (partCount === 4) {
       document.querySelector("#mob-name").textContent = easyMob2.name;
       document.querySelector("#mob-hp").textContent = easyMob2.hp;
-      document.querySelector("#mob-pic").src = "images/orc-mob-2.png";
+      document.querySelector("#mob-pic").src = "images/orc-2-final.png";
       battle(medMob1, playerData);
     }
     return;
@@ -671,7 +716,7 @@ document.querySelector("#next-story").addEventListener("click", function () {
         storyCount = 0;
         document.querySelector("#main-story").textContent =
           storyText[partCount][storyCount];
-        document.querySelector("#mob-pic").src = "images/left-cottage.png";
+        document.querySelector("#mob-pic").src = "images/left-cabin-final.png";
         return;
         // -- RIGHT COTTAGE CHOICE --
       } else if (cottage === "R") {
@@ -680,7 +725,7 @@ document.querySelector("#next-story").addEventListener("click", function () {
         storyCount = 0;
         document.querySelector("#main-story").textContent =
           storyText[partCount][storyCount];
-        document.querySelector("#mob-pic").src = "images/right-cottage.png";
+        document.querySelector("#mob-pic").src = "images/right-cabin-final.png";
         return;
         // -- INVALID SELECTION --
       } else {
@@ -691,7 +736,71 @@ document.querySelector("#next-story").addEventListener("click", function () {
       document.querySelector("#main-story").textContent ===
       `Ahead of you reside two cottages`
     ) {
-      document.querySelector("#mob-pic").src = "images/cottages.png";
+      document.querySelector("#mob-pic").src =
+        "images/cottage-choice-final.png";
+      document.querySelector("#main-story").textContent =
+        storyText[partCount][storyCount];
+      storyCount++;
+      return;
+      // -- SHOW INSIDE LEFT COTTAGE PICTURE --
+    } else if (
+      document.querySelector("#main-story").textContent ===
+      `You rest and restore yourself to full power!`
+    ) {
+      document.querySelector("#mob-pic").src =
+        "images/continue-to-castle-final.png";
+      document.querySelector("#main-story").textContent =
+        storyText[partCount][storyCount];
+      storyCount++;
+      return;
+      // -- SHOW INSIDE LEFT COTTAGE PICTURE --
+    } else if (
+      document.querySelector("#main-story").textContent ===
+      `As you approach the cottage on the right you notice a shadow moving inside`
+    ) {
+      document.querySelector("#mob-pic").src =
+        "images/inside-right-cabin-final.png";
+      document.querySelector("#main-story").textContent =
+        storyText[partCount][storyCount];
+      storyCount++;
+      return;
+      // -- SHOW INSIDE LEFT COTTAGE PICTURE --
+    } else if (
+      document.querySelector("#main-story").textContent ===
+      `Boy: "If you need to rest, feel free to take shelter inside"`
+    ) {
+      document.querySelector("#mob-pic").src =
+        "images/boy-running-away-final.png";
+      document.querySelector("#main-story").textContent =
+        storyText[partCount][storyCount];
+      storyCount++;
+      return;
+      // -- SHOW INSIDE LEFT COTTAGE PICTURE --
+    } else if (
+      document.querySelector("#main-story").textContent ===
+      `You look around to see who made that noise and you see a young woman hiding behind a barrel`
+    ) {
+      document.querySelector("#mob-pic").src = "images/woman-barrel-final.png";
+      document.querySelector("#main-story").textContent =
+        storyText[partCount][storyCount];
+      storyCount++;
+      return;
+      // -- SHOW INSIDE LEFT COTTAGE PICTURE --
+    } else if (
+      document.querySelector("#main-story").textContent ===
+      `You turn to the boy`
+    ) {
+      document.querySelector("#mob-pic").src = "images/boy-happy-final.png";
+      document.querySelector("#main-story").textContent =
+        storyText[partCount][storyCount];
+      storyCount++;
+      return;
+      // -- SHOW INSIDE LEFT COTTAGE PICTURE --
+    } else if (
+      document.querySelector("#main-story").textContent ===
+      `A young boy is running towards you as he is being chased by an Orc!`
+    ) {
+      document.querySelector("#mob-pic").src = "images/boy-running-final.png";
       document.querySelector("#main-story").textContent =
         storyText[partCount][storyCount];
       storyCount++;
@@ -701,7 +810,8 @@ document.querySelector("#next-story").addEventListener("click", function () {
       document.querySelector("#main-story").textContent ===
       `As you enter you see a create in the corner with a broken lock`
     ) {
-      document.querySelector("#mob-pic").src = "images/inside-left-cottage.jpg";
+      document.querySelector("#mob-pic").src =
+        "images/inside-left-cabin-final.png";
       document.querySelector("#main-story").textContent =
         storyText[partCount][storyCount];
       storyCount++;
@@ -711,7 +821,7 @@ document.querySelector("#next-story").addEventListener("click", function () {
       document / this.querySelector("#main-story") ===
       `You open the door and find yourself standing in front of another Orc!`
     ) {
-      document.querySelector("#mob-pic").src = "orc-mob-1.jpg";
+      document.querySelector("#mob-pic").src = "inside-right-cabin-final.png";
       document.querySelector("#main-story").textContent =
         storyText[partCount][storyCount];
       storyCount++;
@@ -727,6 +837,15 @@ document.querySelector("#next-story").addEventListener("click", function () {
       storyCount = storyCount + 2;
       return;
       // -- FULL STATS CHECK --
+    } else if (
+      document.querySelector("#main-story").textContent ===
+      `A small vial falls from one of its puches`
+    ) {
+      document.querySelector("#main-story").textContent =
+        storyText[partCount][storyCount];
+      storyCount++;
+      document.querySelector(".hp-pots").textContent++;
+      return;
     } else if (storyText[partCount][storyCount + 1] === "max-power") {
       document.querySelector(".health").textContent = 100;
       document.querySelector(".energy").textContent = 50;
@@ -737,9 +856,9 @@ document.querySelector("#next-story").addEventListener("click", function () {
       // -- SHOW ORC OUTSIDE CITY GATES --
     } else if (
       document.querySelector("#main-story").textContent ===
-      `A few steps in front of the castle gates, a large Orc drags a massive bone axe behind it`
+      `You hear the sound of scrapping metal`
     ) {
-      document.querySelector("#mob-pic").src = "images/orc-mob-2.png";
+      document.querySelector("#mob-pic").src = "images/orc-2-final.png";
       document.querySelector("#main-story").textContent =
         storyText[partCount][storyCount];
       storyCount++;
@@ -789,33 +908,6 @@ document.querySelector("#drink-nrg").addEventListener("click", function () {
   }
 });
 /*
-
-battle(medMob1, playerData);
-
-// -- PART 5 "Trial by fire" --
-alert(`--The large armored Orc drops to the ground with a crashing thud--`);
-alert(`--A small vial falls from one of its puches--`);
-alert(`**Health potion ❤️‍🩹 increases by 1**`);
-playerData.healthPots++;
-alert(`--Tired and bleeding, you seek aid within the city gates--`);
-alert(`--As you enter, you see the absolute distruction of the city--`);
-alert(`--Homes burnt to nothing but charred stone and ash--`);
-alert(`Stranger: "Psst.."`);
-alert(
-  `--You look around to see who made that noise and you see a young woman hiding behind a barrel--`
-);
-alert(`--She gestures you over while looking for any nearby Orcs--`);
-
-let help = undefined;
-
-alert(
-  `--You approach the young woman you notice she has a young girl who looks sick--`
-);
-alert(`Woman: "Please, is there anything you can do to help her?"`);
-alert(
-  `--You look around and notice something glistening from inside a barrel--`
-);
-alert(`--You reach in and discover its a health potion ❤️‍🩹--`);
 let choice = prompt(
   `Do you keep the health potion for yourself or help the little girl?\nPress 1 to help\nPress 2 to keep the potion`
 );
