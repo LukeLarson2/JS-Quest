@@ -321,51 +321,24 @@ function toHit() {
   }
 }
 
-// -- LEFT COTTAGE --
-const leftCottagePick = [
-  `You make your way to the cottage on the left`,
-  `As you enter you see a create in the corner with a broken lock`,
-  `You slowly open the box and find ${openBox()}`,
-
-  `The cottage seems safe so you decide to rest to restore your strength`,
-  `max-power`,
-  `You rest and restore yourself to full power!`,
-];
-
-// -- RIGHT COTTAGE --
-const rightCottagePick = [
-  `As you approach the cottage on the right you notice a shadow moving inside`,
-  `You open the door and find yourself standing in front of another Orc!`,
-  `---- IN BATTLE ----`,
-];
-
-const helpWoman = [
-  `You tip the girls head back and slowly let her drink the potion`,
-  `Almost instantly she begins to look better`,
-  `Woman: "Oh thank you! You've saved her! I wont forget this!"`,
-  `${playerData.name}: "Of course, it's the least I can do"`,
-  `You stand up bid them farwell`,
-];
-
-const dontHelpWoman = [
-  `Woman: "I can't believe you wont help us..."`,
-  `You take the vial and bid them good luck, but anything that could help you save this kingdom is needed`,
-];
-
 // -- BOX ITEM GENERATOR --
 function openBox() {
   const item = Math.floor(Math.random() * 5) + 1;
   let result = undefined;
-  if (item === 1 || item === 5) {
+  if (item === 1) {
     result = "a Health Potion!";
     let val = Number(document.querySelector(".hp-pots").textContent);
-    document.querySelector(".hp-pots").textContent = val + 1;
+    document.querySelector(".hp-pots").textContent = val++;
   } else if (item === 2) {
     result = "an old boot... Great...";
   } else if (item === 3) {
     result = "a pair of dirty underwear... Thats nasty...";
   } else if (item === 4) {
     result = "a rusted fork... Useful...";
+  } else if (item === 5) {
+    result = "an Energy Potion!";
+    let val = Number(document.querySelector(".nrg-pots").textContent);
+    document.querySelector(".nrg-pots").textContent = val++;
   } else {
     result = "nothing... Wonderful...";
   }
@@ -598,7 +571,55 @@ playerData.defGen();
 document.querySelector("#player-name").textContent = playerData.name;
 disableButtons(false, true);
 
-// -- Story Board --
+// -- LEFT COTTAGE --
+const leftCottagePick = [
+  `You make your way to the cottage on the left`,
+  `As you enter you see a create in the corner with a broken lock`,
+  `You slowly open the box and find ${openBox()}`,
+
+  `The cottage seems safe so you decide to rest to restore your strength`,
+  `max-power`,
+  `You rest and restore yourself to full power!`,
+];
+
+// -- RIGHT COTTAGE --
+const rightCottagePick = [
+  `As you approach the cottage on the right you notice a shadow moving inside`,
+  `You open the door and find yourself standing in front of another Orc!`,
+  `---- IN BATTLE ----`,
+];
+
+// -- HELP WOMAN AND DAUGHTER --
+const helpWoman = [
+  `You tip the girls head back and slowly let her drink the potion`,
+  `Almost instantly she begins to look better`,
+  `Woman: "Oh thank you! You've saved her! I wont forget this!"`,
+  `${playerData.name}: "Of course, it's the least I can do"`,
+  `You stand up bid them farwell`,
+];
+
+// -- DONT HELP WOMAN AND DAUGHTER --
+const dontHelpWoman = [
+  `Woman: "I can't believe you wont help us..."`,
+  `You take the vial and bid them good luck, but anything that could help you save this kingdom is needed`,
+];
+
+// -- WOMAN HELPS YOU --
+const sheHelps = [
+  `Just then, the young woman you helpped earlier throws a stone, hitting the Orcs helmet`,
+  `Armored Orc: "HEY! WHO THROW THAT!"`,
+  `The Orc walks off in frustration, unable to find the young woman`,
+  `You take advantage of the opportunity and make your way into the keep`,
+];
+
+// -- WOMAN DOESNT HELP YOU --
+const noHelp = [
+  `While his back is turned, you take advantage and strike!`,
+  "---- IN BATTLE ----",
+  `As the Orc collapses you make your way into the keep`,
+];
+
+// -- STORY BOARD --
 const storyText = {
   1: [
     `You have arrived just in time, ${playerData.name}! ${playerData.roleName}'s of your skill are needed greatly!`,
@@ -654,6 +675,8 @@ const storyText = {
     `Woman: "Please, is there anything you can do to help her?"`,
     `You look around and notice something glistening from inside a barrel`,
     `You reach in and discover its a health potion`,
+    `Do you keep the health potion for yourself or help the little girl?`,
+    "check",
   ],
   6: [],
   7: [
@@ -671,11 +694,81 @@ const storyText = {
     `${playerData.name}: "Where are all of the kingdom's soldiers??"`,
     `${playerData.name}: "Could they have truly all been wipped out? Am I to late?"`,
     `You push the inner gates open just enough to see to the other side`,
+    `An armored Orc patrols the grounds outside the doors to the keep`,
+    `${playerData.name}: "Did they breach the keep?"`,
+    `You sneek through the gates while the armored Orc isn't looking`,
+    `As you quietly make your way, behind crumbled structures towards the doors to the keep, you find a small create`,
+    `As you open it you find ${openBox()}`,
+    `You make your way towards the doors`,
+    `How will you make it past the guard?`,
+    `How will you make it past the guard?`,
+    "check",
+  ],
+  9: [],
+  10: [
+    `Your suprised at the condition of the keep`,
+    `Nothing is destroyed`,
+    `Statues still stand and a chest of gold coins remains untouched`,
+    `As you make your way to the throne room you hear voices from up ahead`,
+    `Orc Commander: "THIS LAST CHANCE! GIVE ORCS STONE OR CASTLE WILL CRUMBLE!"`,
+    `King: "That stone does not belong to you. It is the symbol of my people..."`,
+    `The king lets out a scream of pain`,
+    `King: "No matter what you do to me...You will not get what you came here for..."`,
+    `Orc Commander: "FINE... WE WILL DESTROY THE REST OF YOUR CITY UNTIL WE FIND IT!"`,
+    `Orc Commander: "THEIR LIVES WILL BE YOUR DOING!"`,
+    `This is it, the final battle...`,
+    `You enter the throne room`,
+    `${playerData.name}: "STOP!"`,
+    `Both the King and the Orc Commander turn in suprise`,
+    `Orc Commander: "WHO YOU?!"`,
+    `As you slowly make your way towards the Orc Commander, you begin to pick up speed`,
+    `${playerData.name}: "I am death..."`,
+    `${playerData.name}: "I am the destroyer of orcs..."`,
+    `${playerData.name}: "I am vengance..."`,
+    `${playerData.name}: "I..."`,
+    `${playerData.name}: "Am..."`,
+    `${playerData.name}: "${playerData.name}!!!!`,
+    "---- IN BATTLE ----",
+  ],
+  11: [
+    `The Orc Commander falls to the ground with a look of disbelief`,
+    `Orc Commander: "YoU... CaNNot.... KILL...... MEeeee...."`,
+    `The Orc Commander lets out his final breath and drops his sword`,
+    `The King looks at you as a tear rolls down his face`,
+    `King: "You... You did it..."`,
+    `King: "You saved us all... Thank you ${playerData.name}... You are forever in our debt!"`,
+    `${playerData.name}: "I must know, what was the stone that he was referring to?"`,
+    `The King stands and reaches into his pocket`,
+    `He pulls out a glowing stone`,
+    `King: "This is a seeing stone"`,
+    `King: "So long the bearer has a strong mind, the stone allows them to travel anywhere they desire"`,
+    `King: "This stone was passed down throughout the ages from King to King, only to be used by Kings"`,
+    `King: "You've proven your worth against the Orcs. I see it only fair to allow you the opportunity to try it yourself"`,
+    `He hands you the stone slowly`,
+    `As you take hold of it, images begin to flash through your mind`,
+    `First of the kingdom, then of the land surrounding it`,
+    `You try to focus on a single place in the world`,
+    "You think of your home and your family which you havent seen in ages",
+    "The images shift to inside your house, where your family sits by a fire sharing a meal",
+    `You hear the kings voice echo in your mind`,
+    'King: "To make the journey, you must truly see yourself there"',
+    "As you try to focus a large explosion blasts a whole through the keeps walls",
+    `You try to drop the stone but it seems to have bound itself to you`,
+    `You hear the Kings voice in your mind`,
+    `King: "Protect the stone!!"`,
+    "Your focus strains and bright white light encapsulates you",
+    `When the light disaptes, you find yourself standing on a beach in an unfamiliar land`,
+    `The stone falls from your grasp and its glow diminished`,
+    `You pick up the stone to try and get back but you can tell its energy seems to be drained`,
+    `You look around you and back at the stone`,
+    `It looks like your story isn't over just yet...`,
+    `-----TO BE CONTINUED------`,
   ],
 };
 
 let storyCount = 0;
 let partCount = 1;
+let help = true;
 
 // -- DISABLE FUNCTION --
 function disableButtons(story, battle) {
@@ -695,6 +788,22 @@ document.querySelector("#next-story").addEventListener("click", function () {
     document.querySelector("#story-title").textContent = "Part 2";
   } else if (partCount === 3) {
     document.querySelector("#story-title").textContent = "Part 3";
+  } else if (partCount === 4) {
+    document.querySelector("#story-title").textContent = "Part 4";
+  } else if (partCount === 5) {
+    document.querySelector("#story-title").textContent = "Part 5";
+  } else if (partCount === 6) {
+    document.querySelector("#story-title").textContent = "Part 6";
+  } else if (partCount === 7) {
+    document.querySelector("#story-title").textContent = "Part 7";
+  } else if (partCount === 8) {
+    document.querySelector("#story-title").textContent = "Part 8";
+  } else if (partCount === 9) {
+    document.querySelector("#story-title").textContent = "Part 9";
+  } else if (partCount === 10) {
+    document.querySelector("#story-title").textContent = "Part 10";
+  } else if (partCount === 11) {
+    document.querySelector("#story-title").textContent = "Part 11";
   }
   // Check if end of story array
   if (
@@ -715,10 +824,25 @@ document.querySelector("#next-story").addEventListener("click", function () {
         "images/inside-right-cabin-final.png";
       battle(easyMob2, playerData);
     } else if (partCount === 4) {
-      document.querySelector("#mob-name").textContent = easyMob2.name;
-      document.querySelector("#mob-hp").textContent = easyMob2.hp;
+      document.querySelector("#mob-name").textContent = medMob1.name;
+      document.querySelector("#mob-hp").textContent = medMob1.hp;
       document.querySelector("#mob-pic").src = "images/orc-2-final.png";
       battle(medMob1, playerData);
+    } else if (partCount === 7) {
+      document.querySelector("#mob-name").textContent = medMob2.name;
+      document.querySelector("#mob-hp").textContent = medMob2.hp;
+      document.querySelector("#mob-pic").src = "images/orc-3-final.png";
+      battle(medMob2, playerData);
+    } else if (partCount === 9) {
+      document.querySelector("#mob-name").textContent = hardMob.name;
+      document.querySelector("#mob-hp").textContent = hardMob.hp;
+      document.querySelector("#mob-pic").src = "images/orc-3-final.png";
+      battle(hardMob, playerData);
+    } else if (partCount === 10) {
+      document.querySelector("#mob-name").textContent = bossMob.name;
+      document.querySelector("#mob-hp").textContent = bossMob.hp;
+      document.querySelector("#mob-pic").src = "images/final-orc-final.png";
+      battle(bossMob, playerData);
     }
     return;
   }
@@ -730,6 +854,7 @@ document.querySelector("#next-story").addEventListener("click", function () {
     ) {
       beginTutorial();
       return;
+
       // -- COTTAGE SELECTION CHECK --
     } else if (
       document.querySelector("#main-story").textContent ===
@@ -739,6 +864,7 @@ document.querySelector("#next-story").addEventListener("click", function () {
         `"L" => cottage on the left\n"R" => cottage on the right`
       );
       cottage = cottage.toUpperCase();
+
       // -- LEFT COTTAGE CHOICE --
       if (cottage === "L") {
         storyText[3] = leftCottagePick;
@@ -748,6 +874,7 @@ document.querySelector("#next-story").addEventListener("click", function () {
           storyText[partCount][storyCount];
         document.querySelector("#mob-pic").src = "images/left-cabin-final.png";
         return;
+
         // -- RIGHT COTTAGE CHOICE --
       } else if (cottage === "R") {
         storyText[3] = rightCottagePick;
@@ -761,6 +888,7 @@ document.querySelector("#next-story").addEventListener("click", function () {
       } else {
         alert(`Invalid entry, please try again...`);
       }
+
       // -- SHOW COTTAGE PICTURES --
     } else if (
       document.querySelector("#main-story").textContent ===
@@ -772,7 +900,27 @@ document.querySelector("#next-story").addEventListener("click", function () {
         storyText[partCount][storyCount];
       storyCount++;
       return;
-      // -- SHOW INSIDE LEFT COTTAGE PICTURE --
+
+      // -- POTION FROM ORC --
+    } else if (
+      document.querySelector("#main-story").textContent ===
+      `A small vial falls from one of its puches`
+    ) {
+      let chance = Math.floor(Math.random() * 2) + 1;
+      let val;
+      if (chance < 2) {
+        val = Number(document.querySelector(".nrg-pots").textContent);
+        document.querySelector(".nrg-pots").textContent = val++;
+      } else {
+        val = Number(document.querySelector(".hp-pots").textContent);
+        document.querySelector(".hp-pots").textContent = val++;
+      }
+      document.querySelector("#main-story").textContent =
+        storyText[partCount][storyCount];
+      storyCount++;
+      return;
+
+      // -- MOVING ON TO CASTLE --
     } else if (
       document.querySelector("#main-story").textContent ===
       `You rest and restore yourself to full power!`
@@ -783,7 +931,86 @@ document.querySelector("#next-story").addEventListener("click", function () {
         storyText[partCount][storyCount];
       storyCount++;
       return;
-      // -- SHOW INSIDE LEFT COTTAGE PICTURE --
+
+      // -- IN ARMORY --
+    } else if (
+      document.querySelector("#main-story").textContent ===
+      `Your suprised at the condition of the keep`
+    ) {
+      document.querySelector("#mob-pic").src = "images/castle-hall-final.png";
+      document.querySelector("#main-story").textContent =
+        storyText[partCount][storyCount];
+      storyCount++;
+      return;
+
+      // -- GREATFUL KING --
+    } else if (
+      document.querySelector("#main-story").textContent ===
+      `The King looks at you as a tear rolls down his face`
+    ) {
+      document.querySelector("#mob-pic").src = "images/king-final.png";
+      document.querySelector("#main-story").textContent =
+        storyText[partCount][storyCount];
+      storyCount++;
+      return;
+
+      // -- DOOR TO THRONE ROOM --
+    } else if (
+      document.querySelector("#main-story").textContent ===
+      `As you make your way to the throne room you hear voices from up ahead`
+    ) {
+      document.querySelector("#mob-pic").src =
+        "images/door-to-throne-final.png";
+      document.querySelector("#main-story").textContent =
+        storyText[partCount][storyCount];
+      storyCount++;
+      return;
+
+      // -- THE STONE --
+    } else if (
+      document.querySelector("#main-story").textContent ===
+      `He pulls out a glowing stone`
+    ) {
+      document.querySelector("#mob-pic").src = "images/dream-stone-final.png";
+      document.querySelector("#main-story").textContent =
+        storyText[partCount][storyCount];
+      storyCount++;
+      return;
+
+      // -- EXPLOSION --
+    } else if (
+      document.querySelector("#main-story").textContent ===
+      "As you try to focus a large explosion blasts a whole through the keeps walls"
+    ) {
+      document.querySelector("#mob-pic").src = "images/castle-boom-final.png";
+      document.querySelector("#main-story").textContent =
+        storyText[partCount][storyCount];
+      storyCount++;
+      return;
+
+      // -- WARP --
+    } else if (
+      document.querySelector("#main-story").textContent ===
+      "Your focus strains and bright white light encapsulates you"
+    ) {
+      document.querySelector("#mob-pic").src = "images/portal-final.png";
+      document.querySelector("#main-story").textContent =
+        storyText[partCount][storyCount];
+      storyCount++;
+      return;
+
+      // -- BEACH --
+    } else if (
+      document.querySelector("#main-story").textContent ===
+      `When the light disaptes, you find yourself standing on a beach in an unfamiliar land`
+    ) {
+      document.querySelector("#mob-pic").src = "images/beach-final.png";
+      document.querySelector("#main-story").textContent =
+        storyText[partCount][storyCount];
+      storyCount++;
+      return;
+
+      // -- SHOW INSIDE RIGHT COTTAGE PICTURE --
     } else if (
       document.querySelector("#main-story").textContent ===
       `As you approach the cottage on the right you notice a shadow moving inside`
@@ -794,7 +1021,8 @@ document.querySelector("#next-story").addEventListener("click", function () {
         storyText[partCount][storyCount];
       storyCount++;
       return;
-      // -- SHOW INSIDE LEFT COTTAGE PICTURE --
+
+      // -- BOY RUNNING AWAY --
     } else if (
       document.querySelector("#main-story").textContent ===
       `Boy: "If you need to rest, feel free to take shelter inside"`
@@ -805,7 +1033,8 @@ document.querySelector("#next-story").addEventListener("click", function () {
         storyText[partCount][storyCount];
       storyCount++;
       return;
-      // -- SHOW INSIDE LEFT COTTAGE PICTURE --
+
+      // -- WOMAN HIDING BEHIND BARREL --
     } else if (
       document.querySelector("#main-story").textContent ===
       `You look around to see who made that noise and you see a young woman hiding behind a barrel`
@@ -815,7 +1044,19 @@ document.querySelector("#next-story").addEventListener("click", function () {
         storyText[partCount][storyCount];
       storyCount++;
       return;
-      // -- SHOW INSIDE LEFT COTTAGE PICTURE --
+
+      // -- SHOW ORC COMMANDER --
+    } else if (
+      document.querySelector("#main-story").textContent ===
+      `As you approach an inner gate to access the keep, a deep, rumbling voice echos against the stone`
+    ) {
+      document.querySelector("#mob-pic").src = "images/orc-3-final.png";
+      document.querySelector("#main-story").textContent =
+        storyText[partCount][storyCount];
+      storyCount++;
+      return;
+
+      // -- BOY IS HAPPY --
     } else if (
       document.querySelector("#main-story").textContent ===
       `You turn to the boy`
@@ -825,7 +1066,8 @@ document.querySelector("#next-story").addEventListener("click", function () {
         storyText[partCount][storyCount];
       storyCount++;
       return;
-      // -- SHOW INSIDE LEFT COTTAGE PICTURE --
+
+      // -- BOY RUNNING TOWARDS YOU --
     } else if (
       document.querySelector("#main-story").textContent ===
       `A young boy is running towards you as he is being chased by an Orc!`
@@ -835,6 +1077,7 @@ document.querySelector("#next-story").addEventListener("click", function () {
         storyText[partCount][storyCount];
       storyCount++;
       return;
+
       // -- SHOW INSIDE LEFT COTTAGE PICTURE --
     } else if (
       document.querySelector("#main-story").textContent ===
@@ -846,7 +1089,44 @@ document.querySelector("#next-story").addEventListener("click", function () {
         storyText[partCount][storyCount];
       storyCount++;
       return;
-      // -- ADD ONE HEALTH POTION AND ONE ENERGY POTION --
+
+      // -- HELP WOMAN OR NOT --
+    } else if (
+      document.querySelector("#main-story").textContent ===
+      `Do you keep the health potion for yourself or help the little girl?`
+    ) {
+      let choice = prompt(`Press 1 to help\nPress 2 to keep the potion`);
+      if (choice === "1") {
+        help = true;
+        storyText[6] = helpWoman;
+      } else {
+        playerData.healthPots++;
+        help = false;
+        storyText[6] = dontHelpWoman;
+      }
+      partCount++;
+      storyCount = 0;
+      document.querySelector("#main-story").textContent =
+        storyText[partCount][storyCount];
+      return;
+
+      // -- DOES THE WOMAN HELP YOU OR NOT --
+    } else if (
+      document / this.querySelector("#main-story") ===
+      `How will you make it past the guard?`
+    ) {
+      if (help === true) {
+        storyText[9] = sheHelps;
+      } else {
+        storyText[9] = noHelp;
+      }
+      partCount++;
+      storyCount = 0;
+      document.querySelector("#main-story").textContent =
+        storyText[partCount][storyCount];
+      return;
+
+      // -- INSIDE RIGHT CABIN --
     } else if (
       document / this.querySelector("#main-story") ===
       `You open the door and find yourself standing in front of another Orc!`
@@ -856,16 +1136,19 @@ document.querySelector("#next-story").addEventListener("click", function () {
         storyText[partCount][storyCount];
       storyCount++;
       return;
+
+      // -- GAIN 1 ENERGY AND ONE HEALTH POTION --
     } else if (
       document.querySelector("#main-story").textContent ===
       `Before you go let me give you these health and energy potions to help you on your jounrey`
     ) {
       document.querySelector("#main-story").textContent =
         storyText[partCount][storyCount];
-      document.querySelector(".hp-pots").textContent++;
-      document.querySelector(".nrg-pots").textContent++;
+      document.querySelector(".hp-pots").textContent = 1;
+      document.querySelector(".nrg-pots").textContent = 1;
       storyCount = storyCount + 2;
       return;
+
       // -- FULL STATS CHECK --
     } else if (
       document.querySelector("#main-story").textContent ===
@@ -876,6 +1159,8 @@ document.querySelector("#next-story").addEventListener("click", function () {
       storyCount++;
       document.querySelector(".hp-pots").textContent++;
       return;
+
+      // -- REST AND GAIN FULL POWER --
     } else if (storyText[partCount][storyCount + 1] === "max-power") {
       document.querySelector(".health").textContent = 100;
       document.querySelector(".energy").textContent = 50;
@@ -883,6 +1168,7 @@ document.querySelector("#next-story").addEventListener("click", function () {
       document.querySelector("#main-story").textContent =
         storyText[partCount][storyCount];
       return;
+
       // -- SHOW ORC OUTSIDE CITY GATES --
     } else if (
       document.querySelector("#main-story").textContent ===
@@ -894,12 +1180,13 @@ document.querySelector("#next-story").addEventListener("click", function () {
       storyCount++;
       return;
     }
+
     // -- ELSE PROGRESS STORY --
     document.querySelector("#main-story").textContent =
       storyText[partCount][storyCount];
     storyCount++;
-
     return;
+
     // -- IF AT END OF STORY ARRAY MOVE TO NEXT PART --
   } else {
     partCount++;
@@ -937,137 +1224,3 @@ document.querySelector("#drink-nrg").addEventListener("click", function () {
     document.querySelector(".energy").textContent = totalNrg + amountToRestore;
   }
 });
-/*
-let choice = prompt(
-  `Do you keep the health potion for yourself or help the little girl?\nPress 1 to help\nPress 2 to keep the potion`
-);
-if (choice === "1") {
-  help = true;
-} else {
-  playerData.healthPots++;
-  help = false;
-}
-
-battle(hardMob, playerData);
-
-
-alert(`--You push the inner gates open just enough to see to the other side--`);
-alert(`--An armored Orc patrols the grounds outside the doors to the keep--`);
-alert(`${playerData.name}: "Did they breach the keep?"`);
-alert(`--You sneek through the gates while the armored Orc isn't looking--`);
-alert(
-  `--As you quietly make your way, behind crumbled structures towards the doors to the keep, you find a small create--`
-);
-alert(`--As you open it you find ${openBox()}--`);
-
-// -- PART 8 "Does your past haunt you?" --
-alert(`--You make your way towards the doors--`);
-alert(`--How will you make it past the guard?--`);
-
-if (help === true) {
-  alert(
-    `--Just then, the young woman you helpped earlier throws a stone, hitting the Orcs helmet--`
-  );
-  alert(`Armored Orc: "HEY! WHO THROW THAT!"`);
-  alert(`--The Orc walks off in frustration, unable to find the young woman--`);
-  alert(
-    `--You take advantage of the opportunity and make your way into the keep--`
-  );
-} else {
-  alert(`--While his back is turned, you take advantage and strike!--`);
-  battle(medMob2, playerData);
-  alert(`--As the Orc collapses you make your way into the keep--`);
-}
-
-// -- PART 9 "Enter the keep" --
-alert(`--Your suprised at the condition of the keep--`);
-alert(`--Nothing is destroyed--`);
-alert(`--Statues still stand and a chest of gold coins remains untouched--`);
-alert(
-  `--As you make your way to the throne room you hear voices from up ahead--`
-);
-alert(
-  `Orc Commander: "THIS LAST CHANCE! GIVE ORCS STONE OR CASTLE WILL CRUMBLE!"`
-);
-alert(
-  `King: "That stone does not belong to you. It is the symbol of my people..."`
-);
-alert(`--The king lets out a scream of pain--`);
-alert(
-  `King: "No matter what you do to me...You will not get what you came here for..."`
-);
-alert(
-  `Orc Commander: "FINE... WE WILL DESTROY THE REST OF YOUR CITY UNTIL WE FIND IT!"`
-);
-alert(`Orc Commander: "THEIR LIVES WILL BE YOUR DOING!"`);
-alert(`--This is it, the final battle...---`);
-alert(`--You enter the throne room--`);
-alert(`${playerData.name}: "STOP!"`);
-alert(`--Both the King and the Orc Commander turn in suprise--`);
-alert(`Orc Commander: "WHO YOU?!"`);
-alert(
-  `--As you slowly make your way towards the Orc Commander, you begin to pick up speed--`
-);
-alert(`${playerData.name}: "I am death..."`);
-alert(`${playerData.name}: "I am the destroyer of orcs..."`);
-alert(`${playerData.name}: "I am vengance..."`);
-alert(`${playerData.name}: "I..."`);
-alert(`${playerData.name}: "Am..."`);
-alert(`${playerData.name}: "${playerData.name}!!!!`);
-
-// -- Part 10 "This is the end" --
-battle(bossMob, playerData);
-
-alert(`--The Orc Commander falls to the ground with a look of disbelief--`);
-alert(`Orc Commander: "YoU... CaNNot.... KILL...... MEeeee...."`);
-alert(`--The Orc Commander lets out his final breath and drops his sword--`);
-alert(`--The King looks at you as a tear rolls down his face--`);
-alert(`King: "You... You did it..."`);
-alert(
-  `King: "You saved us all... Thank you ${playerData.name}... You are forever in our debt!"`
-);
-alert(
-  `${playerData.name}: "I must know, what was the stone that he was referring to?"`
-);
-alert(`--The King stands and reaches into his pocket--`);
-alert(`--He pulls out a glowing stone--`);
-alert(`King: "This is a seeing stone"`);
-alert(
-  `King: "So long the bearer has a strong mind, the stone allows them to travel anywhere they desire"`
-);
-alert(
-  `King: "This stone was passed down throughout the ages from King to King, only to be used by Kings"`
-);
-alert(
-  `King: "You've proven your worth against the Orcs. I see it only fair to allow you the opportunity to try it yourself"`
-);
-alert(`--He hands you the stone slowly--`);
-alert(`--As you take hold of it, images begin to flash through your mind--`);
-alert(`--First of the kingdom, then of the land surrounding it--`);
-alert(`--You try to focus on a single place in the world--`);
-alert(
-  "--You think of your home and your family which you havent seen in ages--"
-);
-alert(
-  "--The images shift to inside your house, where your family sits by a fire sharing a meal--"
-);
-alert(`--You hear the kings voice echo in your mind--`);
-alert('King: "To make the journey, you must truly see yourself there"');
-alert(
-  "--As you try to focus a large explosion blasts a whole through the keeps walls--"
-);
-alert(`--You try to drop the stone but it seems to have bound itself to you--`);
-alert(`--You hear the Kings voice in your mind--`);
-alert(`King: "Protect the stone!!"`);
-alert("--Your focus strains and bright white light encapsulates you--");
-alert(
-  `--When the light disaptes, you find yourself standing on a beach in an unfamiliar land--`
-);
-alert(`--The stone falls from your grasp and its glow diminished--`);
-alert(
-  `--You pick up the stone to try and get back but you can tell its energy seems to be drained--`
-);
-alert(`--You look around you and back at the stone--`);
-alert(`--It looks like your story isn't over just yet...--`);
-alert(`-----TO BE CONTINUED------`);
-*/
