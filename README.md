@@ -5,5 +5,6 @@ Developing Browser Game
 <ol>
 <li>Download full zip file</li>
 <li>Extract Files</li>
+<li>Open "Content FOlder"<li>
 <li>Open index.html file</li>
 </ol>
