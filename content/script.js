@@ -99,10 +99,15 @@ function battle(mob, player) {
 
       document.querySelector("#mob-hp").textContent = "N/A";
       document.querySelector("#mob-name").textContent = "-- No Enemy --";
-      storyCount++;
+      if (storyCount === storyText[partCount].length) {
+        partCount++;
+        storyCount = 0;
+      } else {
+        storyCount++;
+      }
       document.querySelector("#main-story").textContent =
         storyText[partCount][storyCount];
-      storyCount++;
+
       return;
     }
     if (player.health - mobDmg <= 0) {
@@ -161,10 +166,15 @@ function battle(mob, player) {
       }
       document.querySelector("#mob-hp").textContent = "N/A";
       document.querySelector("#mob-name").textContent = "-- No Enemy --";
-      storyCount++;
+      if (storyCount === storyText[partCount].length) {
+        partCount++;
+        storyCount = 0;
+      } else {
+        storyCount++;
+      }
       document.querySelector("#main-story").textContent =
         storyText[partCount][storyCount];
-      storyCount++;
+
       return;
     }
     if (player.health - mobDmg <= 0) {
@@ -223,10 +233,15 @@ function battle(mob, player) {
       }
       document.querySelector("#mob-hp").textContent = "N/A";
       document.querySelector("#mob-name").textContent = "-- No Enemy --";
-      storyCount++;
+      if (storyCount === storyText[partCount].length) {
+        partCount++;
+        storyCount = 0;
+      } else {
+        storyCount++;
+      }
       document.querySelector("#main-story").textContent =
         storyText[partCount][storyCount];
-      storyCount++;
+
       return;
     }
     if (player.health - mobDmg <= 0) {
@@ -285,10 +300,15 @@ function battle(mob, player) {
       }
       document.querySelector("#mob-hp").textContent = "N/A";
       document.querySelector("#mob-name").textContent = "-- No Enemy --";
-      storyCount++;
+      if (storyCount === storyText[partCount].length) {
+        partCount++;
+        storyCount = 0;
+      } else {
+        storyCount++;
+      }
       document.querySelector("#main-story").textContent =
         storyText[partCount][storyCount];
-      storyCount++;
+
       return;
     }
     if (player.health - mobDmg <= 0) {
