@@ -267,6 +267,15 @@ function battle(mob, player) {
       gameOver();
       return;
     }
+    if (
+      document.querySelector(".nrg-pots").textContent === 0 &&
+      document.querySelector(".energy").textContent === 0
+    ) {
+      document.querySelector("#main-story").textContent =
+        "You've run out of energy...";
+      gameOver();
+      return;
+    }
     document.querySelector(".health").textContent = playerHP - mobDmg;
     document.querySelector("#mob-hp").textContent = mobHP - playerDmg;
   });
@@ -323,12 +332,10 @@ function toHit() {
 
 // -- BOX ITEM GENERATOR --
 function openBox() {
-  const item = Math.floor(Math.random() * 5) + 1;
+  const item = Math.floor(Math.random() * 2) + 1;
   let result = undefined;
   if (item === 1) {
     result = "a Health Potion!";
-    let val = Number(document.querySelector(".hp-pots").textContent);
-    document.querySelector(".hp-pots").textContent = val++;
   } else if (item === 2) {
     result = "an old boot... Great...";
   } else if (item === 3) {
@@ -337,8 +344,6 @@ function openBox() {
     result = "a rusted fork... Useful...";
   } else if (item === 5) {
     result = "an Energy Potion!";
-    let val = Number(document.querySelector(".nrg-pots").textContent);
-    document.querySelector(".nrg-pots").textContent = val++;
   } else {
     result = "nothing... Wonderful...";
   }
@@ -575,8 +580,7 @@ disableButtons(false, true);
 const leftCottagePick = [
   `You make your way to the cottage on the left`,
   `As you enter you see a create in the corner with a broken lock`,
-  `You slowly open the box and find ${openBox()}`,
-
+  `As you open it you find ${openBox()}`,
   `The cottage seems safe so you decide to rest to restore your strength`,
   `max-power`,
   `You rest and restore yourself to full power!`,
@@ -666,6 +670,7 @@ const storyText = {
   5: [
     `The large armored Orc drops to the ground with a crashing thud`,
     `A small vial falls from one of its puches`,
+    `You add the potion to your inventory`,
     `Tired and bleeding, you seek aid within the city gates`,
     `As you enter, you see the absolute distruction of the city`,
     `Stranger: "Psst.."`,
@@ -700,7 +705,6 @@ const storyText = {
     `As you quietly make your way, behind crumbled structures towards the doors to the keep, you find a small create`,
     `As you open it you find ${openBox()}`,
     `You make your way towards the doors`,
-    `How will you make it past the guard?`,
     `How will you make it past the guard?`,
     "check",
   ],
@@ -762,7 +766,7 @@ const storyText = {
     `You pick up the stone to try and get back but you can tell its energy seems to be drained`,
     `You look around you and back at the stone`,
     `It looks like your story isn't over just yet...`,
-    `-----TO BE CONTINUED------`,
+    `---TO BE CONTINUED---`,
   ],
 };
 
@@ -779,32 +783,11 @@ function disableButtons(story, battle) {
   document.querySelector("#attack-4").disabled = battle;
 }
 
+document.querySelector("#story-title").textContent = "Main Story";
+
 // -- Click Through Story --
 document.querySelector("#next-story").addEventListener("click", function () {
   // Initialize Current Part
-  if (partCount === 1) {
-    document.querySelector("#story-title").textContent = "Part 1";
-  } else if (partCount === 2) {
-    document.querySelector("#story-title").textContent = "Part 2";
-  } else if (partCount === 3) {
-    document.querySelector("#story-title").textContent = "Part 3";
-  } else if (partCount === 4) {
-    document.querySelector("#story-title").textContent = "Part 4";
-  } else if (partCount === 5) {
-    document.querySelector("#story-title").textContent = "Part 5";
-  } else if (partCount === 6) {
-    document.querySelector("#story-title").textContent = "Part 6";
-  } else if (partCount === 7) {
-    document.querySelector("#story-title").textContent = "Part 7";
-  } else if (partCount === 8) {
-    document.querySelector("#story-title").textContent = "Part 8";
-  } else if (partCount === 9) {
-    document.querySelector("#story-title").textContent = "Part 9";
-  } else if (partCount === 10) {
-    document.querySelector("#story-title").textContent = "Part 10";
-  } else if (partCount === 11) {
-    document.querySelector("#story-title").textContent = "Part 11";
-  }
   // Check if end of story array
   if (
     document.querySelector("#main-story").textContent === `---- IN BATTLE ----`
@@ -909,11 +892,11 @@ document.querySelector("#next-story").addEventListener("click", function () {
       let chance = Math.floor(Math.random() * 2) + 1;
       let val;
       if (chance < 2) {
-        val = Number(document.querySelector(".nrg-pots").textContent);
-        document.querySelector(".nrg-pots").textContent = val++;
+        val = Number(document.querySelector(".nrg-pots").textContent) + 1;
+        document.querySelector(".nrg-pots").textContent = val;
       } else {
-        val = Number(document.querySelector(".hp-pots").textContent);
-        document.querySelector(".hp-pots").textContent = val++;
+        val = Number(document.querySelector(".hp-pots").textContent) + 1;
+        document.querySelector(".hp-pots").textContent = val;
       }
       document.querySelector("#main-story").textContent =
         storyText[partCount][storyCount];
@@ -966,6 +949,23 @@ document.querySelector("#next-story").addEventListener("click", function () {
       storyCount++;
       return;
 
+      // -- DOOR TO THRONE ROOM --
+    } else if (
+      document.querySelector("#main-story").textContent ===
+      `${playerData.name}: "Am..."`
+    ) {
+      if (playerData.role === "M") {
+        document.querySelector("#mob-pic").src = "images/mage-close-up.png";
+      } else if (playerData.role === "W") {
+        document.querySelector("#mob-pic").src = "images/warrior-close-up.png";
+      } else {
+        document.querySelector("#mob-pic").src = "images/assassin-close-up.png";
+      }
+      document.querySelector("#main-story").textContent =
+        storyText[partCount][storyCount];
+      storyCount++;
+      return;
+
       // -- THE STONE --
     } else if (
       document.querySelector("#main-story").textContent ===
@@ -994,6 +994,42 @@ document.querySelector("#next-story").addEventListener("click", function () {
       "Your focus strains and bright white light encapsulates you"
     ) {
       document.querySelector("#mob-pic").src = "images/portal-final.png";
+      document.querySelector("#main-story").textContent =
+        storyText[partCount][storyCount];
+      storyCount++;
+      return;
+
+      // -- OPENING A CRATE FOR HP --
+    } else if (
+      document.querySelector("#main-story").textContent ===
+      `As you open it you find a Health Potion!`
+    ) {
+      let val = Number(document.querySelector(".hp-pots").textContent) + 1;
+      document.querySelector(".hp-pots").textContent = val;
+      document.querySelector("#main-story").textContent =
+        storyText[partCount][storyCount];
+      storyCount++;
+      return;
+
+      // -- OPENING A CRATE FOR HP --
+    } else if (
+      document.querySelector("#main-story").textContent ===
+      `As you open it you find an Energy Potion!`
+    ) {
+      let val = Number(document.querySelector(".nrg-pots").textContent) + 1;
+      document.querySelector(".nrg-pots").textContent = val;
+      document.querySelector("#main-story").textContent =
+        storyText[partCount][storyCount];
+      storyCount++;
+      return;
+
+      // -- ORC LEADER DEFEATED --
+    } else if (
+      document.querySelector("#main-story").textContent ===
+      `The Orc Commander falls to the ground with a look of disbelief`
+    ) {
+      document.querySelector("#mob-pic").src =
+        "images/orc-leader-defeated-final.png";
       document.querySelector("#main-story").textContent =
         storyText[partCount][storyCount];
       storyCount++;
@@ -1095,8 +1131,9 @@ document.querySelector("#next-story").addEventListener("click", function () {
       document.querySelector("#main-story").textContent ===
       `Do you keep the health potion for yourself or help the little girl?`
     ) {
-      let choice = prompt(`Press 1 to help\nPress 2 to keep the potion`);
-      if (choice === "1") {
+      let choice = prompt(`Press "Y" to help\nPress "N" to keep the potion`);
+      choice = choice.toUpperCase();
+      if (choice === "Y") {
         help = true;
         storyText[6] = helpWoman;
       } else {
@@ -1112,7 +1149,7 @@ document.querySelector("#next-story").addEventListener("click", function () {
 
       // -- DOES THE WOMAN HELP YOU OR NOT --
     } else if (
-      document / this.querySelector("#main-story") ===
+      document.querySelector("#main-story").textContent ===
       `How will you make it past the guard?`
     ) {
       if (help === true) {
@@ -1149,21 +1186,10 @@ document.querySelector("#next-story").addEventListener("click", function () {
       storyCount = storyCount + 2;
       return;
 
-      // -- FULL STATS CHECK --
-    } else if (
-      document.querySelector("#main-story").textContent ===
-      `A small vial falls from one of its puches`
-    ) {
-      document.querySelector("#main-story").textContent =
-        storyText[partCount][storyCount];
-      storyCount++;
-      document.querySelector(".hp-pots").textContent++;
-      return;
-
       // -- REST AND GAIN FULL POWER --
     } else if (storyText[partCount][storyCount + 1] === "max-power") {
       document.querySelector(".health").textContent = 100;
-      document.querySelector(".energy").textContent = 50;
+      document.querySelector(".energy").textContent = 60;
       storyCount = storyCount + 2;
       document.querySelector("#main-story").textContent =
         storyText[partCount][storyCount];
