@@ -1,4 +1,5 @@
 // FUNCTIONS
+
 // -- TUTORIAL START --
 function beginTutorial() {
   let begin = prompt(`Save the kingdom? (Y/N)`);
