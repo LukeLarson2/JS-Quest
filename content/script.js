@@ -384,18 +384,26 @@ const playerData = {
       playerData.skills[0][0];
     document.querySelector("#attack-1").textContent =
       playerData.skills[0][1].dmg + " DMG";
+    document.querySelector(".attack-1-nrg").textContent =
+      "-" + playerData.skills[0][1].nrg + " ⚡";
     document.querySelector(".attack-2-dmg").textContent =
       playerData.skills[1][0];
     document.querySelector("#attack-2").textContent =
       playerData.skills[1][1].dmg + " DMG";
+    document.querySelector(".attack-2-nrg").textContent =
+      "-" + playerData.skills[1][1].nrg + " ⚡";
     document.querySelector(".attack-3-dmg").textContent =
       playerData.skills[2][0];
     document.querySelector("#attack-3").textContent =
       playerData.skills[2][1].dmg + " DMG";
+    document.querySelector(".attack-3-nrg").textContent =
+      "-" + playerData.skills[2][1].nrg + " ⚡";
     document.querySelector(".attack-4-dmg").textContent =
       playerData.skills[3][0];
     document.querySelector("#attack-4").textContent =
       playerData.skills[3][1].dmg + " DMG";
+    document.querySelector(".attack-4-nrg").textContent =
+      "-" + playerData.skills[3][1].nrg + " ⚡";
     return this.skills;
   },
   health: 100,
