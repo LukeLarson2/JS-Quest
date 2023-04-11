@@ -551,7 +551,7 @@ const assassinSkils = [
 // -- ENEMY STATS --
 const easyMob1 = {
   name: "Orc",
-  hp: 20,
+  hp: 30,
   def: 1,
   attack: 2,
   toHit: 2,
@@ -559,7 +559,7 @@ const easyMob1 = {
 
 const easyMob2 = {
   name: "Orc",
-  hp: 20,
+  hp: 30,
   def: 1,
   attack: 2,
   toHit: 3,
@@ -567,7 +567,7 @@ const easyMob2 = {
 
 const medMob1 = {
   name: "Armored Orc",
-  hp: 30,
+  hp: 40,
   def: 3,
   attack: 3,
   toHit: 4,
@@ -575,7 +575,7 @@ const medMob1 = {
 
 const medMob2 = {
   name: "Armored Orc",
-  hp: 30,
+  hp: 40,
   def: 3,
   attack: 3,
   toHit: 4,
@@ -583,7 +583,7 @@ const medMob2 = {
 
 const hardMob = {
   name: "Armored Orc Leader",
-  hp: 40,
+  hp: 50,
   def: 4,
   attack: 4,
   toHit: 5,
@@ -591,7 +591,7 @@ const hardMob = {
 
 const bossMob = {
   name: "Orc Commander",
-  hp: 50,
+  hp: 60,
   def: 5,
   attack: 5,
   toHit: 6,
