@@ -52,282 +52,285 @@ function getName() {
 // -- GAME OVER --
 function gameOver() {
   document.querySelector("#next-story").remove();
-  document.querySelector("#main-story").textContent = `---- Game Over ----`;
+  document.querySelector(".health").textContent = "0";
+  document.querySelector(".energy").textContent = "0";
+  document.querySelector(
+    "#main-story"
+  ).textContent = `You drop to your knees as the Orc prepares his final blow... Game Over...`;
 }
-
-// -- BATTLE SCREEN --
-function battle(mob, player) {
-  document.querySelector("#mob-hp").textContent = mob.hp;
-  // ---- ATTACK 1 ----
-  document.querySelector("#attack-1").addEventListener("click", function () {
-    let curNrg = Number(document.querySelector(".energy").textContent);
-    if (curNrg < player.skills[0][1].nrg) {
-      return;
-    }
-    curNrg = curNrg - player.skills[0][1].nrg;
-    document.querySelector(".energy").textContent = curNrg;
-    let mobHP = Number(document.querySelector("#mob-hp").textContent);
-    console.log(mobHP);
-    let playerHP = Number(document.querySelector(".health").textContent);
-    console.log(playerHP);
-    let mobDmg;
-    let playerDmg;
-    if (player.role === "M" || player.role === "W") {
-      mobDmg = Math.floor(dmgGen(mob.attack) / dmgReducGen());
-      playerDmg = dmgGen(player.skills[0][1].dmg);
+let mobID = undefined;
+// ---- ATTACK 1 ----
+document.querySelector("#attack-1").addEventListener("click", function () {
+  // -- CHECK IF ENOUGH ENERGY TO USE ABILITY --
+  let playerSkill = playerData.skills[0][1];
+  let curNrg = playerData.energy;
+  if (curNrg < playerSkill.nrg) {
+    return;
+  }
+  // -- CALCULATE DAMAGE --
+  curNrg = playerData.energy - playerSkill.nrg;
+  let mobDmg = 0;
+  let playerDmg = 0;
+  if (playerData.role === "M" || playerData.role === "W") {
+    mobDmg = Math.floor(dmgGen(mobID.attack) / dmgReducGen());
+    playerDmg = dmgGen(playerSkill.dmg);
+  } else {
+    const mobHit = dodgeCheck(mobID.toHit);
+    if (mobHit === true) {
+      playerDmg = dmgGen(playerSkill.dmg);
     } else {
-      const mobHit = dodgeCheck(mob.toHit);
-      if (mobHit === true) {
-        playerDmg = dmgGen(player.skills[0][1].dmg);
-      } else {
-        mobDmg = dmgGen(mob.attack);
-        playerDmg = dmgGen(player.skills[0][1].dmg);
-      }
+      mobDmg = dmgGen(mobID.attack);
+      playerDmg = dmgGen(playerSkill.dmg);
     }
-    if (mobHP - playerDmg <= 0) {
-      alert(`--Victory!--`);
-      disableButtons(false, true);
-      if (partCount === 1) {
-        document.querySelector("#mob-pic").src = "images/boy-happy-final.png";
-      } else if (partCount === 3) {
-        document.querySelector("#mob-pic").src =
-          "images/continue-to-castle-final.png";
-      } else if (partCount === 4) {
-        document.querySelector("#mob-pic").src =
-          "images/destroyed-town-final.png";
-      }
-
-      document.querySelector("#mob-hp").textContent = "N/A";
-      document.querySelector("#mob-name").textContent = "-- No Enemy --";
-      if (storyCount === storyText[partCount].length) {
-        partCount++;
-        storyCount = 0;
-      } else {
-        storyCount++;
-      }
-      document.querySelector("#main-story").textContent =
-        storyText[partCount][storyCount];
-
-      return;
+  }
+  // -- DISPLAY NEW HEALTH --
+  playerData.health = playerData.health - mobDmg;
+  playerData.energy = curNrg;
+  mobID.hp = mobID.hp - playerDmg;
+  document.querySelector(".energy").textContent = playerData.energy;
+  document.querySelector(".health").textContent = playerData.health;
+  document.querySelector("#mob-hp").textContent = mobID.hp;
+  // -- MOB DEFEATED --
+  if (mobID.hp - playerDmg <= 0) {
+    alert(`--Victory!--`);
+    disableButtons(false, true);
+    if (partCount === 1) {
+      document.querySelector("#mob-pic").src = "images/boy-happy-final.png";
+    } else if (partCount === 3) {
+      document.querySelector("#mob-pic").src =
+        "images/continue-to-castle-final.png";
+    } else if (partCount === 4) {
+      document.querySelector("#mob-pic").src =
+        "images/destroyed-town-final.png";
     }
-    if (player.health - mobDmg <= 0) {
-      gameOver();
-      return;
-    }
-    if (
-      document.querySelector(".nrg-pots").textContent === 0 &&
-      document.querySelector(".energy").textContent === 0
-    ) {
-      document.querySelector("#main-story").textContent =
-        "You've run out of energy...";
-      gameOver();
-      return;
-    }
-    document.querySelector(".health").textContent = playerHP - mobDmg;
-    document.querySelector("#mob-hp").textContent = mobHP - playerDmg;
-  });
-  // ---- ATTACK 2 ----
-  document.querySelector("#attack-2").addEventListener("click", function () {
-    let curNrg = Number(document.querySelector(".energy").textContent);
-    if (curNrg < player.skills[1][1].nrg) {
-      return;
-    }
-    curNrg = curNrg - player.skills[1][1].nrg;
-    document.querySelector(".energy").textContent = curNrg;
-    let mobHP = Number(document.querySelector("#mob-hp").textContent);
-    console.log(mobHP);
-    let playerHP = Number(document.querySelector(".health").textContent);
-    console.log(playerHP);
-    let mobDmg;
-    let playerDmg;
-    if (player.role === "M" || player.role === "W") {
-      mobDmg = Math.floor(dmgGen(mob.attack) / dmgReducGen());
-      playerDmg = dmgGen(player.skills[1][1].dmg);
+    document.querySelector("#mob-hp").textContent = "N/A";
+    document.querySelector("#mob-name").textContent = "-- No Enemy --";
+    partCount++;
+    storyCount = 0;
+    document.querySelector("#main-story").textContent =
+      storyText[partCount][storyCount];
+    return;
+  }
+  // -- PLAYER DEFEATED --
+  if (playerData.health - mobDmg <= 0) {
+    gameOver();
+    return;
+  }
+  // -- PLAYER OUT OF ENERGY --
+  if (
+    document.querySelector(".nrg-pots").textContent === "0" &&
+    document.querySelector(".energy").textContent === "0"
+  ) {
+    document.querySelector("#main-story").textContent =
+      "You've run out of energy...";
+    gameOver();
+    return;
+  }
+});
+// ---- ATTACK 2 ----
+document.querySelector("#attack-2").addEventListener("click", function () {
+  // -- CHECK IF ENOUGH ENERGY TO USE ABILITY --
+  let playerSkill = playerData.skills[1][1];
+  let curNrg = playerData.energy;
+  if (curNrg < playerSkill.nrg) {
+    return;
+  }
+  // -- CALCULATE DAMAGE --
+  curNrg = playerData.energy - playerSkill.nrg;
+  let mobDmg = 0;
+  let playerDmg = 0;
+  if (playerData.role === "M" || playerData.role === "W") {
+    mobDmg = Math.floor(dmgGen(mobID.attack) / dmgReducGen());
+    playerDmg = dmgGen(playerSkill.dmg);
+  } else {
+    const mobHit = dodgeCheck(mobID.toHit);
+    if (mobHit === true) {
+      playerDmg = dmgGen(playerSkill.dmg);
     } else {
-      const mobHit = dodgeCheck(mob.toHit);
-      if (mobHit === true) {
-        playerDmg = dmgGen(player.skills[1][1].dmg);
-      } else {
-        mobDmg = dmgGen(mob.attack);
-        playerDmg = dmgGen(player.skills[1][1].dmg);
-      }
+      mobDmg = dmgGen(mobID.attack);
+      playerDmg = dmgGen(playerSkill.dmg);
     }
-    if (mobHP - playerDmg <= 0) {
-      alert(`--Victory!--`);
-      disableButtons(false, true);
-      if (partCount === 1) {
-        document.querySelector("#mob-pic").src = "images/boy-happy-final.png";
-      } else if (partCount === 3) {
-        document.querySelector("#mob-pic").src =
-          "images/continue-to-castle-final.png";
-      } else if (partCount === 4) {
-        document.querySelector("#mob-pic").src =
-          "images/destroyed-town-final.png";
-      }
-      document.querySelector("#mob-hp").textContent = "N/A";
-      document.querySelector("#mob-name").textContent = "-- No Enemy --";
-      if (storyCount === storyText[partCount].length) {
-        partCount++;
-        storyCount = 0;
-      } else {
-        storyCount++;
-      }
-      document.querySelector("#main-story").textContent =
-        storyText[partCount][storyCount];
-
-      return;
+  }
+  // -- DISPLAY NEW HEALTH --
+  playerData.health = playerData.health - mobDmg;
+  playerData.energy = curNrg;
+  mobID.hp = mobID.hp - playerDmg;
+  document.querySelector(".energy").textContent = playerData.energy;
+  document.querySelector(".health").textContent = playerData.health;
+  document.querySelector("#mob-hp").textContent = mobID.hp;
+  // -- MOB DEFEATED --
+  if (mobID.hp - playerDmg <= 0) {
+    alert(`--Victory!--`);
+    disableButtons(false, true);
+    if (partCount === 1) {
+      document.querySelector("#mob-pic").src = "images/boy-happy-final.png";
+    } else if (partCount === 3) {
+      document.querySelector("#mob-pic").src =
+        "images/continue-to-castle-final.png";
+    } else if (partCount === 4) {
+      document.querySelector("#mob-pic").src =
+        "images/destroyed-town-final.png";
     }
-    if (player.health - mobDmg <= 0) {
-      gameOver();
-      return;
-    }
-    if (
-      document.querySelector(".nrg-pots").textContent === 0 &&
-      document.querySelector(".energy").textContent === 0
-    ) {
-      document.querySelector("#main-story").textContent =
-        "You've run out of energy...";
-      gameOver();
-      return;
-    }
-    document.querySelector(".health").textContent = playerHP - mobDmg;
-    document.querySelector("#mob-hp").textContent = mobHP - playerDmg;
-  });
-  // ---- ATTACK 3 ----
-  document.querySelector("#attack-3").addEventListener("click", function () {
-    let curNrg = Number(document.querySelector(".energy").textContent);
-    if (curNrg < player.skills[2][1].nrg) {
-      return;
-    }
-    curNrg = curNrg - player.skills[2][1].nrg;
-    document.querySelector(".energy").textContent = curNrg;
-    let mobHP = Number(document.querySelector("#mob-hp").textContent);
-    console.log(mobHP);
-    let playerHP = Number(document.querySelector(".health").textContent);
-    console.log(playerHP);
-    let mobDmg;
-    let playerDmg;
-    if (player.role === "M" || player.role === "W") {
-      mobDmg = Math.floor(dmgGen(mob.attack) / dmgReducGen());
-      playerDmg = dmgGen(player.skills[2][1].dmg);
+    document.querySelector("#mob-hp").textContent = "N/A";
+    document.querySelector("#mob-name").textContent = "-- No Enemy --";
+    partCount++;
+    storyCount = 0;
+    document.querySelector("#main-story").textContent =
+      storyText[partCount][storyCount];
+    return;
+  }
+  // -- PLAYER DEFEATED --
+  if (playerData.health - mobDmg <= 0) {
+    gameOver();
+    return;
+  }
+  // -- PLAYER OUT OF ENERGY --
+  if (
+    document.querySelector(".nrg-pots").textContent === "0" &&
+    document.querySelector(".energy").textContent === "0"
+  ) {
+    document.querySelector("#main-story").textContent =
+      "You've run out of energy...";
+    gameOver();
+    return;
+  }
+});
+// ---- ATTACK 3 ----
+document.querySelector("#attack-3").addEventListener("click", function () {
+  // -- CHECK IF ENOUGH ENERGY TO USE ABILITY --
+  let playerSkill = playerData.skills[2][1];
+  let curNrg = playerData.energy;
+  if (curNrg < playerSkill.nrg) {
+    return;
+  }
+  // -- CALCULATE DAMAGE --
+  curNrg = playerData.energy - playerSkill.nrg;
+  let mobDmg = 0;
+  let playerDmg = 0;
+  if (playerData.role === "M" || playerData.role === "W") {
+    mobDmg = Math.floor(dmgGen(mobID.attack) / dmgReducGen());
+    playerDmg = dmgGen(playerSkill.dmg);
+  } else {
+    const mobHit = dodgeCheck(mobID.toHit);
+    if (mobHit === true) {
+      playerDmg = dmgGen(playerSkill.dmg);
     } else {
-      const mobHit = dodgeCheck(mob.toHit);
-      if (mobHit === true) {
-        playerDmg = dmgGen(player.skills[2][1].dmg);
-      } else {
-        mobDmg = dmgGen(mob.attack);
-        playerDmg = dmgGen(player.skills[2][1].dmg);
-      }
+      mobDmg = dmgGen(mobID.attack);
+      playerDmg = dmgGen(playerSkill.dmg);
     }
-    if (mobHP - playerDmg <= 0) {
-      alert(`--Victory!--`);
-      disableButtons(false, true);
-      if (partCount === 1) {
-        document.querySelector("#mob-pic").src = "images/boy-happy-final.png";
-      } else if (partCount === 3) {
-        document.querySelector("#mob-pic").src =
-          "images/continue-to-castle-final.png";
-      } else if (partCount === 4) {
-        document.querySelector("#mob-pic").src =
-          "images/destroyed-town-final.png";
-      }
-      document.querySelector("#mob-hp").textContent = "N/A";
-      document.querySelector("#mob-name").textContent = "-- No Enemy --";
-      if (storyCount === storyText[partCount].length) {
-        partCount++;
-        storyCount = 0;
-      } else {
-        storyCount++;
-      }
-      document.querySelector("#main-story").textContent =
-        storyText[partCount][storyCount];
-
-      return;
+  }
+  // -- DISPLAY NEW HEALTH --
+  playerData.health = playerData.health - mobDmg;
+  playerData.energy = curNrg;
+  mobID.hp = mobID.hp - playerDmg;
+  document.querySelector(".energy").textContent = playerData.energy;
+  document.querySelector(".health").textContent = playerData.health;
+  document.querySelector("#mob-hp").textContent = mobID.hp;
+  // -- MOB DEFEATED --
+  if (mobID.hp - playerDmg <= 0) {
+    alert(`--Victory!--`);
+    disableButtons(false, true);
+    if (partCount === 1) {
+      document.querySelector("#mob-pic").src = "images/boy-happy-final.png";
+    } else if (partCount === 3) {
+      document.querySelector("#mob-pic").src =
+        "images/continue-to-castle-final.png";
+    } else if (partCount === 4) {
+      document.querySelector("#mob-pic").src =
+        "images/destroyed-town-final.png";
     }
-    if (player.health - mobDmg <= 0) {
-      gameOver();
-      return;
-    }
-    if (
-      document.querySelector(".nrg-pots").textContent === 0 &&
-      document.querySelector(".energy").textContent === 0
-    ) {
-      document.querySelector("#main-story").textContent =
-        "You've run out of energy...";
-      gameOver();
-      return;
-    }
-    document.querySelector(".health").textContent = playerHP - mobDmg;
-    document.querySelector("#mob-hp").textContent = mobHP - playerDmg;
-  });
-  // ---- ATTACK 4 ----
-  document.querySelector("#attack-4").addEventListener("click", function () {
-    let curNrg = Number(document.querySelector(".energy").textContent);
-    if (curNrg < player.skills[3][1].nrg) {
-      return;
-    }
-    curNrg = curNrg - player.skills[3][1].nrg;
-    document.querySelector(".energy").textContent = curNrg;
-    let mobHP = Number(document.querySelector("#mob-hp").textContent);
-    console.log(mobHP);
-    let playerHP = Number(document.querySelector(".health").textContent);
-    console.log(playerHP);
-    let mobDmg;
-    let playerDmg;
-    if (player.role === "M" || player.role === "W") {
-      mobDmg = Math.floor(dmgGen(mob.attack) / dmgReducGen());
-      playerDmg = dmgGen(player.skills[3][1].dmg);
+    document.querySelector("#mob-hp").textContent = "N/A";
+    document.querySelector("#mob-name").textContent = "-- No Enemy --";
+    partCount++;
+    storyCount = 0;
+    document.querySelector("#main-story").textContent =
+      storyText[partCount][storyCount];
+    return;
+  }
+  // -- PLAYER DEFEATED --
+  if (playerData.health - mobDmg <= 0) {
+    gameOver();
+    return;
+  }
+  // -- PLAYER OUT OF ENERGY --
+  if (
+    document.querySelector(".nrg-pots").textContent === "0" &&
+    document.querySelector(".energy").textContent === "0"
+  ) {
+    document.querySelector("#main-story").textContent =
+      "You've run out of energy...";
+    gameOver();
+    return;
+  }
+});
+// ---- ATTACK 4 ----
+document.querySelector("#attack-4").addEventListener("click", function () {
+  // -- CHECK IF ENOUGH ENERGY TO USE ABILITY --
+  let playerSkill = playerData.skills[3][1];
+  let curNrg = playerData.energy;
+  if (curNrg < playerSkill.nrg) {
+    return;
+  }
+  // -- CALCULATE DAMAGE --
+  curNrg = playerData.energy - playerSkill.nrg;
+  let mobDmg = 0;
+  let playerDmg = 0;
+  if (playerData.role === "M" || playerData.role === "W") {
+    mobDmg = Math.floor(dmgGen(mobID.attack) / dmgReducGen());
+    playerDmg = dmgGen(playerSkill.dmg);
+  } else {
+    const mobHit = dodgeCheck(mobID.toHit);
+    if (mobHit === true) {
+      playerDmg = dmgGen(playerSkill.dmg);
     } else {
-      const mobHit = dodgeCheck(mob.toHit);
-      if (mobHit === true) {
-        playerDmg = dmgGen(player.skills[3][1].dmg);
-      } else {
-        mobDmg = dmgGen(mob.attack);
-        playerDmg = dmgGen(player.skills[3][1].dmg);
-      }
+      mobDmg = dmgGen(mobID.attack);
+      playerDmg = dmgGen(playerSkill.dmg);
     }
-    if (mobHP - playerDmg <= 0) {
-      alert(`--Victory!--`);
-      disableButtons(false, true);
-      if (partCount === 1) {
-        document.querySelector("#mob-pic").src = "images/boy-happy-final.png";
-      } else if (partCount === 3) {
-        document.querySelector("#mob-pic").src =
-          "images/continue-to-castle-final.png";
-      } else if (partCount === 4) {
-        document.querySelector("#mob-pic").src =
-          "images/destroyed-town-final.png";
-      }
-      document.querySelector("#mob-hp").textContent = "N/A";
-      document.querySelector("#mob-name").textContent = "-- No Enemy --";
-      if (storyCount === storyText[partCount].length) {
-        partCount++;
-        storyCount = 0;
-      } else {
-        storyCount++;
-      }
-      document.querySelector("#main-story").textContent =
-        storyText[partCount][storyCount];
-
-      return;
+  }
+  // -- DISPLAY NEW HEALTH --
+  playerData.health = playerData.health - mobDmg;
+  playerData.energy = curNrg;
+  mobID.hp = mobID.hp - playerDmg;
+  document.querySelector(".energy").textContent = playerData.energy;
+  document.querySelector(".health").textContent = playerData.health;
+  document.querySelector("#mob-hp").textContent = mobID.hp;
+  // -- MOB DEFEATED --
+  if (mobID.hp - playerDmg <= 0) {
+    alert(`--Victory!--`);
+    disableButtons(false, true);
+    if (partCount === 1) {
+      document.querySelector("#mob-pic").src = "images/boy-happy-final.png";
+    } else if (partCount === 3) {
+      document.querySelector("#mob-pic").src =
+        "images/continue-to-castle-final.png";
+    } else if (partCount === 4) {
+      document.querySelector("#mob-pic").src =
+        "images/destroyed-town-final.png";
     }
-    if (player.health - mobDmg <= 0) {
-      gameOver();
-      return;
-    }
-    if (
-      document.querySelector(".nrg-pots").textContent === 0 &&
-      document.querySelector(".energy").textContent === 0
-    ) {
-      document.querySelector("#main-story").textContent =
-        "You've run out of energy...";
-      gameOver();
-      return;
-    }
-    document.querySelector(".health").textContent = playerHP - mobDmg;
-    document.querySelector("#mob-hp").textContent = mobHP - playerDmg;
-  });
-}
+    document.querySelector("#mob-hp").textContent = "N/A";
+    document.querySelector("#mob-name").textContent = "-- No Enemy --";
+    partCount++;
+    storyCount = 0;
+    document.querySelector("#main-story").textContent =
+      storyText[partCount][storyCount];
+    return;
+  }
+  // -- PLAYER DEFEATED --
+  if (playerData.health - mobDmg <= 0) {
+    gameOver();
+    return;
+  }
+  // -- PLAYER OUT OF ENERGY --
+  if (
+    document.querySelector(".nrg-pots").textContent === "0" &&
+    document.querySelector(".energy").textContent === "0"
+  ) {
+    document.querySelector("#main-story").textContent =
+      "You've run out of energy...";
+    gameOver();
+    return;
+  }
+});
 
 // -- DISPLAY SKILLS --
 function skillList() {
@@ -341,20 +344,17 @@ function skillList() {
 
 // -- DAMAGE GENERATOR --
 function dmgGen(skillDmg) {
-  const randomNum = Math.floor(Math.random() * skillDmg) + 1;
-  const result = skillDmg + randomNum;
-  if (result > skillDmg * 2) {
-    result += skillDmg / 2;
-    alert(`--CRITICAL HIT--`);
+  const randomNum = Math.floor(Math.random() * 5) + 1;
+  const result = skillDmg * 2;
+  if (randomNum === 5) {
+    return result;
   }
-  return result;
+  return skillDmg;
 }
 
 // -- DAMAGE REDUCTION GENERATOR --
 function dmgReducGen() {
-  const randomNum = Math.floor(Math.random() * 2) + 1;
-  const result = playerData.def + randomNum;
-  return result;
+  return playerData.def;
 }
 
 // -- DODGE CHECK GENERATOR --
@@ -454,12 +454,13 @@ const playerData = {
     return this.skills;
   },
   health: 100,
-  energy: 50,
+  energy: 60,
   healthPots: 0,
+  energyPots: 0,
   defGen: function () {
     if (this.role === "M") {
       this.defType = "Cloth 🧙";
-      this.def = 0;
+      this.def = 1;
     } else if (this.role === "W") {
       this.defType = "Armor 🛡️";
       this.def = 2;
@@ -571,7 +572,7 @@ const assassinSkils = [
 // -- ENEMY STATS --
 const easyMob1 = {
   name: "Orc",
-  hp: 30,
+  hp: 10,
   def: 1,
   attack: 2,
   toHit: 2,
@@ -579,7 +580,7 @@ const easyMob1 = {
 
 const easyMob2 = {
   name: "Orc",
-  hp: 30,
+  hp: 10,
   def: 1,
   attack: 2,
   toHit: 3,
@@ -587,7 +588,7 @@ const easyMob2 = {
 
 const medMob1 = {
   name: "Armored Orc",
-  hp: 40,
+  hp: 20,
   def: 3,
   attack: 3,
   toHit: 4,
@@ -595,7 +596,7 @@ const medMob1 = {
 
 const medMob2 = {
   name: "Armored Orc",
-  hp: 40,
+  hp: 20,
   def: 3,
   attack: 3,
   toHit: 4,
@@ -603,7 +604,7 @@ const medMob2 = {
 
 const hardMob = {
   name: "Armored Orc Leader",
-  hp: 50,
+  hp: 30,
   def: 4,
   attack: 4,
   toHit: 5,
@@ -611,7 +612,7 @@ const hardMob = {
 
 const bossMob = {
   name: "Orc Commander",
-  hp: 60,
+  hp: 40,
   def: 5,
   attack: 5,
   toHit: 6,
@@ -638,7 +639,6 @@ const leftCottagePick = [
   `As you enter you see a create in the corner with a broken lock`,
   `As you open it you find ${openBox()}`,
   `The cottage seems safe so you decide to rest to restore your strength`,
-  `max-power`,
   `You rest and restore yourself to full power!`,
 ];
 
@@ -854,34 +854,34 @@ document.querySelector("#next-story").addEventListener("click", function () {
       document.querySelector("#mob-name").textContent = easyMob1.name;
       document.querySelector("#mob-hp").textContent = easyMob1.hp;
       document.querySelector("#mob-pic").src = "images/orc-1-final.png";
-      battle(easyMob1, playerData);
+      mobID = easyMob1;
       // -- EXTRA BATTLE --
     } else if (partCount === 3) {
       document.querySelector("#mob-name").textContent = easyMob2.name;
       document.querySelector("#mob-hp").textContent = easyMob2.hp;
       document.querySelector("#mob-pic").src =
         "images/inside-right-cabin-final.png";
-      battle(easyMob2, playerData);
+      mobID = easyMob2;
     } else if (partCount === 4) {
       document.querySelector("#mob-name").textContent = medMob1.name;
       document.querySelector("#mob-hp").textContent = medMob1.hp;
-      document.querySelector("#mob-pic").src = "images/orc-2-final.png";
-      battle(medMob1, playerData);
+      document.querySelector("#mob-pic").src = "images/orc-3-final.png";
+      mobID = medMob1;
     } else if (partCount === 7) {
       document.querySelector("#mob-name").textContent = medMob2.name;
       document.querySelector("#mob-hp").textContent = medMob2.hp;
-      document.querySelector("#mob-pic").src = "images/orc-3-final.png";
-      battle(medMob2, playerData);
+      document.querySelector("#mob-pic").src = "images/orc-2-final.png";
+      mobID = medMob2;
     } else if (partCount === 9) {
       document.querySelector("#mob-name").textContent = hardMob.name;
       document.querySelector("#mob-hp").textContent = hardMob.hp;
-      document.querySelector("#mob-pic").src = "images/orc-3-final.png";
-      battle(hardMob, playerData);
+      document.querySelector("#mob-pic").src = "images/orc-2-final.png";
+      mobID = hardMob;
     } else if (partCount === 10) {
       document.querySelector("#mob-name").textContent = bossMob.name;
       document.querySelector("#mob-hp").textContent = bossMob.hp;
       document.querySelector("#mob-pic").src = "images/final-orc-final.png";
-      battle(bossMob, playerData);
+      mobID = bossMob;
     }
     return;
   }
@@ -948,11 +948,11 @@ document.querySelector("#next-story").addEventListener("click", function () {
       let chance = Math.floor(Math.random() * 2) + 1;
       let val;
       if (chance < 2) {
-        val = Number(document.querySelector(".nrg-pots").textContent) + 1;
-        document.querySelector(".nrg-pots").textContent = val;
+        playerData.energyPots = playerData.energyPots + 1;
+        document.querySelector(".nrg-pots").textContent = playerData.energyPots;
       } else {
-        val = Number(document.querySelector(".hp-pots").textContent) + 1;
-        document.querySelector(".hp-pots").textContent = val;
+        playerData.healthPots = playerData.healthPots + 1;
+        document.querySelector(".hp-pots").textContent = playerData.healthPots;
       }
       document.querySelector("#main-story").textContent =
         storyText[partCount][storyCount];
@@ -1005,7 +1005,7 @@ document.querySelector("#next-story").addEventListener("click", function () {
       storyCount++;
       return;
 
-      // -- DOOR TO THRONE ROOM --
+      // -- I AM... --
     } else if (
       document.querySelector("#main-story").textContent ===
       `${playerData.name}: "Am..."`
@@ -1060,8 +1060,8 @@ document.querySelector("#next-story").addEventListener("click", function () {
       document.querySelector("#main-story").textContent ===
       `As you open it you find a Health Potion!`
     ) {
-      let val = Number(document.querySelector(".hp-pots").textContent) + 1;
-      document.querySelector(".hp-pots").textContent = val;
+      playerData.healthPots = playerData.healthPots + 1;
+      document.querySelector(".hp-pots").textContent = playerData.healthPots;
       document.querySelector("#main-story").textContent =
         storyText[partCount][storyCount];
       storyCount++;
@@ -1072,8 +1072,8 @@ document.querySelector("#next-story").addEventListener("click", function () {
       document.querySelector("#main-story").textContent ===
       `As you open it you find an Energy Potion!`
     ) {
-      let val = Number(document.querySelector(".nrg-pots").textContent) + 1;
-      document.querySelector(".nrg-pots").textContent = val;
+      playerData.energyPots = playerData.energyPots + 1;
+      document.querySelector(".nrg-pots").textContent = playerData.energyPots;
       document.querySelector("#main-story").textContent =
         storyText[partCount][storyCount];
       storyCount++;
@@ -1182,6 +1182,19 @@ document.querySelector("#next-story").addEventListener("click", function () {
       storyCount++;
       return;
 
+      // -- TAKE WOMANS HP POTION --
+    } else if (
+      document.querySelector("#main-story").textContent ===
+      `Woman: "I can't believe you wont help us..."`
+    ) {
+      playerData.healthPots = playerData.healthPots + 1;
+      document.querySelector(".hp-pots").textContent = playerData.healthPots;
+      storyCount++;
+      document.querySelector("#main-story").textContent =
+        storyText[partCount][storyCount];
+
+      return;
+
       // -- HELP WOMAN OR NOT --
     } else if (
       document.querySelector("#main-story").textContent ===
@@ -1193,7 +1206,6 @@ document.querySelector("#next-story").addEventListener("click", function () {
         help = true;
         storyText[6] = helpWoman;
       } else {
-        playerData.healthPots++;
         help = false;
         storyText[6] = dontHelpWoman;
       }
@@ -1237,18 +1249,26 @@ document.querySelector("#next-story").addEventListener("click", function () {
     ) {
       document.querySelector("#main-story").textContent =
         storyText[partCount][storyCount];
-      document.querySelector(".hp-pots").textContent = 1;
-      document.querySelector(".nrg-pots").textContent = 1;
+      playerData.healthPots = playerData.healthPots + 1;
+      playerData.energyPots = playerData.energyPots + 1;
+      document.querySelector(".hp-pots").textContent = playerData.healthPots;
+      document.querySelector(".nrg-pots").textContent = playerData.energyPots;
       storyCount = storyCount + 2;
       return;
 
       // -- REST AND GAIN FULL POWER --
-    } else if (storyText[partCount][storyCount + 1] === "max-power") {
-      document.querySelector(".health").textContent = 100;
-      document.querySelector(".energy").textContent = 60;
-      storyCount = storyCount + 2;
+    } else if (
+      storyText[partCount][storyCount] ===
+      `The cottage seems safe so you decide to rest to restore your strength`
+    ) {
+      playerData.health = 100;
+      playerData.nrg = 60;
+      document.querySelector(".health").textContent = playerData.health;
+      document.querySelector(".energy").textContent = playerData.nrg;
+
       document.querySelector("#main-story").textContent =
         storyText[partCount][storyCount];
+      storyCount++;
       return;
 
       // -- SHOW ORC OUTSIDE CITY GATES --
@@ -1281,28 +1301,32 @@ document.querySelector("#next-story").addEventListener("click", function () {
 
 // -- Drink hp potion --
 document.querySelector("#drink-hp").addEventListener("click", function () {
-  const totalHpPots = Number(document.querySelector(".hp-pots").textContent);
-  const totalHp = Number(document.querySelector(".health").textContent);
+  const totalHpPots = playerData.healthPots;
+  const totalHp = playerData.health;
   let amountToHeal = 30;
   if (totalHpPots !== 0 && totalHp < 100) {
     if (totalHp + 30 > 100) {
       amountToHeal = 100 - totalHp;
     }
-    document.querySelector(".hp-pots").textContent = totalHpPots - 1;
-    document.querySelector(".health").textContent = totalHp + amountToHeal;
+    playerData.health = totalHp + amountToHeal;
+    playerData.healthPots = totalHpPots - 1;
+    document.querySelector(".hp-pots").textContent = playerData.healthPots;
+    document.querySelector(".health").textContent = playerData.health;
   }
 });
 
 // -- Drink nrg potion --
 document.querySelector("#drink-nrg").addEventListener("click", function () {
-  const totalNrgPots = Number(document.querySelector(".nrg-pots").textContent);
-  const totalNrg = Number(document.querySelector(".energy").textContent);
+  const totalNrgPots = playerData.energyPots;
+  const totalNrg = playerData.energy;
   let amountToRestore = 20;
-  if (totalNrgPots !== 0 && totalNrg < 50) {
-    if (totalNrg + 20 > 50) {
-      amountToRestore = 50 - totalNrg;
+  if (totalNrgPots !== 0 && totalNrg < 60) {
+    if (totalNrg + 20 > 60) {
+      amountToRestore = 60 - totalNrg;
     }
-    document.querySelector(".nrg-pots").textContent = totalNrgPots - 1;
-    document.querySelector(".energy").textContent = totalNrg + amountToRestore;
+    playerData.energy = totalNrg + amountToRestore;
+    playerData.energyPots = totalNrgPots - 1;
+    document.querySelector(".nrg-pots").textContent = playerData.energyPots;
+    document.querySelector(".energy").textContent = playerData.energy;
   }
 });
