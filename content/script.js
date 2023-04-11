@@ -109,6 +109,15 @@ function battle(mob, player) {
       gameOver();
       return;
     }
+    if (
+      document.querySelector(".nrg-pots").textContent === 0 &&
+      document.querySelector(".energy").textContent === 0
+    ) {
+      document.querySelector("#main-story").textContent =
+        "You've run out of energy...";
+      gameOver();
+      return;
+    }
     document.querySelector(".health").textContent = playerHP - mobDmg;
     document.querySelector("#mob-hp").textContent = mobHP - playerDmg;
   });
@@ -162,6 +171,15 @@ function battle(mob, player) {
       gameOver();
       return;
     }
+    if (
+      document.querySelector(".nrg-pots").textContent === 0 &&
+      document.querySelector(".energy").textContent === 0
+    ) {
+      document.querySelector("#main-story").textContent =
+        "You've run out of energy...";
+      gameOver();
+      return;
+    }
     document.querySelector(".health").textContent = playerHP - mobDmg;
     document.querySelector("#mob-hp").textContent = mobHP - playerDmg;
   });
@@ -212,6 +230,15 @@ function battle(mob, player) {
       return;
     }
     if (player.health - mobDmg <= 0) {
+      gameOver();
+      return;
+    }
+    if (
+      document.querySelector(".nrg-pots").textContent === 0 &&
+      document.querySelector(".energy").textContent === 0
+    ) {
+      document.querySelector("#main-story").textContent =
+        "You've run out of energy...";
       gameOver();
       return;
     }
