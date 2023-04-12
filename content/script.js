@@ -71,17 +71,36 @@ document.querySelector("#attack-1").addEventListener("click", function () {
   curNrg = playerData.energy - playerSkill.nrg;
   let mobDmg = 0;
   let playerDmg = 0;
+  let mobHit;
   if (playerData.role === "M" || playerData.role === "W") {
     mobDmg = Math.floor(dmgGen(mobID.attack) / dmgReducGen());
     playerDmg = dmgGen(playerSkill.dmg);
   } else {
-    const mobHit = dodgeCheck(mobID.toHit);
+    mobHit = dodgeCheck(mobID.toHit);
     if (mobHit === true) {
       playerDmg = dmgGen(playerSkill.dmg);
     } else {
       mobDmg = dmgGen(mobID.attack);
       playerDmg = dmgGen(playerSkill.dmg);
     }
+  }
+  // -- DISPLAY DAMAGES --
+  if (playerDmg > playerSkill.dmg) {
+    alert(
+      `${playerData.name} Damage: ${playerDmg} --Critical Hit!--\n${mobID.name} Damage: ${mobDmg}`
+    );
+  } else if (mobDmg > mobID.dmg) {
+    alert(
+      `${playerData.name} Damage: ${playerDmg}\n${mobID.name} Damage: ${mobDmg} --Critical Hit!--`
+    );
+  } else if (mobHit === true) {
+    alert(
+      `${playerData.name} Damage: ${playerDmg}\n${mobID.name} Damage: --Miss--`
+    );
+  } else {
+    alert(
+      `${playerData.name} Damage: ${playerDmg}\n${mobID.name} Damage: ${mobDmg}`
+    );
   }
   // -- DISPLAY NEW HEALTH --
   playerData.health = playerData.health - mobDmg;
@@ -151,6 +170,24 @@ document.querySelector("#attack-2").addEventListener("click", function () {
       playerDmg = dmgGen(playerSkill.dmg);
     }
   }
+  // -- DISPLAY DAMAGES --
+  if (playerDmg > playerSkill.dmg) {
+    alert(
+      `${playerData.name} Damage: ${playerDmg} --Critical Hit!--\n${mobID.name} Damage: ${mobDmg}`
+    );
+  } else if (mobDmg > mobID.dmg) {
+    alert(
+      `${playerData.name} Damage: ${playerDmg}\n${mobID.name} Damage: ${mobDmg} --Critical Hit!--`
+    );
+  } else if (mobHit === true) {
+    alert(
+      `${playerData.name} Damage: ${playerDmg}\n${mobID.name} Damage: --Miss--`
+    );
+  } else {
+    alert(
+      `${playerData.name} Damage: ${playerDmg}\n${mobID.name} Damage: ${mobDmg}`
+    );
+  }
   // -- DISPLAY NEW HEALTH --
   playerData.health = playerData.health - mobDmg;
   playerData.energy = curNrg;
@@ -219,6 +256,24 @@ document.querySelector("#attack-3").addEventListener("click", function () {
       playerDmg = dmgGen(playerSkill.dmg);
     }
   }
+  // -- DISPLAY DAMAGES --
+  if (playerDmg > playerSkill.dmg) {
+    alert(
+      `${playerData.name} Damage: ${playerDmg} --Critical Hit!--\n${mobID.name} Damage: ${mobDmg}`
+    );
+  } else if (mobDmg > mobID.dmg) {
+    alert(
+      `${playerData.name} Damage: ${playerDmg}\n${mobID.name} Damage: ${mobDmg} --Critical Hit!--`
+    );
+  } else if (mobHit === true) {
+    alert(
+      `${playerData.name} Damage: ${playerDmg}\n${mobID.name} Damage: --Miss--`
+    );
+  } else {
+    alert(
+      `${playerData.name} Damage: ${playerDmg}\n${mobID.name} Damage: ${mobDmg}`
+    );
+  }
   // -- DISPLAY NEW HEALTH --
   playerData.health = playerData.health - mobDmg;
   playerData.energy = curNrg;
@@ -286,6 +341,24 @@ document.querySelector("#attack-4").addEventListener("click", function () {
       mobDmg = dmgGen(mobID.attack);
       playerDmg = dmgGen(playerSkill.dmg);
     }
+  }
+  // -- DISPLAY DAMAGES --
+  if (playerDmg > playerSkill.dmg) {
+    alert(
+      `${playerData.name} Damage: ${playerDmg} --Critical Hit!--\n${mob.name} Damage: ${mobDmg}`
+    );
+  } else if (mobDmg > mobID.dmg) {
+    alert(
+      `${playerData.name} Damage: ${playerDmg}\n${mobID.name} Damage: ${mobDmg} --Critical Hit!--`
+    );
+  } else if (mobHit === true) {
+    alert(
+      `${playerData.name} Damage: ${playerDmg}\n${mobID.name} Damage: --Miss--`
+    );
+  } else {
+    alert(
+      `${playerData.name} Damage: ${playerDmg}\n${mobID.name} Damage: ${mobDmg}`
+    );
   }
   // -- DISPLAY NEW HEALTH --
   playerData.health = playerData.health - mobDmg;
@@ -635,8 +708,8 @@ disableButtons(false, true);
 
 // -- LEFT COTTAGE --
 const leftCottagePick = [
-  `You make your way to the cottage on the left`,
-  `As you enter you see a create in the corner with a broken lock`,
+  `You make your way to the cottage on the left to`,
+  `As you enter you see a crate in the corner with a broken lock`,
   `As you open it you find ${openBox()}`,
   `The cottage seems safe so you decide to rest to restore your strength`,
   `You rest and restore yourself to full power!`,
@@ -668,13 +741,13 @@ const dontHelpWoman = [
 const sheHelps = [
   `Just then, the young woman you helpped earlier throws a stone, hitting the Orcs helmet`,
   `Armored Orc: "HEY! WHO THROW THAT!"`,
-  `The Orc walks off in frustration, unable to find the young woman`,
+  `The Orc walks off in frustration, unable to find who threw the stone`,
   `You take advantage of the opportunity and make your way into the keep`,
 ];
 
 // -- WOMAN DOESNT HELP YOU --
 const noHelp = [
-  `While his back is turned, you take advantage and strike!`,
+  `The orc turns and see's you and prepares to strike!`,
   "---- IN BATTLE ----",
   `As the Orc collapses you make your way into the keep`,
 ];
@@ -703,7 +776,7 @@ const storyText = {
     `The boy gestures ahead`,
     `Boy: "My home is just up there"`,
     `Boy: "If you need to rest, feel free to take shelter inside"`,
-    `The boy turns and continues off into the distance`,
+    `The boy turns and continues off into the distance away from the city`,
     `The battle has drained some energy and the idea of rest sounds like a good idea`,
     `Ahead of you reside two cottages`,
     `The cottage on your left looks abandoned and broken`,
@@ -728,7 +801,7 @@ const storyText = {
     `A small vial falls from one of its puches`,
     `You add the potion to your inventory`,
     `Tired and bleeding, you seek aid within the city gates`,
-    `As you enter, you see the absolute distruction of the city`,
+    `As you enter, you see the absolute destruction of the city`,
     `Stranger: "Psst.."`,
     `You look around to see who made that noise and you see a young woman hiding behind a barrel`,
     `She gestures you over while looking for any nearby Orcs`,
@@ -746,27 +819,27 @@ const storyText = {
     `Armored Orc Leader: "YOU.. GO.. NO... FURTHER"`,
     `The monstrous Orc slams a massive hammer against the stone wall, throwing splintered stone in every direction`,
     `Armored Orc Leader: "YOU DIE.....NOW!!!"`,
-    `You ready your self for an epic battle for survival!`,
+    `You ready yourself for an epic battle for survival!`,
     `---- IN BATTLE ----`,
   ],
   8: [
     `The collosus beast falls to his back, trembling the ground around you`,
     `You begin to think this quest was much more than you asked for`,
     `${playerData.name}: "Where are all of the kingdom's soldiers??"`,
-    `${playerData.name}: "Could they have truly all been wipped out? Am I to late?"`,
+    `${playerData.name}: "Could they have truly all been wiped out? Am I too late?"`,
     `You push the inner gates open just enough to see to the other side`,
     `An armored Orc patrols the grounds outside the doors to the keep`,
     `${playerData.name}: "Did they breach the keep?"`,
-    `You sneek through the gates while the armored Orc isn't looking`,
-    `As you quietly make your way, behind crumbled structures towards the doors to the keep, you find a small create`,
+    `You sneak through the gates while the armored Orc isn't looking`,
+    `As you quietly make your way, behind crumbled structures towards the doors to the keep, you find a small crate`,
     `As you open it you find ${openBox()}`,
     `You make your way towards the doors`,
-    `How will you make it past the guard?`,
+    `How will you make it passed the guard?`,
     "check",
   ],
   9: [],
   10: [
-    `Your suprised at the condition of the keep`,
+    `You're suprised at the condition of the keep`,
     `Nothing is destroyed`,
     `Statues still stand and a chest of gold coins remains untouched`,
     `As you make your way to the throne room you hear voices from up ahead`,
@@ -775,7 +848,7 @@ const storyText = {
     `The king lets out a scream of pain`,
     `King: "No matter what you do to me...You will not get what you came here for..."`,
     `Orc Commander: "FINE... WE WILL DESTROY THE REST OF YOUR CITY UNTIL WE FIND IT!"`,
-    `Orc Commander: "THEIR LIVES WILL BE YOUR DOING!"`,
+    `Orc Commander: "THEIR DEATHS WILL BE YOUR DOING!"`,
     `This is it, the final battle...`,
     `You enter the throne room`,
     `${playerData.name}: "STOP!"`,
@@ -796,7 +869,7 @@ const storyText = {
     `The Orc Commander lets out his final breath and drops his sword`,
     `The King looks at you as a tear rolls down his face`,
     `King: "You... You did it..."`,
-    `King: "You saved us all... Thank you ${playerData.name}... You are forever in our debt!"`,
+    `King: "You saved us all... Thank you ${playerData.name}... We are forever in your debt!"`,
     `${playerData.name}: "I must know, what was the stone that he was referring to?"`,
     `The King stands and reaches into his pocket`,
     `He pulls out a glowing stone`,
@@ -1142,7 +1215,7 @@ document.querySelector("#next-story").addEventListener("click", function () {
       document.querySelector("#main-story").textContent ===
       `As you approach an inner gate to access the keep, a deep, rumbling voice echos against the stone`
     ) {
-      document.querySelector("#mob-pic").src = "images/orc-3-final.png";
+      document.querySelector("#mob-pic").src = "images/orc-2-final.png";
       document.querySelector("#main-story").textContent =
         storyText[partCount][storyCount];
       storyCount++;
@@ -1173,7 +1246,7 @@ document.querySelector("#next-story").addEventListener("click", function () {
       // -- SHOW INSIDE LEFT COTTAGE PICTURE --
     } else if (
       document.querySelector("#main-story").textContent ===
-      `As you enter you see a create in the corner with a broken lock`
+      `As you enter you see a crate in the corner with a broken lock`
     ) {
       document.querySelector("#mob-pic").src =
         "images/inside-left-cabin-final.png";
@@ -1262,7 +1335,7 @@ document.querySelector("#next-story").addEventListener("click", function () {
       `The cottage seems safe so you decide to rest to restore your strength`
     ) {
       playerData.health = 100;
-      playerData.nrg = 60;
+      playerData.energy = 60;
       document.querySelector(".health").textContent = playerData.health;
       document.querySelector(".energy").textContent = playerData.nrg;
 
