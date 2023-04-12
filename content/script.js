@@ -87,19 +87,25 @@ document.querySelector("#attack-1").addEventListener("click", function () {
   // -- DISPLAY DAMAGES --
   if (playerDmg > playerSkill.dmg) {
     alert(
-      `${playerData.name} Damage: ${playerDmg} --Critical Hit!--\n${mobID.name} Damage: ${mobDmg}`
+      `${playerData.name} deals ${playerDmg} damage (Critical Hit)!\n${mobID.name} deals ${mobDmg} damage!`
     );
   } else if (mobDmg > mobID.dmg) {
     alert(
-      `${playerData.name} Damage: ${playerDmg}\n${mobID.name} Damage: ${mobDmg} --Critical Hit!--`
+      `${playerData.name} deals ${playerDmg} damage!\n${mobID.name} deals ${mobDmg} damage (Critical Hit)!`
     );
   } else if (mobHit === true) {
-    alert(
-      `${playerData.name} Damage: ${playerDmg}\n${mobID.name} Damage: --Miss--`
-    );
+    if (playerDmg > playerSkill.dmg) {
+      alert(
+        `${playerData.name} deals ${playerDmg} damage (Critical Hit)!\n${mobID.name} --MISS--`
+      );
+    } else {
+      alert(
+        `${playerData.name} deals ${playerDmg} damage!\n${mobID.name} --MISS--`
+      );
+    }
   } else {
     alert(
-      `${playerData.name} Damage: ${playerDmg}\n${mobID.name} Damage: ${mobDmg}`
+      `${playerData.name} deals ${playerDmg} damage!\n${mobID.name} deals ${mobDmg} damage!`
     );
   }
   // -- DISPLAY NEW HEALTH --
@@ -173,19 +179,25 @@ document.querySelector("#attack-2").addEventListener("click", function () {
   // -- DISPLAY DAMAGES --
   if (playerDmg > playerSkill.dmg) {
     alert(
-      `${playerData.name} Damage: ${playerDmg} --Critical Hit!--\n${mobID.name} Damage: ${mobDmg}`
+      `${playerData.name} deals ${playerDmg} damage (Critical Hit)!\n${mobID.name} deals ${mobDmg} damage!`
     );
   } else if (mobDmg > mobID.dmg) {
     alert(
-      `${playerData.name} Damage: ${playerDmg}\n${mobID.name} Damage: ${mobDmg} --Critical Hit!--`
+      `${playerData.name} deals ${playerDmg} damage!\n${mobID.name} deals ${mobDmg} damage (Critical Hit)!`
     );
   } else if (mobHit === true) {
-    alert(
-      `${playerData.name} Damage: ${playerDmg}\n${mobID.name} Damage: --Miss--`
-    );
+    if (playerDmg > playerSkill.dmg) {
+      alert(
+        `${playerData.name} deals ${playerDmg} damage (Critical Hit)!\n${mobID.name} --MISS--`
+      );
+    } else {
+      alert(
+        `${playerData.name} deals ${playerDmg} damage!\n${mobID.name} --MISS--`
+      );
+    }
   } else {
     alert(
-      `${playerData.name} Damage: ${playerDmg}\n${mobID.name} Damage: ${mobDmg}`
+      `${playerData.name} deals ${playerDmg} damage!\n${mobID.name} deals ${mobDmg} damage!`
     );
   }
   // -- DISPLAY NEW HEALTH --
@@ -259,19 +271,25 @@ document.querySelector("#attack-3").addEventListener("click", function () {
   // -- DISPLAY DAMAGES --
   if (playerDmg > playerSkill.dmg) {
     alert(
-      `${playerData.name} Damage: ${playerDmg} --Critical Hit!--\n${mobID.name} Damage: ${mobDmg}`
+      `${playerData.name} deals ${playerDmg} damage (Critical Hit)!\n${mobID.name} deals ${mobDmg} damage!`
     );
   } else if (mobDmg > mobID.dmg) {
     alert(
-      `${playerData.name} Damage: ${playerDmg}\n${mobID.name} Damage: ${mobDmg} --Critical Hit!--`
+      `${playerData.name} deals ${playerDmg} damage!\n${mobID.name} deals ${mobDmg} damage (Critical Hit)!`
     );
   } else if (mobHit === true) {
-    alert(
-      `${playerData.name} Damage: ${playerDmg}\n${mobID.name} Damage: --Miss--`
-    );
+    if (playerDmg > playerSkill.dmg) {
+      alert(
+        `${playerData.name} deals ${playerDmg} damage (Critical Hit)!\n${mobID.name} --MISS--`
+      );
+    } else {
+      alert(
+        `${playerData.name} deals ${playerDmg} damage!\n${mobID.name} --MISS--`
+      );
+    }
   } else {
     alert(
-      `${playerData.name} Damage: ${playerDmg}\n${mobID.name} Damage: ${mobDmg}`
+      `${playerData.name} deals ${playerDmg} damage!\n${mobID.name} deals ${mobDmg} damage!`
     );
   }
   // -- DISPLAY NEW HEALTH --
@@ -345,19 +363,25 @@ document.querySelector("#attack-4").addEventListener("click", function () {
   // -- DISPLAY DAMAGES --
   if (playerDmg > playerSkill.dmg) {
     alert(
-      `${playerData.name} Damage: ${playerDmg} --Critical Hit!--\n${mob.name} Damage: ${mobDmg}`
+      `${playerData.name} deals ${playerDmg} damage (Critical Hit)!\n${mobID.name} deals ${mobDmg} damage!`
     );
   } else if (mobDmg > mobID.dmg) {
     alert(
-      `${playerData.name} Damage: ${playerDmg}\n${mobID.name} Damage: ${mobDmg} --Critical Hit!--`
+      `${playerData.name} deals ${playerDmg} damage!\n${mobID.name} deals ${mobDmg} damage (Critical Hit)!`
     );
   } else if (mobHit === true) {
-    alert(
-      `${playerData.name} Damage: ${playerDmg}\n${mobID.name} Damage: --Miss--`
-    );
+    if (playerDmg > playerSkill.dmg) {
+      alert(
+        `${playerData.name} deals ${playerDmg} damage (Critical Hit)!\n${mobID.name} --MISS--`
+      );
+    } else {
+      alert(
+        `${playerData.name} deals ${playerDmg} damage!\n${mobID.name} --MISS--`
+      );
+    }
   } else {
     alert(
-      `${playerData.name} Damage: ${playerDmg}\n${mobID.name} Damage: ${mobDmg}`
+      `${playerData.name} deals ${playerDmg} damage!\n${mobID.name} deals ${mobDmg} damage!`
     );
   }
   // -- DISPLAY NEW HEALTH --
