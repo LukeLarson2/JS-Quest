@@ -716,8 +716,8 @@ const medMob1 = {
 };
 
 const medMob2 = {
-  name: "Armored Orc",
-  hp: 20,
+  name: "Armored Orc Brute",
+  hp: 25,
   def: 3,
   attack: 3,
   toHit: 4,
@@ -756,10 +756,10 @@ disableButtons(false, true);
 
 // -- LEFT COTTAGE --
 const leftCottagePick = [
-  `You make your way to the cottage on the left to`,
+  `You make your way to the cottage on the left`,
   `As you enter you see a crate in the corner with a broken lock`,
   `As you open it you find ${openBox()}`,
-  `The cottage seems safe so you decide to rest to restore your strength`,
+  `The cottage seems safe, so you decide to rest to restore your strength`,
   `You rest and restore yourself to full power!`,
 ];
 
@@ -787,7 +787,7 @@ const dontHelpWoman = [
 
 // -- WOMAN HELPS YOU --
 const sheHelps = [
-  `Just then, the young woman you helpped earlier throws a stone, hitting the Orcs helmet`,
+  `Just then, the young woman you helped earlier throws a stone, hitting the Orcs helmet`,
   `Armored Orc: "HEY! WHO THROW THAT!"`,
   `The Orc walks off in frustration, unable to find who threw the stone`,
   `You take advantage of the opportunity and make your way into the keep`,
@@ -795,7 +795,7 @@ const sheHelps = [
 
 // -- WOMAN DOESNT HELP YOU --
 const noHelp = [
-  `The orc turns and see's you and prepares to strike!`,
+  `The Orc turns and see's you and prepares to strike!`,
   "---- IN BATTLE ----",
   `As the Orc collapses you make your way into the keep`,
 ];
@@ -804,12 +804,12 @@ const noHelp = [
 const storyText = {
   1: [
     `You have arrived just in time, ${playerData.name}! ${playerData.roleName}'s of your skill are needed greatly!`,
-    `The land of the king has been attacked by an evil hoard of Orcs!`,
+    `The land of the king has been attacked by an evil horde of Orcs!`,
     `Only a few soldiers hold the line to the keep, but their numbers are dwindling`,
     `${playerData.name}, do you stand up to the task of cleansing the kingdom of these filthy Orcs?`,
     "-- Do you Continue? --",
     `That's Excellent!`,
-    `Before you go let me give you these health and energy potions to help you on your jounrey`,
+    `Before you go let me give you these health and energy potions to help you on your journey`,
     `Good luck ${playerData.name}!`,
     `You make your way to the castle gates`,
     `A young boy is running towards you as he is being chased by an Orc!`,
@@ -839,8 +839,8 @@ const storyText = {
     `A foul stench drifts into your nostrils`,
     `You hear the sound of scrapping metal`,
     `A few steps in front of the castle gates, a large Orc stands blocking it`,
-    `Orc: "YOU NO PASS HUMAN!"`,
-    `Orc: "I CRUSH AND EAT YOU FOR BREAKFAST!"`,
+    `Orc: "NO PASS HUMAN!"`,
+    `Orc: "I CRUSH AND EAT FOR BREAKFAST!"`,
     `You ready your weapon and prepare to fight!`,
     `---- IN BATTLE ----`,
   ],
@@ -1015,6 +1015,66 @@ document.querySelector("#next-story").addEventListener("click", function () {
       beginTutorial();
       return;
 
+      // -- GAIN 1 ENERGY AND ONE HEALTH POTION --
+    } else if (
+      document.querySelector("#main-story").textContent ===
+      `Before you go let me give you these health and energy potions to help you on your journey`
+    ) {
+      document.querySelector("#main-story").textContent =
+        storyText[partCount][storyCount];
+      playerData.healthPots = playerData.healthPots + 1;
+      playerData.energyPots = playerData.energyPots + 1;
+      document.querySelector(".hp-pots").textContent = playerData.healthPots;
+      document.querySelector(".nrg-pots").textContent = playerData.energyPots;
+      storyCount = storyCount + 2;
+      return;
+
+      // -- BOY RUNNING TOWARDS YOU --
+    } else if (
+      document.querySelector("#main-story").textContent ===
+      `A young boy is running towards you as he is being chased by an Orc!`
+    ) {
+      document.querySelector("#mob-pic").src = "images/boy-running-final.png";
+      document.querySelector("#main-story").textContent =
+        storyText[partCount][storyCount];
+      storyCount++;
+      return;
+
+      // -- BOY IS HAPPY --
+    } else if (
+      document.querySelector("#main-story").textContent ===
+      `You turn to the boy`
+    ) {
+      document.querySelector("#mob-pic").src = "images/boy-happy-final.png";
+      document.querySelector("#main-story").textContent =
+        storyText[partCount][storyCount];
+      storyCount++;
+      return;
+
+      // -- BOY RUNNING AWAY --
+    } else if (
+      document.querySelector("#main-story").textContent ===
+      `Boy: "If you need to rest, feel free to take shelter inside"`
+    ) {
+      document.querySelector("#mob-pic").src =
+        "images/boy-running-away-final.png";
+      document.querySelector("#main-story").textContent =
+        storyText[partCount][storyCount];
+      storyCount++;
+      return;
+
+      // -- SHOW COTTAGE PICTURES --
+    } else if (
+      document.querySelector("#main-story").textContent ===
+      `Ahead of you reside two cottages`
+    ) {
+      document.querySelector("#mob-pic").src =
+        "images/cottage-choice-final.png";
+      document.querySelector("#main-story").textContent =
+        storyText[partCount][storyCount];
+      storyCount++;
+      return;
+
       // -- COTTAGE SELECTION CHECK --
     } else if (
       document.querySelector("#main-story").textContent ===
@@ -1051,13 +1111,87 @@ document.querySelector("#next-story").addEventListener("click", function () {
         alert(`Invalid entry, please try again...`);
       }
 
-      // -- SHOW COTTAGE PICTURES --
+      // -- SHOW INSIDE RIGHT COTTAGE PICTURE --
     } else if (
       document.querySelector("#main-story").textContent ===
-      `Ahead of you reside two cottages`
+      `As you approach the cottage on the right you notice a shadow moving inside`
     ) {
       document.querySelector("#mob-pic").src =
-        "images/cottage-choice-final.png";
+        "images/inside-right-cabin-final.png";
+      document.querySelector("#main-story").textContent =
+        storyText[partCount][storyCount];
+      storyCount++;
+      return;
+
+      // -- SHOW INSIDE LEFT COTTAGE PICTURE --
+    } else if (
+      document.querySelector("#main-story").textContent ===
+      `As you enter you see a crate in the corner with a broken lock`
+    ) {
+      document.querySelector("#mob-pic").src =
+        "images/inside-left-cabin-final.png";
+      document.querySelector("#main-story").textContent =
+        storyText[partCount][storyCount];
+      storyCount++;
+      return;
+
+      // -- REST AND GAIN FULL POWER --
+    } else if (
+      storyText[partCount][storyCount] ===
+      `The cottage seems safe, so you decide to rest to restore your strength`
+    ) {
+      playerData.health = 100;
+      playerData.energy = 60;
+      document.querySelector(".health").textContent = playerData.health;
+      document.querySelector(".energy").textContent = playerData.nrg;
+
+      document.querySelector("#main-story").textContent =
+        storyText[partCount][storyCount];
+      storyCount++;
+      return;
+
+      // -- OPENING A CRATE FOR HP --
+    } else if (
+      document.querySelector("#main-story").textContent ===
+      `As you open it you find a Health Potion!`
+    ) {
+      playerData.healthPots = playerData.healthPots + 1;
+      document.querySelector(".hp-pots").textContent = playerData.healthPots;
+      document.querySelector("#main-story").textContent =
+        storyText[partCount][storyCount];
+      storyCount++;
+      return;
+
+      // -- OPENING A CRATE FOR NRG --
+    } else if (
+      document.querySelector("#main-story").textContent ===
+      `As you open it you find an Energy Potion!`
+    ) {
+      playerData.energyPots = playerData.energyPots + 1;
+      document.querySelector(".nrg-pots").textContent = playerData.energyPots;
+      document.querySelector("#main-story").textContent =
+        storyText[partCount][storyCount];
+      storyCount++;
+      return;
+
+      // -- MOVING ON TO CASTLE --
+    } else if (
+      document.querySelector("#main-story").textContent ===
+      `You rest and restore yourself to full power!`
+    ) {
+      document.querySelector("#mob-pic").src =
+        "images/continue-to-castle-final.png";
+      document.querySelector("#main-story").textContent =
+        storyText[partCount][storyCount];
+      storyCount++;
+      return;
+
+      // -- SHOW ORC OUTSIDE CITY GATES --
+    } else if (
+      document.querySelector("#main-story").textContent ===
+      `You hear the sound of scrapping metal`
+    ) {
+      document.querySelector("#mob-pic").src = "images/orc-3-final.png";
       document.querySelector("#main-story").textContent =
         storyText[partCount][storyCount];
       storyCount++;
@@ -1081,13 +1215,73 @@ document.querySelector("#next-story").addEventListener("click", function () {
       storyCount++;
       return;
 
-      // -- MOVING ON TO CASTLE --
+      // -- WOMAN HIDING BEHIND BARREL --
     } else if (
       document.querySelector("#main-story").textContent ===
-      `You rest and restore yourself to full power!`
+      `You look around to see who made that noise and you see a young woman hiding behind a barrel`
     ) {
-      document.querySelector("#mob-pic").src =
-        "images/continue-to-castle-final.png";
+      document.querySelector("#mob-pic").src = "images/woman-barrel-final.png";
+      document.querySelector("#main-story").textContent =
+        storyText[partCount][storyCount];
+      storyCount++;
+      return;
+
+      // -- TAKE WOMANS HP POTION --
+    } else if (
+      document.querySelector("#main-story").textContent ===
+      `Woman: "I can't believe you wont help us..."`
+    ) {
+      playerData.healthPots = playerData.healthPots + 1;
+      document.querySelector(".hp-pots").textContent = playerData.healthPots;
+      document.querySelector("#main-story").textContent =
+        storyText[partCount][storyCount];
+      storyCount++;
+      return;
+
+      // -- HELP WOMAN OR NOT --
+    } else if (
+      document.querySelector("#main-story").textContent ===
+      `Do you keep the health potion for yourself or help the little girl?`
+    ) {
+      let choice = prompt(`Press "Y" to help\nPress "N" to keep the potion`);
+      choice = choice.toUpperCase();
+      if (choice === "Y") {
+        help = true;
+        storyText[6] = helpWoman;
+      } else {
+        help = false;
+        storyText[6] = dontHelpWoman;
+      }
+      partCount++;
+      storyCount = 0;
+      document.querySelector("#main-story").textContent =
+        storyText[partCount][storyCount];
+      storyCount++;
+      return;
+
+      // -- SHOW ORC COMMANDER --
+    } else if (
+      document.querySelector("#main-story").textContent ===
+      `As you approach an inner gate to access the keep, a deep, rumbling voice echos against the stone`
+    ) {
+      document.querySelector("#mob-pic").src = "images/orc-2-final.png";
+      document.querySelector("#main-story").textContent =
+        storyText[partCount][storyCount];
+      storyCount++;
+      return;
+
+      // -- DOES THE WOMAN HELP YOU OR NOT --
+    } else if (
+      document.querySelector("#main-story").textContent ===
+      `How will you make it passed the guard?`
+    ) {
+      if (help === true) {
+        storyText[9] = sheHelps;
+      } else {
+        storyText[9] = noHelp;
+      }
+      partCount++;
+      storyCount = 0;
       document.querySelector("#main-story").textContent =
         storyText[partCount][storyCount];
       storyCount++;
@@ -1099,17 +1293,6 @@ document.querySelector("#next-story").addEventListener("click", function () {
       `Your suprised at the condition of the keep`
     ) {
       document.querySelector("#mob-pic").src = "images/castle-hall-final.png";
-      document.querySelector("#main-story").textContent =
-        storyText[partCount][storyCount];
-      storyCount++;
-      return;
-
-      // -- GREATFUL KING --
-    } else if (
-      document.querySelector("#main-story").textContent ===
-      `The King looks at you as a tear rolls down his face`
-    ) {
-      document.querySelector("#mob-pic").src = "images/king-final.png";
       document.querySelector("#main-story").textContent =
         storyText[partCount][storyCount];
       storyCount++;
@@ -1139,6 +1322,29 @@ document.querySelector("#next-story").addEventListener("click", function () {
       } else {
         document.querySelector("#mob-pic").src = "images/assassin-close-up.png";
       }
+      document.querySelector("#main-story").textContent =
+        storyText[partCount][storyCount];
+      storyCount++;
+      return;
+
+      // -- ORC LEADER DEFEATED --
+    } else if (
+      document.querySelector("#main-story").textContent ===
+      `The Orc Commander falls to the ground with a look of disbelief`
+    ) {
+      document.querySelector("#mob-pic").src =
+        "images/orc-leader-defeated-final.png";
+      document.querySelector("#main-story").textContent =
+        storyText[partCount][storyCount];
+      storyCount++;
+      return;
+
+      // -- GREATFUL KING --
+    } else if (
+      document.querySelector("#main-story").textContent ===
+      `The King looks at you as a tear rolls down his face`
+    ) {
+      document.querySelector("#mob-pic").src = "images/king-final.png";
       document.querySelector("#main-story").textContent =
         storyText[partCount][storyCount];
       storyCount++;
@@ -1177,230 +1383,12 @@ document.querySelector("#next-story").addEventListener("click", function () {
       storyCount++;
       return;
 
-      // -- OPENING A CRATE FOR HP --
-    } else if (
-      document.querySelector("#main-story").textContent ===
-      `As you open it you find a Health Potion!`
-    ) {
-      playerData.healthPots = playerData.healthPots + 1;
-      document.querySelector(".hp-pots").textContent = playerData.healthPots;
-      document.querySelector("#main-story").textContent =
-        storyText[partCount][storyCount];
-      storyCount++;
-      return;
-
-      // -- OPENING A CRATE FOR HP --
-    } else if (
-      document.querySelector("#main-story").textContent ===
-      `As you open it you find an Energy Potion!`
-    ) {
-      playerData.energyPots = playerData.energyPots + 1;
-      document.querySelector(".nrg-pots").textContent = playerData.energyPots;
-      document.querySelector("#main-story").textContent =
-        storyText[partCount][storyCount];
-      storyCount++;
-      return;
-
-      // -- ORC LEADER DEFEATED --
-    } else if (
-      document.querySelector("#main-story").textContent ===
-      `The Orc Commander falls to the ground with a look of disbelief`
-    ) {
-      document.querySelector("#mob-pic").src =
-        "images/orc-leader-defeated-final.png";
-      document.querySelector("#main-story").textContent =
-        storyText[partCount][storyCount];
-      storyCount++;
-      return;
-
       // -- BEACH --
     } else if (
       document.querySelector("#main-story").textContent ===
       `When the light disaptes, you find yourself standing on a beach in an unfamiliar land`
     ) {
       document.querySelector("#mob-pic").src = "images/beach-final.png";
-      document.querySelector("#main-story").textContent =
-        storyText[partCount][storyCount];
-      storyCount++;
-      return;
-
-      // -- SHOW INSIDE RIGHT COTTAGE PICTURE --
-    } else if (
-      document.querySelector("#main-story").textContent ===
-      `As you approach the cottage on the right you notice a shadow moving inside`
-    ) {
-      document.querySelector("#mob-pic").src =
-        "images/inside-right-cabin-final.png";
-      document.querySelector("#main-story").textContent =
-        storyText[partCount][storyCount];
-      storyCount++;
-      return;
-
-      // -- BOY RUNNING AWAY --
-    } else if (
-      document.querySelector("#main-story").textContent ===
-      `Boy: "If you need to rest, feel free to take shelter inside"`
-    ) {
-      document.querySelector("#mob-pic").src =
-        "images/boy-running-away-final.png";
-      document.querySelector("#main-story").textContent =
-        storyText[partCount][storyCount];
-      storyCount++;
-      return;
-
-      // -- WOMAN HIDING BEHIND BARREL --
-    } else if (
-      document.querySelector("#main-story").textContent ===
-      `You look around to see who made that noise and you see a young woman hiding behind a barrel`
-    ) {
-      document.querySelector("#mob-pic").src = "images/woman-barrel-final.png";
-      document.querySelector("#main-story").textContent =
-        storyText[partCount][storyCount];
-      storyCount++;
-      return;
-
-      // -- SHOW ORC COMMANDER --
-    } else if (
-      document.querySelector("#main-story").textContent ===
-      `As you approach an inner gate to access the keep, a deep, rumbling voice echos against the stone`
-    ) {
-      document.querySelector("#mob-pic").src = "images/orc-2-final.png";
-      document.querySelector("#main-story").textContent =
-        storyText[partCount][storyCount];
-      storyCount++;
-      return;
-
-      // -- BOY IS HAPPY --
-    } else if (
-      document.querySelector("#main-story").textContent ===
-      `You turn to the boy`
-    ) {
-      document.querySelector("#mob-pic").src = "images/boy-happy-final.png";
-      document.querySelector("#main-story").textContent =
-        storyText[partCount][storyCount];
-      storyCount++;
-      return;
-
-      // -- BOY RUNNING TOWARDS YOU --
-    } else if (
-      document.querySelector("#main-story").textContent ===
-      `A young boy is running towards you as he is being chased by an Orc!`
-    ) {
-      document.querySelector("#mob-pic").src = "images/boy-running-final.png";
-      document.querySelector("#main-story").textContent =
-        storyText[partCount][storyCount];
-      storyCount++;
-      return;
-
-      // -- SHOW INSIDE LEFT COTTAGE PICTURE --
-    } else if (
-      document.querySelector("#main-story").textContent ===
-      `As you enter you see a crate in the corner with a broken lock`
-    ) {
-      document.querySelector("#mob-pic").src =
-        "images/inside-left-cabin-final.png";
-      document.querySelector("#main-story").textContent =
-        storyText[partCount][storyCount];
-      storyCount++;
-      return;
-
-      // -- TAKE WOMANS HP POTION --
-    } else if (
-      document.querySelector("#main-story").textContent ===
-      `Woman: "I can't believe you wont help us..."`
-    ) {
-      playerData.healthPots = playerData.healthPots + 1;
-      document.querySelector(".hp-pots").textContent = playerData.healthPots;
-      document.querySelector("#main-story").textContent =
-        storyText[partCount][storyCount];
-      storyCount++;
-
-      return;
-
-      // -- HELP WOMAN OR NOT --
-    } else if (
-      document.querySelector("#main-story").textContent ===
-      `Do you keep the health potion for yourself or help the little girl?`
-    ) {
-      let choice = prompt(`Press "Y" to help\nPress "N" to keep the potion`);
-      choice = choice.toUpperCase();
-      if (choice === "Y") {
-        help = true;
-        storyText[6] = helpWoman;
-      } else {
-        help = false;
-        storyText[6] = dontHelpWoman;
-      }
-      partCount++;
-      storyCount = 0;
-      document.querySelector("#main-story").textContent =
-        storyText[partCount][storyCount];
-      storyCount++;
-      return;
-
-      // -- DOES THE WOMAN HELP YOU OR NOT --
-    } else if (
-      document.querySelector("#main-story").textContent ===
-      `How will you make it passed the guard?`
-    ) {
-      if (help === true) {
-        storyText[9] = sheHelps;
-      } else {
-        storyText[9] = noHelp;
-      }
-      partCount++;
-      storyCount = 0;
-      document.querySelector("#main-story").textContent =
-        storyText[partCount][storyCount];
-      storyCount++;
-      return;
-
-      // -- INSIDE RIGHT CABIN --
-    } else if (
-      document / this.querySelector("#main-story") ===
-      `You open the door and find yourself standing in front of another Orc!`
-    ) {
-      document.querySelector("#mob-pic").src = "inside-right-cabin-final.png";
-      document.querySelector("#main-story").textContent =
-        storyText[partCount][storyCount];
-      storyCount++;
-      return;
-
-      // -- GAIN 1 ENERGY AND ONE HEALTH POTION --
-    } else if (
-      document.querySelector("#main-story").textContent ===
-      `Before you go let me give you these health and energy potions to help you on your jounrey`
-    ) {
-      document.querySelector("#main-story").textContent =
-        storyText[partCount][storyCount];
-      playerData.healthPots = playerData.healthPots + 1;
-      playerData.energyPots = playerData.energyPots + 1;
-      document.querySelector(".hp-pots").textContent = playerData.healthPots;
-      document.querySelector(".nrg-pots").textContent = playerData.energyPots;
-      storyCount = storyCount + 2;
-      return;
-
-      // -- REST AND GAIN FULL POWER --
-    } else if (
-      storyText[partCount][storyCount] ===
-      `The cottage seems safe so you decide to rest to restore your strength`
-    ) {
-      playerData.health = 100;
-      playerData.energy = 60;
-      document.querySelector(".health").textContent = playerData.health;
-      document.querySelector(".energy").textContent = playerData.nrg;
-
-      document.querySelector("#main-story").textContent =
-        storyText[partCount][storyCount];
-      storyCount++;
-      return;
-
-      // -- SHOW ORC OUTSIDE CITY GATES --
-    } else if (
-      document.querySelector("#main-story").textContent ===
-      `You hear the sound of scrapping metal`
-    ) {
-      document.querySelector("#mob-pic").src = "images/orc-3-final.png";
       document.querySelector("#main-story").textContent =
         storyText[partCount][storyCount];
       storyCount++;
