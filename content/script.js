@@ -103,6 +103,10 @@ document.querySelector("#attack-1").addEventListener("click", function () {
         `${playerData.name} deals ${playerDmg} damage!\n${mobID.name} --MISS--`
       );
     }
+  } else if (mobDmg > mobID.dmg && playerDmg > playerSkill.dmg) {
+    alert(
+      `${playerData.name} deals ${playerDmg} damage (Critical Hit)!\n${mobID.name} deals ${mobDmg} damage (Critical Hit)!`
+    );
   } else {
     alert(
       `${playerData.name} deals ${playerDmg} damage!\n${mobID.name} deals ${mobDmg} damage!`
@@ -134,6 +138,7 @@ document.querySelector("#attack-1").addEventListener("click", function () {
     storyCount = 0;
     document.querySelector("#main-story").textContent =
       storyText[partCount][storyCount];
+    storyCount++;
     return;
   }
   // -- PLAYER DEFEATED --
@@ -164,11 +169,12 @@ document.querySelector("#attack-2").addEventListener("click", function () {
   curNrg = playerData.energy - playerSkill.nrg;
   let mobDmg = 0;
   let playerDmg = 0;
+  let mobHit;
   if (playerData.role === "M" || playerData.role === "W") {
     mobDmg = Math.floor(dmgGen(mobID.attack) / dmgReducGen());
     playerDmg = dmgGen(playerSkill.dmg);
   } else {
-    const mobHit = dodgeCheck(mobID.toHit);
+    mobHit = dodgeCheck(mobID.toHit);
     if (mobHit === true) {
       playerDmg = dmgGen(playerSkill.dmg);
     } else {
@@ -195,6 +201,10 @@ document.querySelector("#attack-2").addEventListener("click", function () {
         `${playerData.name} deals ${playerDmg} damage!\n${mobID.name} --MISS--`
       );
     }
+  } else if (mobDmg > mobID.dmg && playerDmg > playerSkill.dmg) {
+    alert(
+      `${playerData.name} deals ${playerDmg} damage (Critical Hit)!\n${mobID.name} deals ${mobDmg} damage (Critical Hit)!`
+    );
   } else {
     alert(
       `${playerData.name} deals ${playerDmg} damage!\n${mobID.name} deals ${mobDmg} damage!`
@@ -226,6 +236,7 @@ document.querySelector("#attack-2").addEventListener("click", function () {
     storyCount = 0;
     document.querySelector("#main-story").textContent =
       storyText[partCount][storyCount];
+    storyCount++;
     return;
   }
   // -- PLAYER DEFEATED --
@@ -256,11 +267,12 @@ document.querySelector("#attack-3").addEventListener("click", function () {
   curNrg = playerData.energy - playerSkill.nrg;
   let mobDmg = 0;
   let playerDmg = 0;
+  let mobHit;
   if (playerData.role === "M" || playerData.role === "W") {
     mobDmg = Math.floor(dmgGen(mobID.attack) / dmgReducGen());
     playerDmg = dmgGen(playerSkill.dmg);
   } else {
-    const mobHit = dodgeCheck(mobID.toHit);
+    mobHit = dodgeCheck(mobID.toHit);
     if (mobHit === true) {
       playerDmg = dmgGen(playerSkill.dmg);
     } else {
@@ -287,6 +299,10 @@ document.querySelector("#attack-3").addEventListener("click", function () {
         `${playerData.name} deals ${playerDmg} damage!\n${mobID.name} --MISS--`
       );
     }
+  } else if (mobDmg > mobID.dmg && playerDmg > playerSkill.dmg) {
+    alert(
+      `${playerData.name} deals ${playerDmg} damage (Critical Hit)!\n${mobID.name} deals ${mobDmg} damage (Critical Hit)!`
+    );
   } else {
     alert(
       `${playerData.name} deals ${playerDmg} damage!\n${mobID.name} deals ${mobDmg} damage!`
@@ -318,6 +334,7 @@ document.querySelector("#attack-3").addEventListener("click", function () {
     storyCount = 0;
     document.querySelector("#main-story").textContent =
       storyText[partCount][storyCount];
+    storyCount++;
     return;
   }
   // -- PLAYER DEFEATED --
@@ -348,11 +365,12 @@ document.querySelector("#attack-4").addEventListener("click", function () {
   curNrg = playerData.energy - playerSkill.nrg;
   let mobDmg = 0;
   let playerDmg = 0;
+  let mobHit;
   if (playerData.role === "M" || playerData.role === "W") {
     mobDmg = Math.floor(dmgGen(mobID.attack) / dmgReducGen());
     playerDmg = dmgGen(playerSkill.dmg);
   } else {
-    const mobHit = dodgeCheck(mobID.toHit);
+    mobHit = dodgeCheck(mobID.toHit);
     if (mobHit === true) {
       playerDmg = dmgGen(playerSkill.dmg);
     } else {
@@ -379,6 +397,10 @@ document.querySelector("#attack-4").addEventListener("click", function () {
         `${playerData.name} deals ${playerDmg} damage!\n${mobID.name} --MISS--`
       );
     }
+  } else if (mobDmg > mobID.dmg && playerDmg > playerSkill.dmg) {
+    alert(
+      `${playerData.name} deals ${playerDmg} damage (Critical Hit)!\n${mobID.name} deals ${mobDmg} damage (Critical Hit)!`
+    );
   } else {
     alert(
       `${playerData.name} deals ${playerDmg} damage!\n${mobID.name} deals ${mobDmg} damage!`
@@ -410,6 +432,7 @@ document.querySelector("#attack-4").addEventListener("click", function () {
     storyCount = 0;
     document.querySelector("#main-story").textContent =
       storyText[partCount][storyCount];
+    storyCount++;
     return;
   }
   // -- PLAYER DEFEATED --
@@ -441,12 +464,13 @@ function skillList() {
 
 // -- DAMAGE GENERATOR --
 function dmgGen(skillDmg) {
-  const randomNum = Math.floor(Math.random() * 5) + 1;
-  const result = skillDmg * 2;
-  if (randomNum === 5) {
-    return result;
+  const randomNum = Math.floor(Math.random() * 10) + 1;
+  const crit = skillDmg * 2;
+  if (randomNum === 10) {
+    return crit;
+  } else {
+    return skillDmg;
   }
-  return skillDmg;
 }
 
 // -- DAMAGE REDUCTION GENERATOR --
@@ -967,7 +991,7 @@ document.querySelector("#next-story").addEventListener("click", function () {
     } else if (partCount === 7) {
       document.querySelector("#mob-name").textContent = medMob2.name;
       document.querySelector("#mob-hp").textContent = medMob2.hp;
-      document.querySelector("#mob-pic").src = "images/orc-2-final.png";
+      document.querySelector("#mob-pic").src = "images/orc-3-final.png";
       mobID = medMob2;
     } else if (partCount === 9) {
       document.querySelector("#mob-name").textContent = hardMob.name;
@@ -1008,6 +1032,7 @@ document.querySelector("#next-story").addEventListener("click", function () {
         storyCount = 0;
         document.querySelector("#main-story").textContent =
           storyText[partCount][storyCount];
+        storyCount++;
         document.querySelector("#mob-pic").src = "images/left-cabin-final.png";
         return;
 
@@ -1018,6 +1043,7 @@ document.querySelector("#next-story").addEventListener("click", function () {
         storyCount = 0;
         document.querySelector("#main-story").textContent =
           storyText[partCount][storyCount];
+        storyCount++;
         document.querySelector("#mob-pic").src = "images/right-cabin-final.png";
         return;
         // -- INVALID SELECTION --
@@ -1043,7 +1069,6 @@ document.querySelector("#next-story").addEventListener("click", function () {
       `A small vial falls from one of its puches`
     ) {
       let chance = Math.floor(Math.random() * 2) + 1;
-      let val;
       if (chance < 2) {
         playerData.energyPots = playerData.energyPots + 1;
         document.querySelector(".nrg-pots").textContent = playerData.energyPots;
@@ -1286,9 +1311,9 @@ document.querySelector("#next-story").addEventListener("click", function () {
     ) {
       playerData.healthPots = playerData.healthPots + 1;
       document.querySelector(".hp-pots").textContent = playerData.healthPots;
-      storyCount++;
       document.querySelector("#main-story").textContent =
         storyText[partCount][storyCount];
+      storyCount++;
 
       return;
 
@@ -1310,12 +1335,13 @@ document.querySelector("#next-story").addEventListener("click", function () {
       storyCount = 0;
       document.querySelector("#main-story").textContent =
         storyText[partCount][storyCount];
+      storyCount++;
       return;
 
       // -- DOES THE WOMAN HELP YOU OR NOT --
     } else if (
       document.querySelector("#main-story").textContent ===
-      `How will you make it past the guard?`
+      `How will you make it passed the guard?`
     ) {
       if (help === true) {
         storyText[9] = sheHelps;
@@ -1326,6 +1352,7 @@ document.querySelector("#next-story").addEventListener("click", function () {
       storyCount = 0;
       document.querySelector("#main-story").textContent =
         storyText[partCount][storyCount];
+      storyCount++;
       return;
 
       // -- INSIDE RIGHT CABIN --
@@ -1373,7 +1400,7 @@ document.querySelector("#next-story").addEventListener("click", function () {
       document.querySelector("#main-story").textContent ===
       `You hear the sound of scrapping metal`
     ) {
-      document.querySelector("#mob-pic").src = "images/orc-2-final.png";
+      document.querySelector("#mob-pic").src = "images/orc-3-final.png";
       document.querySelector("#main-story").textContent =
         storyText[partCount][storyCount];
       storyCount++;
@@ -1392,6 +1419,7 @@ document.querySelector("#next-story").addEventListener("click", function () {
     storyCount = 0;
     document.querySelector("#main-story").textContent =
       storyText[partCount][storyCount];
+    storyCount++;
     return;
   }
 });
