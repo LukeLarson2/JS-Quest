@@ -846,7 +846,7 @@ const storyText = {
   ],
   5: [
     `The large armored Orc drops to the ground with a crashing thud`,
-    `A small vial falls from one of its puches`,
+    `A small vial falls from one of its pouches`,
     `You add the potion to your inventory`,
     `Tired and bleeding, you seek aid within the city gates`,
     `As you enter, you see the absolute destruction of the city`,
@@ -905,7 +905,7 @@ const storyText = {
     `As you slowly make your way towards the Orc Commander, you begin to pick up speed`,
     `${playerData.name}: "I am death..."`,
     `${playerData.name}: "I am the destroyer of orcs..."`,
-    `${playerData.name}: "I am vengance..."`,
+    `${playerData.name}: "I am vengeance..."`,
     `${playerData.name}: "I..."`,
     `${playerData.name}: "Am..."`,
     `${playerData.name}: "${playerData.name}!!!!`,
@@ -1200,7 +1200,7 @@ document.querySelector("#next-story").addEventListener("click", function () {
       // -- POTION FROM ORC --
     } else if (
       document.querySelector("#main-story").textContent ===
-      `A small vial falls from one of its puches`
+      `A small vial falls from one of its pouches`
     ) {
       let chance = Math.floor(Math.random() * 2) + 1;
       if (chance < 2) {
