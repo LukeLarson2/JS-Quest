@@ -42,25 +42,34 @@
   border: 6px solid #eee;
   background-color: #eee;
   border-radius: 10px;
-  margin-top: 5%;
 }
 
 .hp-nrg {
   color: #eee;
   display: flex;
-  justify-content: flex-start;
+  justify-content: center;
   flex-wrap: wrap;
-  margin: 1%;
-  font-size: 2vmax;
-  flex-basis: 10vmax;
+  font-size: 1.5vmax;
+  flex-basis: 30%;
+  align-content: center;
 }
 
 #hps {
   text-align: center;
+  font-size: 1.5vmax;
 }
 
 #nrgs {
   text-align: center;
+  font-size: 1.5vmax;
+}
+
+#drink-hp {
+  font-size: 1vmax;
+}
+
+#drink-nrg {
+  font-size: 1vmax;
 }
 
 .potions {
@@ -70,6 +79,7 @@
 .pots {
   display: flex;
   justify-content: space-around;
+  flex-basis: 20vmax;
   margin-bottom: 2%;
 }
 
@@ -79,7 +89,8 @@
   border-bottom: 10px solid #eee;
   border-radius: 10px;
   display: flex;
-  justify-content: flex-start;
+  justify-content: center;
+  align-content: center;
 }
 
 #player-name {
