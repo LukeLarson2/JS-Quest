@@ -130,8 +130,9 @@
   border-radius: 10px;
   background-color: #eee;
   text-align: center;
-  margin: 5%;
+  margin: 2%;
   font-size: 2vmin;
+  padding: 1%;
 }
 
 .story-title {
@@ -170,7 +171,7 @@
   padding: 0px;
   display: flex;
   justify-content: center;
-  align-items: flex-start;
+  align-content: space-between;
   flex-wrap: wrap;
   margin: 2%;
 }
@@ -178,15 +179,25 @@
 .combat-content {
   display: flex;
   justify-content: space-evenly;
-  flex-wrap: wrap;
-  align-content: flex-end;
+  flex-wrap: nowrap;
+  align-content: space-between;
+  height: 100%;
 }
 
+#mob-img {
+  display: flex;
+  justify-content: center;
+  flex-basis: 20vmax;
+  margin-left: 2%;
+  margin-right: 2%;
+}
 #mob-pic {
   border: 5px solid #eee;
   border-radius: 3px;
   max-width: 90%;
   padding: 0%;
+  margin-top: 5%;
+  margin-bottom: 5%;
 }
 
 #mob-info {
@@ -195,17 +206,10 @@
   display: flex;
   justify-content: center;
   flex-wrap: wrap;
-  align-items: flex-start;
+  align-content: space-around;
   width: 100%;
   padding-left: 10%;
   padding-right: 10%;
-}
-
-#mob-img {
-  display: flex;
-  justify-content: center;
-  flex-basis: 20vmax;
-  margin: 2%;
 }
 
 #mob-name {
@@ -224,8 +228,8 @@
 
 .attack {
   display: flex;
-  justify-content: center;
-  max-height: 70%;
+  justify-content: space-evenly;
+  height: 3vmax;
   flex-wrap: wrap;
 }
 
