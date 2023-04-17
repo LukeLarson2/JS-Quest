@@ -767,7 +767,7 @@ const leftCottagePick = [
 const rightCottagePick = [
   `As you approach the cottage on the right you notice a shadow moving inside`,
   `You open the door and find yourself standing in front of another Orc!`,
-  `IN  BATTLE`,
+  `IN BATTLE`,
 ];
 
 // -- HELP WOMAN AND DAUGHTER --
@@ -796,7 +796,7 @@ const sheHelps = [
 // -- WOMAN DOESNT HELP YOU --
 const noHelp = [
   `The Orc turns and see's you and prepares to strike!`,
-  "IN  BATTLE",
+  `IN BATTLE`,
   `As the Orc collapses you make your way into the keep`,
 ];
 
@@ -909,7 +909,7 @@ const storyText = {
     `${playerData.name}: "I..."`,
     `${playerData.name}: "Am..."`,
     `${playerData.name}: "${playerData.name}!!!!`,
-    "IN BATTLE",
+    `IN BATTLE`,
   ],
   11: [
     `The Orc Commander falls to the ground with a look of disbelief`,

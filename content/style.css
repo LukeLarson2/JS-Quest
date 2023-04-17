@@ -9,7 +9,8 @@
 .game-screen {
   height: 100%;
   display: flex;
-  background: linear-gradient(to top left, #182e69, #000000);
+  /* background: linear-gradient(to top left, #182e69, #000000); */
+  background-color: #000000;
   font-family: "Press Start 2P", sans-serif !important;
 }
 
