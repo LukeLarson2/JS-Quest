@@ -112,7 +112,7 @@
   height: 30vmax;
   min-width: 200px;
   max-width: 400px;
-  width: 30%;
+  /* width: 30%; */
   border-radius: 10px;
   padding: 0px;
   display: flex;
@@ -121,6 +121,7 @@
   flex-wrap: wrap;
   margin-left: 2%;
   margin-right: 2%;
+  margin-top: 3%;
 }
 
 #main-story {
@@ -179,14 +180,7 @@
   flex-wrap: wrap;
   margin-left: 2%;
   margin-right: 2%;
-}
-
-.combat-content {
-  display: flex;
-  justify-content: space-evenly;
-  flex-wrap: nowrap;
-  align-content: space-between;
-  height: 100%;
+  margin-top: 3%;
 }
 
 #mob-img {
@@ -232,24 +226,40 @@
   margin-top: 2%;
   font-size: 2vmin;
 }
+.combat-content {
+  display: flex;
+  justify-content: space-evenly;
+  flex-wrap: nowrap;
+  align-content: space-between;
+  height: 100%;
+}
 
 .attack {
   display: flex;
   justify-content: space-evenly;
-  height: 3vmax;
+  height: 10vmin;
+  flex-basis: 1vmin;
   flex-wrap: wrap;
+  align-content: space-between;
 }
 
 .attacks {
   font-size: 1.5vmin;
   justify-content: space-evenly;
-  flex-basis: 1vmin;
+  flex-basis: 100%;
 }
 
 #skills {
   text-align: center;
   justify-content: space-evenly;
   font-size: 1.5vmin;
+}
+
+.atk-text {
+  flex-basis: 100%;
+  padding-left: 1%;
+  padding-right: 1%;
+  font-size: 2vmin;
 }
 
 .tooltip-wrap {
