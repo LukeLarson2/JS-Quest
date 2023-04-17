@@ -102,7 +102,8 @@
 
 #main {
   display: flex;
-  justify-content: center;
+  justify-content: space-evenly;
+  flex-wrap: wrap;
 }
 
 #story-block {
@@ -110,6 +111,7 @@
   background: linear-gradient(to top left, #e9e9e9, #111113);
   height: 30vmax;
   min-width: 200px;
+  max-width: 400px;
   width: 30%;
   border-radius: 10px;
   padding: 0px;
@@ -117,7 +119,8 @@
   justify-content: center;
   align-content: space-between;
   flex-wrap: wrap;
-  margin: 2%;
+  margin-left: 2%;
+  margin-right: 2%;
 }
 
 #main-story {
@@ -166,6 +169,7 @@
   background: linear-gradient(to top left, #e9e9e9, #111113);
   height: 30vmax;
   min-width: 200px;
+  max-width: 400px;
   width: 30%;
   border-radius: 10px;
   padding: 0px;
@@ -173,7 +177,8 @@
   justify-content: center;
   align-content: space-between;
   flex-wrap: wrap;
-  margin: 2%;
+  margin-left: 2%;
+  margin-right: 2%;
 }
 
 .combat-content {
@@ -196,21 +201,24 @@
   border-radius: 3px;
   max-width: 90%;
   padding: 0%;
-  margin-top: 9%;
+  margin-top: 7%;
   margin-bottom: 9%;
 }
 
 #mob-info {
   border-bottom: 5px solid #eee;
   background-color: #1a0000;
-  display: flex;
+  color: #eee;
+  text-align: center;
   justify-content: center;
-  flex-wrap: wrap;
-  align-content: space-around;
-  width: 100%;
-  height: 20%;
+  align-content: space-between;
+  padding-top: 1%;
+  padding-bottom: 1%;
   padding-left: 10%;
   padding-right: 10%;
+  width: 100%;
+  height: 18%;
+  font-size: 2vmin;
 }
 
 #mob-name {
@@ -235,7 +243,7 @@
 }
 
 .attacks {
-  font-size: 1vmin;
+  font-size: 1.5vmin;
   justify-content: space-evenly;
   flex-basis: 1vmin;
 }
@@ -243,7 +251,7 @@
 #skills {
   text-align: center;
   justify-content: space-evenly;
-  font-size: 1.3vmin;
+  font-size: 1.5vmin;
 }
 
 .tooltip-wrap {
