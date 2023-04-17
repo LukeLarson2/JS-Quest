@@ -56,20 +56,20 @@
 
 #hps {
   text-align: center;
-  font-size: 1.5vmax;
+  font-size: 2vmin;
 }
 
 #nrgs {
   text-align: center;
-  font-size: 1.5vmax;
+  font-size: 2vmin;
 }
 
 #drink-hp {
-  font-size: 1vmax;
+  font-size: 2vmin;
 }
 
 #drink-nrg {
-  font-size: 1vmax;
+  font-size: 2vmin;
 }
 
 .potions {
@@ -110,14 +110,14 @@
 #story-block {
   border: 7px solid #eee;
   background: linear-gradient(to top left, #e9e9e9, #111113);
-  height: 500px;
-  min-width: 300px;
+  height: 30vmax;
+  min-width: 200px;
   width: 30%;
   border-radius: 10px;
   padding: 0px;
   display: flex;
   justify-content: center;
-  align-items: flex-start;
+  align-content: space-between;
   flex-wrap: wrap;
   margin: 2%;
 }
@@ -125,12 +125,13 @@
 #main-story {
   color: #333;
   max-height: 100%;
-  max-width: 100%;
+  width: 90%;
   border: 3px solid #333;
   border-radius: 10px;
   background-color: #eee;
   text-align: center;
   margin: 5%;
+  font-size: 2vmin;
 }
 
 .story-title {
@@ -138,9 +139,13 @@
   background-color: #1a0000;
   color: #eee;
   text-align: center;
+  justify-content: center;
   padding-top: 3.75%;
   padding-bottom: 3.75%;
+  padding-left: 10%;
+  padding-right: 10%;
   width: 100%;
+  font-size: 2vmin;
 }
 
 #next-button {
@@ -150,15 +155,16 @@
 }
 
 #next-story {
-  max-width: fit-content;
-  max-height: 20px;
+  flex-basis: 2vmax;
+  font-size: 2vmin;
+  align-self: center;
 }
 
 #combat-block {
   border: 7px solid #eee;
   background: linear-gradient(to top left, #e9e9e9, #111113);
-  height: 500px;
-  min-width: 300px;
+  height: 30vmax;
+  min-width: 200px;
   width: 30%;
   border-radius: 10px;
   padding: 0px;
@@ -191,13 +197,14 @@
   flex-wrap: wrap;
   align-items: flex-start;
   width: 100%;
-  height: 20%;
+  padding-left: 10%;
+  padding-right: 10%;
 }
 
 #mob-img {
   display: flex;
   justify-content: center;
-  max-height: 100%;
+  flex-basis: 20vmax;
   margin: 2%;
 }
 
@@ -205,31 +212,33 @@
   color: #eee;
   text-align: center;
   margin-top: 2%;
+  font-size: 2vmin;
 }
 
 #mob-hp-text {
   color: #eee;
   text-align: center;
   margin-top: 2%;
+  font-size: 2vmin;
 }
 
 .attack {
   display: flex;
   justify-content: center;
-  max-height: 100%;
+  max-height: 70%;
   flex-wrap: wrap;
 }
 
 .attacks {
-  font-size: 0.7vmax;
-  text-align: center;
+  font-size: 1vmin;
+  justify-content: space-evenly;
+  flex-basis: 1vmin;
 }
 
 #skills {
   text-align: center;
   justify-content: space-evenly;
-  margin: 5px;
-  font-size: 10px;
+  font-size: 1.3vmin;
 }
 
 .tooltip-wrap {

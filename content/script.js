@@ -807,7 +807,7 @@ const storyText = {
     `The land of the king has been attacked by an evil horde of Orcs!`,
     `Only a few soldiers hold the line to the keep, but their numbers are dwindling`,
     `${playerData.name}, do you stand up to the task of cleansing the kingdom of these filthy Orcs?`,
-    "-- Do you Continue? --",
+    "Do you Continue?",
     `That's Excellent!`,
     `Before you go let me give you these health and energy potions to help you on your journey`,
     `Good luck ${playerData.name}!`,
@@ -960,7 +960,7 @@ function disableButtons(story, battle) {
   document.querySelector("#attack-4").disabled = battle;
 }
 
-document.querySelector("#story-title").textContent = "Main Story";
+document.querySelector(".story-title").textContent = "Main Story";
 
 // -- Click Through Story --
 document.querySelector("#next-story").addEventListener("click", function () {
@@ -1009,8 +1009,7 @@ document.querySelector("#next-story").addEventListener("click", function () {
   if (storyCount < storyText[partCount].length) {
     // -- TUTORIAL CHECK --
     if (
-      document.querySelector("#main-story").textContent ===
-      "-- Do you Continue? --"
+      document.querySelector("#main-story").textContent === "Do you Continue?"
     ) {
       beginTutorial();
       return;
