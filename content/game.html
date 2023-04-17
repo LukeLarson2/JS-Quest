@@ -13,7 +13,7 @@
     <link href="style.css" rel="stylesheet" />
     <title>JS Quest – Part 1</title>
   </head>
-  <body>
+  <body class="game-screen">
     <container class="container">
       <header class="row header" id="player-data">
         <div class="tooltip-wrap user">
@@ -23,21 +23,15 @@
             alt="knight shield picture"
           />
           <div class="tooltip-content-player">Default Text</div>
-          <p id="player-name">username</p>
         </div>
+        <p id="player-name">username</p>
         <div class="hp-nrg">
-          <h3 class="health-title">
-            ❤ <span class="health">100</span><span class="max-hp">/100</span>
-          </h3>
-          <!-- </div> -->
-          <h3 class="energy-title">
-            ⚡ <span class="energy">60</span><span class="max-nrg">/60</span>
-          </h3>
+          ❤ <span class="health">100</span><span class="max-hp">/100 </span>⚡
+          <span class="energy">60</span><span class="max-nrg">/60</span>
         </div>
-        <!-- </div> -->
         <div class="pots">
-          <div class="col" id="hps">
-            <img src="images/hp-pot-bottle.png" />
+          <div id="hps">
+            <img src="images/hp-pot-bottle.png" class="potions" />
             <div class="hp-pots">0</div>
             <div class="tooltip-wrap">
               <button class="btn btn-dark" type="button" id="drink-hp">
@@ -46,9 +40,8 @@
               <div class="tooltip-content-hp">+30 Health</div>
             </div>
           </div>
-          <div class="col" id="nrgs">
-            <img src="images/nrg-pot-bottle.png" />
-
+          <div id="nrgs">
+            <img src="images/nrg-pot-bottle.png" class="potions" />
             <div class="nrg-pots">0</div>
             <div class="tooltip-wrap">
               <button class="btn btn-dark" type="button" id="drink-nrg">
