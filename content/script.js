@@ -501,7 +501,7 @@ function toHit() {
 
 // -- BOX ITEM GENERATOR --
 function openBox() {
-  const item = Math.floor(Math.random() * 2) + 1;
+  const item = Math.floor(Math.random() * 6) + 1;
   let result = undefined;
   if (item === 1) {
     result = "a Health Potion!";
