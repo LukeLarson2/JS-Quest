@@ -553,25 +553,25 @@ const playerData = {
     document.querySelector("#attack-1").textContent =
       playerData.skills[0][1].dmg + " DMG";
     document.querySelector(".attack-1-nrg").textContent =
-      "-" + playerData.skills[0][1].nrg + " ⚡";
+      "-" + playerData.skills[0][1].nrg + "⚡";
     document.querySelector(".attack-2-dmg").textContent =
       playerData.skills[1][0];
     document.querySelector("#attack-2").textContent =
       playerData.skills[1][1].dmg + " DMG";
     document.querySelector(".attack-2-nrg").textContent =
-      "-" + playerData.skills[1][1].nrg + " ⚡";
+      "-" + playerData.skills[1][1].nrg + "⚡";
     document.querySelector(".attack-3-dmg").textContent =
       playerData.skills[2][0];
     document.querySelector("#attack-3").textContent =
       playerData.skills[2][1].dmg + " DMG";
     document.querySelector(".attack-3-nrg").textContent =
-      "-" + playerData.skills[2][1].nrg + " ⚡";
+      "-" + playerData.skills[2][1].nrg + "⚡";
     document.querySelector(".attack-4-dmg").textContent =
       playerData.skills[3][0];
     document.querySelector("#attack-4").textContent =
       playerData.skills[3][1].dmg + " DMG";
     document.querySelector(".attack-4-nrg").textContent =
-      "-" + playerData.skills[3][1].nrg + " ⚡";
+      "-" + playerData.skills[3][1].nrg + "⚡";
     return this.skills;
   },
   health: 100,
@@ -767,7 +767,7 @@ const leftCottagePick = [
 const rightCottagePick = [
   `As you approach the cottage on the right you notice a shadow moving inside`,
   `You open the door and find yourself standing in front of another Orc!`,
-  `---- IN BATTLE ----`,
+  `IN BATTLE`,
 ];
 
 // -- HELP WOMAN AND DAUGHTER --
@@ -796,7 +796,7 @@ const sheHelps = [
 // -- WOMAN DOESNT HELP YOU --
 const noHelp = [
   `The Orc turns and see's you and prepares to strike!`,
-  "---- IN BATTLE ----",
+  `IN BATTLE`,
   `As the Orc collapses you make your way into the keep`,
 ];
 
@@ -807,7 +807,7 @@ const storyText = {
     `The land of the king has been attacked by an evil horde of Orcs!`,
     `Only a few soldiers hold the line to the keep, but their numbers are dwindling`,
     `${playerData.name}, do you stand up to the task of cleansing the kingdom of these filthy Orcs?`,
-    "-- Do you Continue? --",
+    "Do you Continue?",
     `That's Excellent!`,
     `Before you go let me give you these health and energy potions to help you on your journey`,
     `Good luck ${playerData.name}!`,
@@ -815,7 +815,7 @@ const storyText = {
     `A young boy is running towards you as he is being chased by an Orc!`,
     `Boy: "Help me! It's going to get me!"`,
     `The boy runs behind you as the Orc draws near!`,
-    `---- IN BATTLE ----`,
+    `IN BATTLE`,
     `-- Next Part --`,
   ],
   2: [
@@ -842,7 +842,7 @@ const storyText = {
     `Orc: "NO PASS HUMAN!"`,
     `Orc: "I CRUSH AND EAT FOR BREAKFAST!"`,
     `You ready your weapon and prepare to fight!`,
-    `---- IN BATTLE ----`,
+    `IN BATTLE`,
   ],
   5: [
     `The large armored Orc drops to the ground with a crashing thud`,
@@ -868,7 +868,7 @@ const storyText = {
     `The monstrous Orc slams a massive hammer against the stone wall, throwing splintered stone in every direction`,
     `Armored Orc Leader: "YOU DIE.....NOW!!!"`,
     `You ready yourself for an epic battle for survival!`,
-    `---- IN BATTLE ----`,
+    `IN BATTLE`,
   ],
   8: [
     `The collosus beast falls to his back, trembling the ground around you`,
@@ -909,7 +909,7 @@ const storyText = {
     `${playerData.name}: "I..."`,
     `${playerData.name}: "Am..."`,
     `${playerData.name}: "${playerData.name}!!!!`,
-    "---- IN BATTLE ----",
+    `IN BATTLE`,
   ],
   11: [
     `The Orc Commander falls to the ground with a look of disbelief`,
@@ -943,7 +943,7 @@ const storyText = {
     `You pick up the stone to try and get back but you can tell its energy seems to be drained`,
     `You look around you and back at the stone`,
     `It looks like your story isn't over just yet...`,
-    `---TO BE CONTINUED---`,
+    `--TO BE CONTINUED--`,
   ],
 };
 
@@ -960,15 +960,13 @@ function disableButtons(story, battle) {
   document.querySelector("#attack-4").disabled = battle;
 }
 
-document.querySelector("#story-title").textContent = "Main Story";
+document.querySelector(".story-title").textContent = "Main Story";
 
 // -- Click Through Story --
 document.querySelector("#next-story").addEventListener("click", function () {
   // Initialize Current Part
   // Check if end of story array
-  if (
-    document.querySelector("#main-story").textContent === `---- IN BATTLE ----`
-  ) {
+  if (document.querySelector("#main-story").textContent === `IN BATTLE`) {
     disableButtons(true, false);
     // -- FIRST BATTLE --
     if (partCount === 1) {
@@ -1009,8 +1007,7 @@ document.querySelector("#next-story").addEventListener("click", function () {
   if (storyCount < storyText[partCount].length) {
     // -- TUTORIAL CHECK --
     if (
-      document.querySelector("#main-story").textContent ===
-      "-- Do you Continue? --"
+      document.querySelector("#main-story").textContent === "Do you Continue?"
     ) {
       beginTutorial();
       return;
